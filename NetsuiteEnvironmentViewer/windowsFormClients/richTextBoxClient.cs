@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -13,6 +14,16 @@ namespace NetsuiteEnvironmentViewer
         }
 
         private List<MyRichTextBox> linkedRichTextBoxes = new List<MyRichTextBox>();
+
+        public void AppendText(string text, Color color)
+        {
+            this.SelectionStart = this.TextLength;
+            this.SelectionLength = 0;
+
+            this.SelectionColor = color;
+            this.AppendText(text);
+            this.SelectionColor = this.BackColor;
+        }
 
         /// <summary>
         /// Links the specified rich text box to this rich text box.  Whenever either richtextbox
