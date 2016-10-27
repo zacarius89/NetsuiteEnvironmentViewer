@@ -53,14 +53,9 @@ namespace NetsuiteEnvironmentViewer
             }
         }
 
-        private void btnCompareToEnvironment2_Click(object sender, EventArgs e)
+        private void btnCompare_Click(object sender, EventArgs e)
         {
             compareTexts(rTxtContent1, netsuiteCustomScriptFile1.content, rTxtContent2, netsuiteCustomScriptFile2.content);
-        }
-
-        private void btnCompareToEnvironment1_Click(object sender, EventArgs e)
-        {
-            compareTexts(rTxtContent2, netsuiteCustomScriptFile2.content, rTxtContent1, netsuiteCustomScriptFile1.content);
         }
 
         private void compareTexts(MyRichTextBox newRichTextBox, string newText, MyRichTextBox oldRichTextBox, string oldText)
@@ -98,7 +93,7 @@ namespace NetsuiteEnvironmentViewer
                 }
                 else if (diffPiece.Type == ChangeType.Imaginary)
                 {
-                    richTextBox.AppendText(diffPiece.Text + "\n", commonClient.warningColor);
+                    richTextBox.AppendText("\n");
                 }
             }
         }

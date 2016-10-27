@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.grpEnvironment1 = new System.Windows.Forms.GroupBox();
-            this.btnCompareToEnvironment2 = new System.Windows.Forms.Button();
+            this.btnCompare = new System.Windows.Forms.Button();
             this.rTxtContent1 = new NetsuiteEnvironmentViewer.MyRichTextBox();
             this.btnPushToEnvironment2 = new System.Windows.Forms.Button();
             this.txtSize1 = new System.Windows.Forms.TextBox();
@@ -59,7 +59,7 @@
             // 
             // grpEnvironment1
             // 
-            this.grpEnvironment1.Controls.Add(this.btnCompareToEnvironment2);
+            this.grpEnvironment1.Controls.Add(this.btnCompare);
             this.grpEnvironment1.Controls.Add(this.rTxtContent1);
             this.grpEnvironment1.Controls.Add(this.btnPushToEnvironment2);
             this.grpEnvironment1.Controls.Add(this.txtSize1);
@@ -78,15 +78,15 @@
             this.grpEnvironment1.TabStop = false;
             this.grpEnvironment1.Text = "Environment 1";
             // 
-            // btnCompareToEnvironment2
+            // btnCompare
             // 
-            this.btnCompareToEnvironment2.Location = new System.Drawing.Point(393, 70);
-            this.btnCompareToEnvironment2.Name = "btnCompareToEnvironment2";
-            this.btnCompareToEnvironment2.Size = new System.Drawing.Size(144, 23);
-            this.btnCompareToEnvironment2.TabIndex = 10;
-            this.btnCompareToEnvironment2.Text = "Compare To Environment 2";
-            this.btnCompareToEnvironment2.UseVisualStyleBackColor = true;
-            this.btnCompareToEnvironment2.Click += new System.EventHandler(this.btnCompareToEnvironment2_Click);
+            this.btnCompare.Location = new System.Drawing.Point(480, 70);
+            this.btnCompare.Name = "btnCompare";
+            this.btnCompare.Size = new System.Drawing.Size(57, 23);
+            this.btnCompare.TabIndex = 10;
+            this.btnCompare.Text = "Compare";
+            this.btnCompare.UseVisualStyleBackColor = true;
+            this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
             // 
             // rTxtContent1
             // 
@@ -214,7 +214,6 @@
             this.btnCompareToEnvironment1.TabIndex = 11;
             this.btnCompareToEnvironment1.Text = "Compare To Environment 1";
             this.btnCompareToEnvironment1.UseVisualStyleBackColor = true;
-            this.btnCompareToEnvironment1.Click += new System.EventHandler(this.btnCompareToEnvironment1_Click);
             // 
             // rTxtContent2
             // 
@@ -347,7 +346,7 @@
         private System.Windows.Forms.Button btnPushToEnvironment2;
         private MyRichTextBox rTxtContent1;
         private MyRichTextBox rTxtContent2;
-        private System.Windows.Forms.Button btnCompareToEnvironment2;
+        private System.Windows.Forms.Button btnCompare;
         private System.Windows.Forms.Button btnCompareToEnvironment1;
     }
 }
