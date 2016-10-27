@@ -22,7 +22,7 @@ namespace NetsuiteEnvironmentViewer
 
             this.SelectionColor = color;
             this.AppendText(text);
-            this.SelectionColor = this.BackColor;
+            this.SelectionColor = this.ForeColor;
         }
 
         /// <summary>
