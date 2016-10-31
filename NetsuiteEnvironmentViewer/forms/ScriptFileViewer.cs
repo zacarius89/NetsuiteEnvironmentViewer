@@ -10,8 +10,6 @@ namespace NetsuiteEnvironmentViewer
 {
     public partial class ScriptFileViewer : Form
     {
-        private ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
-
         private string confirmationTitle = "Confirmation";
         private string confirmationText = "Are you sure you want to push this content to the other environment?  This will overwrite the existing content.";
 
@@ -60,6 +58,7 @@ namespace NetsuiteEnvironmentViewer
 
         private void compareTexts(MyRichTextBox newRichTextBox, string newText, MyRichTextBox oldRichTextBox, string oldText)
         {
+            ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
             SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(newText, oldText);
 
             colorRichTextBox(newRichTextBox, sideBySideModel.NewText.Lines);

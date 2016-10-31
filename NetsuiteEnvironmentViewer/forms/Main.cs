@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DiffPlex;
+using DiffPlex.DiffBuilder;
+using DiffPlex.DiffBuilder.Model;
 
 namespace NetsuiteEnvironmentViewer
 {
@@ -883,6 +882,125 @@ namespace NetsuiteEnvironmentViewer
                 settings.environment2Role = txtRole2.Text;
 
                 settingsClient.saveSettings(settings);
+            }
+        }
+
+        private void btnCompare_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality it is in progress and not completed.");
+            string customRecords1TreeString = "";
+            string customRecords2TreeString = "";
+            string customScripts1TreeString = "";
+            string customScripts2TreeString = "";
+
+            if (tvEnvironment1CustomRecords.Nodes.Count > 0)
+            {
+                customRecords1TreeString = convertTreeViewToString("", tvEnvironment1CustomRecords.Nodes[0]);
+            }
+            
+            if(tvEnvironment2CustomRecords.Nodes.Count > 0)
+            {
+                customRecords2TreeString = convertTreeViewToString("", tvEnvironment2CustomRecords.Nodes[0]);
+            }
+
+            if(tvEnvironment1CustomScripts.Nodes.Count > 0)
+            {
+                customScripts1TreeString = convertTreeViewToString("", tvEnvironment1CustomScripts.Nodes[0]);
+            }
+            
+            if(tvEnvironment2CustomScripts.Nodes.Count > 0)
+            {
+                customScripts2TreeString = convertTreeViewToString("", tvEnvironment2CustomScripts.Nodes[0]);
+            }
+
+            if(customRecords1TreeString != "" && customRecords2TreeString != "")
+            {
+                compareTreeViewStrings(tvEnvironment1CustomRecords, customRecords1TreeString, tvEnvironment2CustomRecords, customRecords2TreeString);
+            }
+
+            if(customScripts1TreeString != "" && customScripts2TreeString != "")
+            {
+                compareTreeViewStrings(tvEnvironment1CustomScripts, customScripts1TreeString, tvEnvironment2CustomScripts, customScripts2TreeString);
+            }
+        }
+
+        private string convertTreeViewToString(string treeViewString, TreeNode parentTreeNode)
+        {
+            treeViewString = parentTreeNode.FullPath + "\n";
+
+            foreach (TreeNode childTreeNode in parentTreeNode.Nodes)
+            {
+                treeViewString = treeViewString + convertTreeViewToString(treeViewString, childTreeNode);
+            }
+
+            return treeViewString;
+        }
+
+        private void compareTreeViewStrings(MyTreeView newTreeView, string newText, MyTreeView oldTreeView, string oldText)
+        {
+            ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
+            SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(newText, oldText);
+
+            newTreeView.Nodes.Clear();
+            oldTreeView.Nodes.Clear();
+
+            TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
+            TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
+
+            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, 1);
+            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, 1);
+
+            newTreeView.AddLinkedTreeView(oldTreeView);
+        }
+
+        private void colorTreeView(string parentFullPath, TreeNode treeNode, List<DiffPiece> textLines, int currentIndex)
+        {
+            commonClient commonClient = new commonClient();
+
+            for (int i = currentIndex; i < textLines.Count; i++)
+            {
+                DiffPiece diffPiece = textLines[i];
+
+                if(diffPiece.Text.StartsWith(parentFullPath))
+                {
+
+                }
+                else
+                {
+                    treeNode.Text = treeNode.Text + "\n" + diffPiece.Text;
+                }
+            }
+
+            foreach (DiffPiece diffPiece in textLines)
+            {
+                if(diffPiece.Text.StartsWith(parentFullPath))
+                {
+                    treeNode = treeNode.Nodes.Add(diffPiece.Text);
+                }
+                else
+                {
+
+                }
+                if (diffPiece.Type == ChangeType.Unchanged)
+                {
+                    //richTextBox.AppendText(diffPiece.Text + "\n");
+                }
+                else if (diffPiece.Type == ChangeType.Inserted)
+                {
+                    //richTextBox.AppendText(diffPiece.Text + "\n", commonClient.newColor);
+                }
+                else if (diffPiece.Type == ChangeType.Deleted)
+                {
+                    //richTextBox.AppendText(diffPiece.Text + "\n", commonClient.errorColor);
+                }
+                else if (diffPiece.Type == ChangeType.Modified)
+                {
+                    //richTextBox.AppendText(diffPiece.Text + "\n", commonClient.warningColor);
+                }
+                else if (diffPiece.Type == ChangeType.Imaginary)
+                {
+                    //richTextBox.AppendText("\n");
+                }
             }
         }
     }
