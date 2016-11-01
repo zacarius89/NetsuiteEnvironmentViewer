@@ -12,6 +12,10 @@ namespace NetsuiteEnvironmentViewer
     {
         private string confirmationTitle = "Confirmation";
         private string saveSettingsConfirmationText = "Are you sure you want to save the settings?  This will overwrite the existing settings.";
+        private string haveNotComparedText = "Have you compared the environments yet?  Please compare before opening the File Viewer.";
+        private string missingCustomScriptFileText = "Cannot compare scriptFile(s).  The scriptFile does not exist in one of the environments.";
+
+        private bool compared = false;
 
         public Main()
         {
@@ -80,6 +84,8 @@ namespace NetsuiteEnvironmentViewer
         #region "Click"
         private void btnPullNetsuiteEnvironmentData_Click(object sender, EventArgs e)
         {
+            compared = false;
+
             netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
             netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 
@@ -172,6 +178,15 @@ namespace NetsuiteEnvironmentViewer
 
         private void btnCompare_Click(object sender, EventArgs e)
         {
+            if(compared)
+            {
+                MessageBox.Show("Cannot compare until Netsuite Environment Data has been pulled again.");
+
+                return;
+            }
+
+            compared = true;
+
             string customRecords1TreeString = "";
             string customRecords2TreeString = "";
             string customScripts1TreeString = "";
@@ -446,14 +461,38 @@ namespace NetsuiteEnvironmentViewer
             if (treeNode.Level == 2 && treeNode.Text == "scriptFile")
             {
                 commonClient commonClient = new commonClient();
-                netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
-                netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 
                 TreeNode customScriptFile1Node = commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], treeNode.FullPath);
                 TreeNode customScriptFile2Node = commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], treeNode.FullPath);
 
-                netsuiteCustomScriptFile netsuiteCustomScriptFile1 = netsuiteClient1.getCustomScriptFile(customScriptFile1Node.Nodes[0].Nodes[0].Text);
-                netsuiteCustomScriptFile netsuiteCustomScriptFile2 = netsuiteClient2.getCustomScriptFile(customScriptFile2Node.Nodes[0].Nodes[0].Text);
+                string scriptFile1InternalId = "0";
+                string scriptFile2InternalId = "0";
+
+                if (compared)
+                {
+                    scriptFile1InternalId = customScriptFile1Node.Nodes[0].Nodes[0].Text;
+                    scriptFile2InternalId = customScriptFile2Node.Nodes[0].Nodes[0].Text;
+                }
+                
+                if (scriptFile1InternalId == "0" || scriptFile2InternalId == "0")
+                {
+                    if(!compared)
+                    {
+                        MessageBox.Show(haveNotComparedText);
+                    }
+                    else
+                    {
+                        MessageBox.Show(missingCustomScriptFileText);
+                    }
+                    
+                    return;
+                }
+
+                netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+                netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+
+                netsuiteCustomScriptFile netsuiteCustomScriptFile1 = netsuiteClient1.getCustomScriptFile(scriptFile1InternalId);
+                netsuiteCustomScriptFile netsuiteCustomScriptFile2 = netsuiteClient2.getCustomScriptFile(scriptFile2InternalId);
 
                 FileViewer scriptFileViewer = new FileViewer();
 
@@ -497,8 +536,8 @@ namespace NetsuiteEnvironmentViewer
             TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
             TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
 
-            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1);
-            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1);
+            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1);
+            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1);
 
             newTreeView.AddLinkedTreeView(oldTreeView);
         }
@@ -523,6 +562,11 @@ namespace NetsuiteEnvironmentViewer
 
                     if (diffPiece.Type == ChangeType.Inserted)
                     {
+                        if(parentTreeNode.Text == "internalId")
+                        {
+                            treeNode.Text = "0";
+                        }
+
                         commonClient.setNodeColor(treeNode, commonClient.newColor);
                     }
                     else if (diffPiece.Type == ChangeType.Deleted)
