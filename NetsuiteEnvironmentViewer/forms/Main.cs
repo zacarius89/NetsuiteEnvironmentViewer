@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DiffPlex;
@@ -126,13 +125,18 @@ namespace NetsuiteEnvironmentViewer
 
             if(chkCustomRecords.Checked)
             {
-                buildCustomRecordTrees(records1, records2);
+                buildCustomRecordTree(tvEnvironment1CustomRecords, records1.customRecords);
+                buildCustomRecordTree(tvEnvironment2CustomRecords, records2.customRecords);
+                //buildCustomRecordTrees(records1, records2);
                 tvEnvironment1CustomRecords.AddLinkedTreeView(tvEnvironment2CustomRecords);
             }
             
             if(chkcustomScripts.Checked)
             {
-                buildCustomScriptTrees(scripts1, scripts2);
+                buildCustomScriptTree(tvEnvironment1CustomScripts, scripts1.customScripts);
+                buildCustomScriptTree(tvEnvironment2CustomScripts, scripts2.customScripts);
+
+                //buildCustomScriptTrees(scripts1, scripts2);
                 tvEnvironment1CustomScripts.AddLinkedTreeView(tvEnvironment2CustomScripts);
             }
         }
@@ -168,7 +172,6 @@ namespace NetsuiteEnvironmentViewer
 
         private void btnCompare_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This functionality it is in progress and not completed.");
             string customRecords1TreeString = "";
             string customRecords2TreeString = "";
             string customScripts1TreeString = "";
@@ -345,568 +348,102 @@ namespace NetsuiteEnvironmentViewer
         #endregion
 
         #region "CustomRecords"
-        private void buildCustomRecordTrees(netsuiteCustomRecords customRecords1, netsuiteCustomRecords customRecords2)
+        private void buildCustomRecordTree(MyTreeView treeView, netsuiteCustomRecord[] customRecords)
         {
             commonClient commonClient = new commonClient();
 
-            tvEnvironment1CustomRecords.Nodes.Clear();
-            tvEnvironment2CustomRecords.Nodes.Clear();
+            treeView.Nodes.Clear();
 
-            int customRecordsMaxLength = commonClient.findMaxLength(customRecords1.customRecords.Length, customRecords2.customRecords.Length);
+            TreeNode customRecordsNode = treeView.Nodes.Add("customRecords");
 
-            TreeNode customRecords1Node = tvEnvironment1CustomRecords.Nodes.Add("customRecords");
-            TreeNode customRecords2Node = tvEnvironment2CustomRecords.Nodes.Add("customRecords");
-
-            int i1 = 0;
-            int i2 = 0;
-
-            for (int i = 0; i < customRecordsMaxLength; i++)
+            for (int i = 0; i < customRecords.Length; i++)
             {
-                netsuiteCustomRecord customRecord1 = customRecords1.customRecords[i1];
-                netsuiteCustomRecord customRecord2 = customRecords2.customRecords[i2];
+                netsuiteCustomRecord customRecord = customRecords[i];
 
-                if (customRecord1.recordName == customRecord2.recordName)
+                TreeNode customRecordNode = commonClient.addNode(customRecordsNode, customRecord.recordName);
+                TreeNode customRecordInternalIdNode = commonClient.addNode(commonClient.addNode(customRecordNode, "internalId"), customRecord.internalId);
+                TreeNode customRecordRecordIdNode = commonClient.addNode(commonClient.addNode(customRecordNode, "recordId"), customRecord.recordId);
+                TreeNode customRecordRecordsFieldsNode = commonClient.addNode(customRecordNode, "recordFields");
+
+                string[] customRecordFields = customRecords[i].recordFields;
+                Array.Sort(customRecordFields);
+
+                for (int j = 0; j < customRecordFields.Length; j++)
                 {
-
-                    TreeNode customRecord1Node = commonClient.addNode(customRecords1Node, customRecord1.recordName);
-                    TreeNode customRecord2Node = commonClient.addNode(customRecords2Node, customRecord2.recordName);
-
-                    TreeNode customRecord1InternalIdNode = commonClient.addNode(commonClient.addNode(customRecord1Node, "internalId"), customRecord1.internalId);
-                    TreeNode customRecord2InternalIdNode = commonClient.addNode(commonClient.addNode(customRecord2Node, "internalId"), customRecord2.internalId);
-                    commonClient.checkNodeColor(customRecord1InternalIdNode, customRecord2InternalIdNode, commonClient.warningColor);
-
-                    TreeNode customRecord1RecordIdNode = commonClient.addNode(commonClient.addNode(customRecord1Node, "recordId"), customRecord1.recordId);
-                    TreeNode customRecord2RecordIdNode = commonClient.addNode(commonClient.addNode(customRecord2Node, "recordId"), customRecord2.recordId);
-                    commonClient.checkNodeColor(customRecord1RecordIdNode, customRecord2RecordIdNode, commonClient.warningColor);
-
-                    TreeNode customRecord1RecordsFieldsNode = commonClient.addNode(customRecord1Node, "recordFields");
-                    TreeNode customRecord2RecordsFieldsNode = commonClient.addNode(customRecord2Node, "recordFields");
-
-                    string[] customRecordFields1 = customRecords1.customRecords[i1].recordFields;
-                    string[] customRecordFields2 = customRecords2.customRecords[i2].recordFields;
-
-                    Array.Sort(customRecordFields1);
-                    Array.Sort(customRecordFields2);
-
-
-                    int j1 = 0;
-                    int j2 = 0;
-
-                    int recordFieldsMaxLength = commonClient.findMaxLength(customRecordFields1.Length, customRecordFields2.Length);
-
-                    for (int j = 0; j < recordFieldsMaxLength; j++)
-                    {
-                        if (customRecordFields1[j1] == customRecordFields2[j2])
-                        {
-                            commonClient.addNode(customRecord1RecordsFieldsNode, customRecordFields1[j1]);
-                            commonClient.addNode(customRecord2RecordsFieldsNode, customRecordFields2[j2]);
-
-                            j1++;
-                            j2++;
-                        }
-                        else
-                        {
-                            if (String.Compare(customRecordFields1[j1], customRecordFields2[j2]) == -1)
-                            {
-                                TreeNode cusomRecordField1Node = commonClient.addNode(customRecord1RecordsFieldsNode, customRecordFields1[j1]);
-                                TreeNode cusomRecordField2Node = commonClient.addNode(customRecord2RecordsFieldsNode, customRecordFields1[j1]);
-
-                                commonClient.setNodeColor(cusomRecordField1Node, commonClient.newColor);
-                                commonClient.setNodeColor(cusomRecordField2Node, commonClient.errorColor);
-
-                                j1++;
-                            }
-                            else
-                            {
-                                TreeNode cusomRecordField1Node = commonClient.addNode(customRecord1RecordsFieldsNode, customRecordFields2[j2]);
-                                TreeNode cusomRecordField2Node = commonClient.addNode(customRecord2RecordsFieldsNode, customRecordFields2[j2]);
-
-                                commonClient.setNodeColor(cusomRecordField1Node, commonClient.errorColor);
-                                commonClient.setNodeColor(cusomRecordField2Node, commonClient.newColor);
-
-                                j2++;
-                            }
-                        }
-                    }
-
-                    i1++;
-                    i2++;
-                }
-                else
-                {
-                    if (String.Compare(customRecord1.recordName, customRecord2.recordName) == -1)
-                    {
-                        addMissingCustomRecord(customRecords1Node, customRecord1, commonClient.newColor);
-                        addMissingCustomRecord(customRecords2Node, customRecord1, commonClient.errorColor);
-
-                        i1++;
-                    }
-                    else
-                    {
-                        addMissingCustomRecord(customRecords1Node, customRecord2, commonClient.errorColor);
-                        addMissingCustomRecord(customRecords2Node, customRecord2, commonClient.newColor);
-
-                        i2++;
-                    }
+                    commonClient.addNode(customRecordRecordsFieldsNode, customRecordFields[j]);
                 }
             }
         }
 
-        private void addMissingCustomRecord(TreeNode treeNode, netsuiteCustomRecord customRecord, Color color)
-        {
-            commonClient commonClient = new commonClient();
-
-            TreeNode customRecordNode = commonClient.addNode(treeNode, customRecord.recordName);
-            commonClient.setNodeColor(customRecordNode, color);
-
-            TreeNode customRecordInternalIdNode = commonClient.addNode(commonClient.addNode(customRecordNode, "internalId"), customRecord.internalId);
-            commonClient.setNodeColor(customRecordInternalIdNode, color);
-
-            TreeNode customRecordRecordIdNode = commonClient.addNode(commonClient.addNode(customRecordNode, "recordId"), customRecord.recordId);
-            commonClient.setNodeColor(customRecordRecordIdNode, color);
-
-            TreeNode customRecordRecordFieldsNode = commonClient.addNode(customRecordNode, "scriptDeployments");
-            commonClient.setNodeColor(customRecordRecordFieldsNode, color);
-
-            Array.Sort(customRecord.recordFields);
-
-            foreach (string customRecordfield in customRecord.recordFields)
-            {
-                TreeNode customRecordRecordFieldRecordFieldNode = commonClient.addNode(customRecordRecordFieldsNode, customRecordfield);
-                commonClient.setNodeColor(customRecordRecordFieldRecordFieldNode, color);
-            }
-        }
-
-        private void addMissingCustomRecords(TreeView treeView1, TreeView treeView2, int index, netsuiteCustomRecord customRecord)
-        {
-            commonClient commonClient = new commonClient();
-
-            treeView1.Nodes[0].Nodes.Add(customRecord.recordName);
-            treeView1.Nodes[0].Nodes[index].ForeColor = commonClient.newColor;
-
-            treeView1.Nodes[0].Nodes[index].Nodes.Add("internalId");
-            treeView1.Nodes[0].Nodes[index].Nodes[0].Nodes.Add(customRecord.internalId);
-            treeView1.Nodes[0].Nodes[index].Nodes[0].ForeColor = commonClient.newColor;
-            treeView1.Nodes[0].Nodes[index].Nodes[0].Nodes[0].ForeColor = commonClient.newColor;
-
-            treeView1.Nodes[0].Nodes[index].Nodes.Add("recordId");
-            treeView1.Nodes[0].Nodes[index].Nodes[1].Nodes.Add(customRecord.recordId);
-            treeView1.Nodes[0].Nodes[index].Nodes[1].ForeColor = commonClient.newColor;
-            treeView1.Nodes[0].Nodes[index].Nodes[1].Nodes[0].ForeColor = commonClient.newColor;
-
-            treeView1.Nodes[0].Nodes[index].Nodes.Add("recordFields");
-            treeView1.Nodes[0].Nodes[index].Nodes[2].ForeColor = commonClient.newColor;
-
-            treeView2.Nodes[0].Nodes.Add(customRecord.recordName);
-            treeView2.Nodes[0].Nodes[index].ForeColor = commonClient.errorColor;
-
-            treeView2.Nodes[0].Nodes[index].Nodes.Add("internalId");
-            treeView2.Nodes[0].Nodes[index].Nodes[0].Nodes.Add(customRecord.internalId);
-            treeView2.Nodes[0].Nodes[index].Nodes[0].ForeColor = commonClient.errorColor;
-            treeView2.Nodes[0].Nodes[index].Nodes[0].Nodes[0].ForeColor = commonClient.errorColor;
-
-            treeView2.Nodes[0].Nodes[index].Nodes.Add("recordId");
-            treeView2.Nodes[0].Nodes[index].Nodes[1].Nodes.Add(customRecord.recordId);
-            treeView2.Nodes[0].Nodes[index].Nodes[1].ForeColor = commonClient.errorColor;
-            treeView2.Nodes[0].Nodes[index].Nodes[1].Nodes[0].ForeColor = commonClient.errorColor;
-
-            treeView2.Nodes[0].Nodes[index].Nodes.Add("recordFields");
-            treeView2.Nodes[0].Nodes[index].Nodes[2].ForeColor = commonClient.errorColor;
-
-            foreach (string customRecordfield in customRecord.recordFields)
-            {
-                treeView1.Nodes[0].Nodes[index].Nodes[2].Nodes.Add(customRecordfield);
-                treeView2.Nodes[0].Nodes[index].Nodes[2].Nodes.Add(customRecordfield);
-
-                treeView1.Nodes[0].Nodes[index].Nodes[2].Nodes[0].ForeColor = commonClient.newColor;
-                treeView2.Nodes[0].Nodes[index].Nodes[2].Nodes[0].ForeColor = commonClient.errorColor;
-            }
-        }
         #endregion
 
         #region "CustomScripts"
-        private void buildCustomScriptTrees(netsuiteCustomScripts customScripts1, netsuiteCustomScripts customScripts2)
+
+        private void buildCustomScriptTree(MyTreeView treeView, netsuiteCustomScript[] customScripts)
         {
             commonClient commonClient = new commonClient();
 
-            tvEnvironment1CustomScripts.Nodes.Clear();
-            tvEnvironment2CustomScripts.Nodes.Clear();
+            treeView.Nodes.Clear();
 
-            int customScriptsMaxLength = commonClient.findMaxLength(customScripts1.customScripts.Length, customScripts2.customScripts.Length);
+            TreeNode customScriptsNode = treeView.Nodes.Add("customScripts");
 
-            TreeNode customScripts1Node = tvEnvironment1CustomScripts.Nodes.Add("customScripts");
-            TreeNode customScripts2Node = tvEnvironment2CustomScripts.Nodes.Add("customScripts");
-
-            int i1 = 0;
-            int i2 = 0;
-
-            for (int i = 0; i < customScriptsMaxLength; i++)
+            for (int i = 0; i < customScripts.Length; i++)
             {
-                netsuiteCustomScript customScript1 = customScripts1.customScripts[i1];
-                netsuiteCustomScript customScript2 = customScripts2.customScripts[i2];
+                netsuiteCustomScript customScript = customScripts[i];
 
-                if (customScript1.scriptName == customScript2.scriptName)
+                TreeNode customScriptNode = commonClient.addNode(customScriptsNode, customScript.scriptName);
+                commonClient.addNode(commonClient.addNode(customScriptNode, "internalId"), customScript.internalId);
+                commonClient.addNode(commonClient.addNode(customScriptNode, "scriptId"), customScript.scriptId);
+                commonClient.addNode(commonClient.addNode(customScriptNode, "scriptType"), customScript.scriptType);
+                commonClient.addNode(commonClient.addNode(customScriptNode, "scriptAPIVersion"), customScript.scriptAPIVersion);
+
+                TreeNode customScriptScriptFunctionsNode = commonClient.addNode(customScriptNode, "scriptFunctions");
+
+                netsuiteCustomScriptFunction[] customScriptFunctions = customScript.scriptFunctions;
+
+                Array.Sort(customScriptFunctions, delegate (netsuiteCustomScriptFunction scripFunction1, netsuiteCustomScriptFunction scripFunction2)
                 {
-                    TreeNode customScript1Node = commonClient.addNode(customScripts1Node, customScript1.scriptName);
-                    TreeNode customScript2Node = commonClient.addNode(customScripts2Node, customScript2.scriptName);
+                    return scripFunction1.functionType.CompareTo(scripFunction2.functionType);
+                });
 
-                    TreeNode customScript1InternalIdNode = commonClient.addNode(commonClient.addNode(customScript1Node, "internalId"), customScript1.internalId);
-                    TreeNode customScript2InternalIdNode = commonClient.addNode(commonClient.addNode(customScript2Node, "internalId"), customScript2.internalId);
-                    commonClient.checkNodeColor(customScript1InternalIdNode, customScript2InternalIdNode, commonClient.warningColor);
-
-                    TreeNode customScript1ScriptIdNode = commonClient.addNode(commonClient.addNode(customScript1Node, "scriptId"), customScript1.scriptId);
-                    TreeNode customScript2ScriptIdNode = commonClient.addNode(commonClient.addNode(customScript2Node, "scriptId"), customScript2.scriptId);
-                    commonClient.checkNodeColor(customScript1ScriptIdNode, customScript2ScriptIdNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptTypeNode = commonClient.addNode(commonClient.addNode(customScript1Node, "scriptType"), customScript1.scriptType);
-                    TreeNode customScript2ScriptTypeNode = commonClient.addNode(commonClient.addNode(customScript2Node, "scriptType"), customScript2.scriptType);
-                    commonClient.checkNodeColor(customScript1ScriptTypeNode, customScript2ScriptTypeNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptAPIVersionNode = commonClient.addNode(commonClient.addNode(customScript1Node, "scriptAPIVersion"), customScript1.scriptAPIVersion);
-                    TreeNode customScript2ScriptAPIVersionNode = commonClient.addNode(commonClient.addNode(customScript2Node, "scriptAPIVersion"), customScript2.scriptAPIVersion);
-                    commonClient.checkNodeColor(customScript1ScriptAPIVersionNode, customScript2ScriptAPIVersionNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptFunctionsNode = commonClient.addNode(customScript1Node, "scriptFunctions");
-                    TreeNode customScript2ScriptFunctionsNode = commonClient.addNode(customScript2Node, "scriptFunctions");
-
-                    netsuiteCustomScriptFunction[] customScriptFunctions1 = customScript1.scriptFunctions;
-                    netsuiteCustomScriptFunction[] customScriptFunctions2 = customScript2.scriptFunctions;
-
-                    Array.Sort(customScriptFunctions1, delegate (netsuiteCustomScriptFunction scripFunction1, netsuiteCustomScriptFunction scripFunction2)
-                    {
-                        return scripFunction1.functionType.CompareTo(scripFunction2.functionType);
-                    });
-
-                    Array.Sort(customScriptFunctions2, delegate (netsuiteCustomScriptFunction scripFunction1, netsuiteCustomScriptFunction scripFunction2)
-                    {
-                        return scripFunction1.functionType.CompareTo(scripFunction2.functionType);
-                    });
-
-                    int scriptFunctionsMaxLength = commonClient.findMaxLength(customScriptFunctions1.Length, customScriptFunctions2.Length);
-
-                    int j1 = 0;
-                    int j2 = 0;
-
-                    for (int j = 0; j < scriptFunctionsMaxLength; j++)
-                    {
-                        TreeNode customScript1ScriptFunctionsFunctionTypeNode;
-                        TreeNode customScript2ScriptFunctionsFunctionTypeNode;
-
-                        TreeNode customScript1ScriptFunctionsFunctionTypeFunctionNode;
-                        TreeNode customScript2ScriptFunctionsFunctionTypeFunctionNode;
-
-                        if (customScriptFunctions1[j1].functionType == customScriptFunctions2[j2].functionType)
-                        {
-                            customScript1ScriptFunctionsFunctionTypeNode = commonClient.addNode(customScript1ScriptFunctionsNode, customScriptFunctions1[j1].functionType);
-                            customScript2ScriptFunctionsFunctionTypeNode = commonClient.addNode(customScript2ScriptFunctionsNode, customScriptFunctions2[j2].functionType);
-
-                            customScript1ScriptFunctionsFunctionTypeFunctionNode = commonClient.addNode(customScript1ScriptFunctionsFunctionTypeNode, customScriptFunctions1[j1].function);
-                            customScript2ScriptFunctionsFunctionTypeFunctionNode = commonClient.addNode(customScript2ScriptFunctionsFunctionTypeNode, customScriptFunctions2[j2].function);
-                            commonClient.checkNodeColor(customScript1ScriptFunctionsFunctionTypeFunctionNode, customScript2ScriptFunctionsFunctionTypeFunctionNode, commonClient.errorColor);
-
-                            j1++;
-                            j2++;
-                        }
-                        else
-                        {
-                            if (String.Compare(customScriptFunctions1[j1].functionType, customScriptFunctions2[j2].functionType) == -1)
-                            {
-                                customScript1ScriptFunctionsFunctionTypeNode = commonClient.addNode(customScript1ScriptFunctionsNode, customScriptFunctions1[j1].functionType);
-                                customScript2ScriptFunctionsFunctionTypeNode = commonClient.addNode(customScript1ScriptFunctionsNode, customScriptFunctions1[j1].functionType);
-
-                                customScript1ScriptFunctionsFunctionTypeFunctionNode = commonClient.addNode(customScript1ScriptFunctionsFunctionTypeNode, customScriptFunctions1[j1].function);
-                                customScript2ScriptFunctionsFunctionTypeFunctionNode = commonClient.addNode(customScript1ScriptFunctionsFunctionTypeNode, customScriptFunctions1[j1].function);
-
-                                j1++;
-                            }
-                            else
-                            {
-                                customScript1ScriptFunctionsFunctionTypeNode = commonClient.addNode(customScript2ScriptFunctionsNode, customScriptFunctions2[j2].functionType);
-                                customScript2ScriptFunctionsFunctionTypeNode = commonClient.addNode(customScript2ScriptFunctionsNode, customScriptFunctions2[j2].functionType);
-
-                                customScript1ScriptFunctionsFunctionTypeFunctionNode = commonClient.addNode(customScript2ScriptFunctionsFunctionTypeNode, customScriptFunctions2[j2].function);
-                                customScript2ScriptFunctionsFunctionTypeFunctionNode = commonClient.addNode(customScript2ScriptFunctionsFunctionTypeNode, customScriptFunctions2[j2].function);
-
-                                j2++;
-                            }
-
-                            commonClient.setNodeColor(customScript1ScriptFunctionsFunctionTypeFunctionNode, commonClient.errorColor);
-                            commonClient.setNodeColor(customScript2ScriptFunctionsFunctionTypeFunctionNode, commonClient.errorColor);
-                        }
-                    }
-
-                    TreeNode customScript1ScriptFileNode = commonClient.addNode(customScript1Node, "scriptFile");
-                    TreeNode customScript2ScriptFileNode = commonClient.addNode(customScript2Node, "scriptFile");
-
-                    TreeNode customScript1ScriptFileInternalIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptFileNode, "internalId"), customScript1.scriptFile.internalId);
-                    TreeNode customScript2ScriptFileInternalIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptFileNode, "internalId"), customScript2.scriptFile.internalId);
-                    commonClient.checkNodeColor(customScript1ScriptFileInternalIdNode, customScript2ScriptFileInternalIdNode, commonClient.warningColor);
-
-                    TreeNode customScript1ScriptFileNameNode = commonClient.addNode(commonClient.addNode(customScript1ScriptFileNode, "name"), customScript1.scriptFile.name);
-                    TreeNode customScript2ScriptFileNameNode = commonClient.addNode(commonClient.addNode(customScript2ScriptFileNode, "name"), customScript2.scriptFile.name);
-                    commonClient.checkNodeColor(customScript1ScriptFileNameNode, customScript2ScriptFileNameNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptFileFolderNode = commonClient.addNode(commonClient.addNode(customScript1ScriptFileNode, "folder"), customScript1.scriptFile.folder);
-                    TreeNode customScript2ScriptFileFolderNode = commonClient.addNode(commonClient.addNode(customScript2ScriptFileNode, "folder"), customScript2.scriptFile.folder);
-                    commonClient.checkNodeColor(customScript1ScriptFileFolderNode, customScript2ScriptFileFolderNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptFileTypeNode = commonClient.addNode(commonClient.addNode(customScript1ScriptFileNode, "type"), customScript1.scriptFile.type);
-                    TreeNode customScript2ScriptFileTypeNode = commonClient.addNode(commonClient.addNode(customScript2ScriptFileNode, "type"), customScript2.scriptFile.type);
-                    commonClient.checkNodeColor(customScript1ScriptFileTypeNode, customScript2ScriptFileTypeNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptFileSizeNode = commonClient.addNode(commonClient.addNode(customScript1ScriptFileNode, "size"), customScript1.scriptFile.size);
-                    TreeNode customScript2ScriptFileSizeNode = commonClient.addNode(commonClient.addNode(customScript2ScriptFileNode, "size"), customScript2.scriptFile.size);
-                    commonClient.checkNodeColor(customScript1ScriptFileSizeNode, customScript2ScriptFileSizeNode, commonClient.warningColor);
-
-                    TreeNode customScript1ScriptFileContentNode = commonClient.addNode(commonClient.addNode(customScript1ScriptFileNode, "content"), customScript1.scriptFile.content);
-                    TreeNode customScript2ScriptFileContentNode = commonClient.addNode(commonClient.addNode(customScript2ScriptFileNode, "content"), customScript2.scriptFile.content);
-                    commonClient.checkNodeColor(customScript1ScriptFileContentNode, customScript2ScriptFileContentNode, commonClient.errorColor);
-
-                    TreeNode customScript1ScriptDeploymentsNode = commonClient.addNode(customScript1Node, "scriptDeployments");
-                    TreeNode customScript2ScriptDeploymentsNode = commonClient.addNode(customScript2Node, "scriptDeployments");
-
-                    int scriptDeploymentsMaxLength = commonClient.findMaxLength(customScript1.scriptDeployments.Length, customScript2.scriptDeployments.Length);
-
-                    netsuiteCustomScriptDeployment[] customScriptDeployment1 = customScript1.scriptDeployments;
-                    netsuiteCustomScriptDeployment[] customScriptDeployment2 = customScript2.scriptDeployments;
-
-                    Array.Sort(customScriptDeployment1, delegate (netsuiteCustomScriptDeployment scriptDeployment1, netsuiteCustomScriptDeployment scriptDeployment2)
-                    {
-                        return scriptDeployment1.scriptDeploymentId.CompareTo(scriptDeployment2.scriptDeploymentId);
-                    });
-
-                    Array.Sort(customScriptDeployment2, delegate (netsuiteCustomScriptDeployment scriptDeployment1, netsuiteCustomScriptDeployment scriptDeployment2)
-                    {
-                        return scriptDeployment1.scriptDeploymentId.CompareTo(scriptDeployment2.scriptDeploymentId);
-                    });
-
-                    j1 = 0;
-                    j2 = 0;
-
-                    for (int j = 0; j < scriptDeploymentsMaxLength; j++)
-                    {
-                        TreeNode customScript1ScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScript1ScriptDeploymentsNode, "deployment " + (j + 1).ToString());
-                        TreeNode customScript2ScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScript2ScriptDeploymentsNode, "deployment " + (j + 1).ToString());
-
-                        TreeNode customScript1ScriptDeploymentsScriptDeploymentInternalIdNode;
-                        TreeNode customScript2ScriptDeploymentsScriptDeploymentInternalIdNode;
-
-                        TreeNode customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode;
-                        TreeNode customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode;
-
-                        TreeNode customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode;
-                        TreeNode customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode;
-
-                        TreeNode customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode;
-                        TreeNode customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode;
-
-                        TreeNode customScript1ScriptDeploymentsScriptDeploymentStatusNode;
-                        TreeNode customScript2ScriptDeploymentsScriptDeploymentStatusNode;
-
-                        if (customScriptDeployment1[j1].scriptDeploymentId == customScriptDeployment2[j2].scriptDeploymentId)
-                        {
-                            customScript1ScriptDeploymentsScriptDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployment1[j1].internalId);
-                            customScript2ScriptDeploymentsScriptDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployment2[j2].internalId);
-                            commonClient.checkNodeColor(customScript1ScriptDeploymentsScriptDeploymentInternalIdNode, customScript2ScriptDeploymentsScriptDeploymentInternalIdNode, commonClient.warningColor);
-
-                            customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployment1[j1].scriptDeploymentId);
-                            customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployment2[j2].scriptDeploymentId);
-                            commonClient.checkNodeColor(customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode, customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode, commonClient.errorColor);
-
-                            customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployment1[j1].isDeployed);
-                            customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployment2[j2].isDeployed);
-                            commonClient.checkNodeColor(customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode, customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode, commonClient.errorColor);
-
-                            customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployment1[j1].recordType);
-                            customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployment2[j2].recordType);
-                            commonClient.checkNodeColor(customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode, customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode, commonClient.errorColor);
-
-                            customScript1ScriptDeploymentsScriptDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployment1[j1].status);
-                            customScript2ScriptDeploymentsScriptDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployment2[j2].status);
-                            commonClient.checkNodeColor(customScript1ScriptDeploymentsScriptDeploymentStatusNode, customScript2ScriptDeploymentsScriptDeploymentStatusNode, commonClient.errorColor);
-
-                            j1++;
-                            j2++;
-                        }
-                        else
-                        {
-                            if (String.Compare(customScriptDeployment1[j1].scriptDeploymentId, customScriptDeployment2[j2].scriptDeploymentId) == -1)
-                            {
-                                customScript1ScriptDeploymentsScriptDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployment1[j1].internalId);
-                                customScript2ScriptDeploymentsScriptDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployment1[j1].internalId);
-
-                                customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployment1[j1].scriptDeploymentId);
-                                customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployment1[j1].scriptDeploymentId);
-
-                                customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployment1[j1].isDeployed);
-                                customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployment1[j1].isDeployed);
-
-                                customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployment1[j1].recordType);
-                                customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployment1[j1].recordType);
-
-                                customScript1ScriptDeploymentsScriptDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployment1[j1].status);
-                                customScript2ScriptDeploymentsScriptDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployment1[j1].status);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentInternalIdNode, commonClient.newColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentInternalIdNode, commonClient.errorColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode, commonClient.newColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode, commonClient.errorColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode, commonClient.newColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode, commonClient.errorColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode, commonClient.newColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode, commonClient.errorColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentStatusNode, commonClient.newColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentStatusNode, commonClient.errorColor);
-
-                                j1++;
-                            }
-                            else
-                            {
-                                customScript1ScriptDeploymentsScriptDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployment2[j2].internalId);
-                                customScript2ScriptDeploymentsScriptDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployment2[j2].internalId);
-
-                                customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployment2[j2].scriptDeploymentId);
-                                customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployment2[j2].scriptDeploymentId);
-
-                                customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployment2[j2].isDeployed);
-                                customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployment2[j2].isDeployed);
-
-                                customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployment2[j2].recordType);
-                                customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployment2[j2].recordType);
-
-                                customScript1ScriptDeploymentsScriptDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScript1ScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployment2[j2].status);
-                                customScript2ScriptDeploymentsScriptDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScript2ScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployment2[j2].status);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentInternalIdNode, commonClient.errorColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentInternalIdNode, commonClient.newColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode, commonClient.errorColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentScriptDeploymentIdNode, commonClient.newColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentIsDeployedNode, commonClient.errorColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentIsDeployedNode, commonClient.newColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentRecordTypeNode, commonClient.errorColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentRecordTypeNode, commonClient.newColor);
-
-                                commonClient.setNodeColor(customScript1ScriptDeploymentsScriptDeploymentStatusNode, commonClient.errorColor);
-                                commonClient.setNodeColor(customScript2ScriptDeploymentsScriptDeploymentStatusNode, commonClient.newColor);
-
-                                j2++;
-                            }
-                        }
-                    }
-
-                    i1++;
-                    i2++;
-                }
-                else
+                for (int j = 0; j < customScriptFunctions.Length; j++)
                 {
-                    if (String.Compare(customScript1.scriptName, customScript2.scriptName) == -1)
-                    {
-                        addMissingCustomScript(customScripts1Node, customScript1, commonClient.newColor);
-                        addMissingCustomScript(customScripts2Node, customScript1, commonClient.errorColor);
-
-                        i1++;
-                    }
-                    else
-                    {
-                        addMissingCustomScript(customScripts2Node, customScript2, commonClient.newColor);
-                        addMissingCustomScript(customScripts1Node, customScript2, commonClient.errorColor);
-
-                        i2++;
-                    }
+                    TreeNode customScriptScriptFunctionsFunctionTypeNode = commonClient.addNode(customScriptScriptFunctionsNode, customScriptFunctions[j].functionType);
+                    commonClient.addNode(customScriptScriptFunctionsFunctionTypeNode, customScriptFunctions[j].function);
                 }
 
+                TreeNode customScriptScriptFileNode = commonClient.addNode(customScriptNode, "scriptFile");
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "internalId"), customScript.scriptFile.internalId);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "name"), customScript.scriptFile.name);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "folder"), customScript.scriptFile.folder);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "type"), customScript.scriptFile.type);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "size"), customScript.scriptFile.size);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "content"), customScript.scriptFile.content);
+
+                TreeNode customScriptScriptDeploymentsNode = commonClient.addNode(customScriptNode, "scriptDeployments");
+
+                netsuiteCustomScriptDeployment[] customScriptDeployments = customScript.scriptDeployments;
+
+                Array.Sort(customScriptDeployments, delegate (netsuiteCustomScriptDeployment scriptDeployment1, netsuiteCustomScriptDeployment scriptDeployment2)
+                {
+                    return scriptDeployment1.scriptDeploymentId.CompareTo(scriptDeployment2.scriptDeploymentId);
+                });
+
+                for (int j = 0; j < customScriptDeployments.Length; j++)
+                {
+                    TreeNode customScriptScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, "deployment " + (j + 1).ToString());
+                    commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployments[j].internalId);
+                    commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployments[j].scriptDeploymentId);
+                    commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployments[j].isDeployed);
+                    commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployments[j].recordType);
+                    commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployments[j].status);
+                }
             }
         }
-
-        private void addMissingCustomScript(TreeNode treeNode, netsuiteCustomScript customScript, Color color)
-        {
-            commonClient commonClient = new commonClient();
-
-            TreeNode customScriptNode = commonClient.addNode(treeNode, customScript.scriptName);
-            commonClient.setNodeColor(customScriptNode, color);
-
-            TreeNode customScriptInternalIdNode = commonClient.addNode(commonClient.addNode(customScriptNode, "internalId"), customScript.internalId);
-            commonClient.setNodeColor(customScriptInternalIdNode, color);
-
-            TreeNode customScriptScriptIdNode = commonClient.addNode(commonClient.addNode(customScriptNode, "scriptId"), customScript.scriptId);
-            commonClient.setNodeColor(customScriptScriptIdNode, color);
-
-            TreeNode customScriptScriptTypeNode = commonClient.addNode(commonClient.addNode(customScriptNode, "scriptType"), customScript.scriptType);
-            commonClient.setNodeColor(customScriptScriptTypeNode, color);
-
-            TreeNode customScriptScriptAPIVersionNode = commonClient.addNode(commonClient.addNode(customScriptNode, "scriptAPIVersion"), customScript.scriptAPIVersion);
-            commonClient.setNodeColor(customScriptScriptAPIVersionNode, color);
-
-            TreeNode customScriptScriptFunctionsNode = commonClient.addNode(customScriptNode, "scriptFunctions");
-            commonClient.setNodeColor(customScriptScriptFunctionsNode, color);
-
-            foreach (netsuiteCustomScriptFunction customScriptFunction in customScript.scriptFunctions)
-            {
-                TreeNode customScript1ScriptFunctionsFunctionNode = commonClient.addNode(commonClient.addNode(customScriptScriptFunctionsNode, customScriptFunction.functionType), customScriptFunction.function);
-                commonClient.setNodeColor(customScript1ScriptFunctionsFunctionNode, color);
-            }
-
-            TreeNode customScriptScriptFileNode = commonClient.addNode(customScriptNode, "scriptFile");
-            commonClient.setNodeColor(customScriptScriptFileNode, color);
-
-            TreeNode customScriptScriptFileInternalIdNode = commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "internalId"), customScript.scriptFile.internalId);
-            commonClient.setNodeColor(customScriptScriptFileInternalIdNode, color);
-
-            TreeNode customScriptScriptFileNameNode = commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "name"), customScript.scriptFile.name);
-            commonClient.setNodeColor(customScriptScriptFileNameNode, color);
-
-            TreeNode customScriptScriptFileFolderNode = commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "folder"), customScript.scriptFile.folder);
-            commonClient.setNodeColor(customScriptScriptFileFolderNode, color);
-
-            TreeNode customScriptScriptFileTypeNode = commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "type"), customScript.scriptFile.type);
-            commonClient.setNodeColor(customScriptScriptFileTypeNode, color);
-
-            TreeNode customScriptScriptFileSizeNode = commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "size"), customScript.scriptFile.size);
-            commonClient.setNodeColor(customScriptScriptFileSizeNode, color);
-
-            TreeNode customScriptScriptFileContentNode = commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "content"), customScript.scriptFile.content);
-            commonClient.setNodeColor(customScriptScriptFileContentNode, color);
-
-            TreeNode customScriptScriptDeploymentsNode = commonClient.addNode(customScriptNode, "scriptDeployments");
-            commonClient.setNodeColor(customScriptScriptDeploymentsNode, color);
-
-            int k = 0;
-
-            foreach (netsuiteCustomScriptDeployment customScriptDeployment in customScript.scriptDeployments)
-            {
-                TreeNode customScriptScriptDeploymentsDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, "deployment " + (k + 1).ToString());
-                commonClient.setNodeColor(customScriptScriptDeploymentsDeploymentNode, color);
-
-                TreeNode customScriptScriptDeploymentsDeploymentInternalIdNode = commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsDeploymentNode, "internalId"), customScriptDeployment.internalId);
-                commonClient.setNodeColor(customScriptScriptDeploymentsDeploymentInternalIdNode, color);
-
-                TreeNode customScriptScriptDeploymentsDeploymentScriptDeploymentIdNode = commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsDeploymentNode, "scriptDeploymentId"), customScriptDeployment.scriptDeploymentId);
-                commonClient.setNodeColor(customScriptScriptDeploymentsDeploymentScriptDeploymentIdNode, color);
-
-                TreeNode customScriptScriptDeploymentsDeploymentIsDeployedNode = commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsDeploymentNode, "isDeployed"), customScriptDeployment.isDeployed);
-                commonClient.setNodeColor(customScriptScriptDeploymentsDeploymentIsDeployedNode, color);
-
-                TreeNode customScriptScriptDeploymentsDeploymentRecordTypeNode = commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsDeploymentNode, "recordType"), customScriptDeployment.recordType);
-                commonClient.setNodeColor(customScriptScriptDeploymentsDeploymentRecordTypeNode, color);
-
-                TreeNode customScriptScriptDeploymentsDeploymentStatusNode = commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsDeploymentNode, "status"), customScriptDeployment.status);
-                commonClient.setNodeColor(customScriptScriptDeploymentsDeploymentStatusNode, color);
-
-                k++;
-            }
-        }
-        #endregion
 
         private void loadCustomScript(TreeNode treeNode)
         {
-            if(treeNode.Level == 2 && treeNode.Text == "scriptFile")
+            if (treeNode.Level == 2 && treeNode.Text == "scriptFile")
             {
                 commonClient commonClient = new commonClient();
                 netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
@@ -929,11 +466,13 @@ namespace NetsuiteEnvironmentViewer
                 scriptFileViewer.Show();
 
             }
-            else if(treeNode.Level > 2)
+            else if (treeNode.Level > 2)
             {
                 loadCustomScript(treeNode.Parent);
             }
         }
+
+        #endregion
 
         private string convertTreeViewToString(string treeViewString, TreeNode parentTreeNode)
         {
@@ -958,61 +497,56 @@ namespace NetsuiteEnvironmentViewer
             TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
             TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
 
-            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, 1);
-            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, 1);
+            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1);
+            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1);
 
             newTreeView.AddLinkedTreeView(oldTreeView);
         }
 
-        private void colorTreeView(string parentFullPath, TreeNode treeNode, List<DiffPiece> textLines, int currentIndex)
+        private int colorTreeView(string parentFullPath, TreeNode parentTreeNode, List<DiffPiece> textLines1, List<DiffPiece> textLines2, int currentIndex)
         {
             commonClient commonClient = new commonClient();
+            int i = currentIndex;
 
-            for (int i = currentIndex; i < textLines.Count; i++)
+            while (i < textLines1.Count)
             {
-                DiffPiece diffPiece = textLines[i];
+                DiffPiece diffPiece = textLines1[i];
 
-                if(diffPiece.Text.StartsWith(parentFullPath))
+                if(diffPiece.Type == ChangeType.Imaginary)
                 {
+                    diffPiece.Text = textLines2[i].Text;
+                }
 
+                if (diffPiece.Text != "" && parentFullPath == diffPiece.Text.Substring(0, diffPiece.Text.LastIndexOf("\\")))
+                {
+                    TreeNode treeNode = parentTreeNode.Nodes.Add(diffPiece.Text.Replace(parentFullPath + "\\", ""));
+
+                    if (diffPiece.Type == ChangeType.Inserted)
+                    {
+                        commonClient.setNodeColor(treeNode, commonClient.newColor);
+                    }
+                    else if (diffPiece.Type == ChangeType.Deleted)
+                    {
+                        commonClient.setNodeColor(treeNode, commonClient.errorColor);
+                    }
+                    else if (diffPiece.Type == ChangeType.Modified)
+                    {
+                        commonClient.setNodeColor(treeNode, commonClient.warningColor);
+                    }
+                    else if (diffPiece.Type == ChangeType.Imaginary)
+                    {
+                        commonClient.setNodeColor(treeNode, commonClient.errorColor);
+                    }
+
+                    i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1);
                 }
                 else
                 {
-                    treeNode.Text = treeNode.Text + "\n" + diffPiece.Text;
+                    return i;
                 }
             }
 
-            foreach (DiffPiece diffPiece in textLines)
-            {
-                if(diffPiece.Text.StartsWith(parentFullPath))
-                {
-                    treeNode = treeNode.Nodes.Add(diffPiece.Text);
-                }
-                else
-                {
-
-                }
-                if (diffPiece.Type == ChangeType.Unchanged)
-                {
-                    //richTextBox.AppendText(diffPiece.Text + "\n");
-                }
-                else if (diffPiece.Type == ChangeType.Inserted)
-                {
-                    //richTextBox.AppendText(diffPiece.Text + "\n", commonClient.newColor);
-                }
-                else if (diffPiece.Type == ChangeType.Deleted)
-                {
-                    //richTextBox.AppendText(diffPiece.Text + "\n", commonClient.errorColor);
-                }
-                else if (diffPiece.Type == ChangeType.Modified)
-                {
-                    //richTextBox.AppendText(diffPiece.Text + "\n", commonClient.warningColor);
-                }
-                else if (diffPiece.Type == ChangeType.Imaginary)
-                {
-                    //richTextBox.AppendText("\n");
-                }
-            }
+            return 0;
         }
     }
 }
