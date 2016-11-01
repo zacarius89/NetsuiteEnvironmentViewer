@@ -351,6 +351,7 @@
             this.tvEnvironment1CustomScripts.Size = new System.Drawing.Size(423, 317);
             this.tvEnvironment1CustomScripts.TabIndex = 0;
             this.tvEnvironment1CustomScripts.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomScripts_AfterCollapse);
+            this.tvEnvironment1CustomScripts.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvEnvironment1CustomScripts_BeforeExpand);
             this.tvEnvironment1CustomScripts.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomScripts_AfterExpand);
             this.tvEnvironment1CustomScripts.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvEnvironment1CustomScripts_NodeMouseDoubleClick);
             // 
@@ -403,6 +404,7 @@
             this.tvEnvironment2CustomScripts.Size = new System.Drawing.Size(413, 317);
             this.tvEnvironment2CustomScripts.TabIndex = 0;
             this.tvEnvironment2CustomScripts.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomScripts_AfterCollapse);
+            this.tvEnvironment2CustomScripts.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvEnvironment2CustomScripts_BeforeExpand);
             this.tvEnvironment2CustomScripts.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomScripts_AfterExpand);
             this.tvEnvironment2CustomScripts.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvEnvironment2CustomScripts_NodeMouseDoubleClick);
             // 

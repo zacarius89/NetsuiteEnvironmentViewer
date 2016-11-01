@@ -95,6 +95,14 @@ namespace NetsuiteEnvironmentViewer
             return JsonConvert.DeserializeObject<netsuiteCustomScripts>(result);
         }
 
+        public netsuiteCustomScriptFile getCustomScriptFile(string internalId)
+        {
+            //string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\", \"internalId\":\"47\"}";
+            string payload = "{\"method\":\"getFile\", \"internalId\":\"" + internalId + "\"}";
+            string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
+            return JsonConvert.DeserializeObject<netsuiteCustomScriptFile>(result);
+        }
+
         public string saveCustomScriptFileContents(netsuiteCustomScriptFile netsuiteCustomScriptFile1, netsuiteCustomScriptFile netsuiteCustomScriptFile2)
         {
             netsuiteCustomScriptFileSave customScriptFile = new netsuiteCustomScriptFileSave();

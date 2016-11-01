@@ -1,6 +1,6 @@
 ﻿namespace NetsuiteEnvironmentViewer
 {
-    partial class ScriptFileViewer
+    partial class FileViewer
     {
         /// <summary>
         /// Required designer variable.
@@ -303,16 +303,16 @@
             this.lblInternalId2.TabIndex = 0;
             this.lblInternalId2.Text = "internalId";
             // 
-            // ScriptFileViewer
+            // FileViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1138, 490);
             this.Controls.Add(this.grpEnvironment2);
             this.Controls.Add(this.grpEnvironment1);
-            this.Name = "ScriptFileViewer";
-            this.Text = "Script File Viewer";
-            this.Load += new System.EventHandler(this.ScriptFileViewer_Load);
+            this.Name = "FileViewer";
+            this.Text = "File Viewer";
+            this.Load += new System.EventHandler(this.FileViewer_Load);
             this.grpEnvironment1.ResumeLayout(false);
             this.grpEnvironment1.PerformLayout();
             this.grpEnvironment2.ResumeLayout(false);

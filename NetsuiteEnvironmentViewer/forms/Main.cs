@@ -136,6 +136,75 @@ namespace NetsuiteEnvironmentViewer
                 tvEnvironment1CustomScripts.AddLinkedTreeView(tvEnvironment2CustomScripts);
             }
         }
+
+        private void btnSaveSettings_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show(saveSettingsConfirmationText, confirmationTitle, MessageBoxButtons.YesNo);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                settingsClient settingsClient = new settingsClient();
+                settings settings = new settings();
+
+                settings.useSameCredentialsChecked = chkUseSameCredentials.Checked;
+                settings.customRecordsChecked = chkCustomRecords.Checked;
+                settings.customScriptsChecked = chkcustomScripts.Checked;
+
+                settings.environment1Url = txtUrl1.Text;
+                settings.environment1Account = txtAccount1.Text;
+                settings.environment1Email = txtEmail1.Text;
+                settings.environment1Signature = txtSignature1.Text;
+                settings.environment1Role = txtRole1.Text;
+
+                settings.environment2Url = txtUrl2.Text;
+                settings.environment2Account = txtAccount2.Text;
+                settings.environment2Email = txtEmail2.Text;
+                settings.environment2Signature = txtSignature2.Text;
+                settings.environment2Role = txtRole2.Text;
+
+                settingsClient.saveSettings(settings);
+            }
+        }
+
+        private void btnCompare_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("This functionality it is in progress and not completed.");
+            string customRecords1TreeString = "";
+            string customRecords2TreeString = "";
+            string customScripts1TreeString = "";
+            string customScripts2TreeString = "";
+
+            if (tvEnvironment1CustomRecords.Nodes.Count > 0)
+            {
+                customRecords1TreeString = convertTreeViewToString("", tvEnvironment1CustomRecords.Nodes[0]);
+            }
+
+            if (tvEnvironment2CustomRecords.Nodes.Count > 0)
+            {
+                customRecords2TreeString = convertTreeViewToString("", tvEnvironment2CustomRecords.Nodes[0]);
+            }
+
+            if (tvEnvironment1CustomScripts.Nodes.Count > 0)
+            {
+                customScripts1TreeString = convertTreeViewToString("", tvEnvironment1CustomScripts.Nodes[0]);
+            }
+
+            if (tvEnvironment2CustomScripts.Nodes.Count > 0)
+            {
+                customScripts2TreeString = convertTreeViewToString("", tvEnvironment2CustomScripts.Nodes[0]);
+            }
+
+            if (customRecords1TreeString != "" && customRecords2TreeString != "")
+            {
+                compareTreeViewStrings(tvEnvironment1CustomRecords, customRecords1TreeString, tvEnvironment2CustomRecords, customRecords2TreeString);
+            }
+
+            if (customScripts1TreeString != "" && customScripts2TreeString != "")
+            {
+                compareTreeViewStrings(tvEnvironment1CustomScripts, customScripts1TreeString, tvEnvironment2CustomScripts, customScripts2TreeString);
+            }
+        }
+
         #endregion
 
         #region "SelectedIndexChanged"
@@ -182,6 +251,25 @@ namespace NetsuiteEnvironmentViewer
         }
         #endregion
 
+        #region "BeforeExpand"
+        private void tvEnvironment1CustomScripts_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if (e.Node.Level == 3 && e.Node.Text == "content")
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void tvEnvironment2CustomScripts_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if (e.Node.Level == 3 && e.Node.Text == "content")
+            {
+                e.Cancel = true;
+            }
+        }
+
+        #endregion
+
         #region "AfterExpand"
         private void tvEnvironment1CustomRecords_AfterExpand(object sender, TreeViewEventArgs e)
         {
@@ -206,6 +294,19 @@ namespace NetsuiteEnvironmentViewer
             commonClient commonClient = new commonClient();
             commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Expand();
         }
+        #endregion
+
+        #region "NodeMouseDoubleClick"
+        private void tvEnvironment1CustomScripts_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            loadCustomScript(e.Node);
+        }
+
+        private void tvEnvironment2CustomScripts_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            loadCustomScript(e.Node);
+        }
+
         #endregion
 
         #endregion
@@ -803,46 +904,24 @@ namespace NetsuiteEnvironmentViewer
         }
         #endregion
 
-        private void tvEnvironment1CustomScripts_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            loadCustomScript(e.Node);
-        }
-
-        private void tvEnvironment2CustomScripts_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            loadCustomScript(e.Node);
-        }
-
         private void loadCustomScript(TreeNode treeNode)
         {
             if(treeNode.Level == 2 && treeNode.Text == "scriptFile")
             {
                 commonClient commonClient = new commonClient();
+                netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+                netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 
                 TreeNode customScriptFile1Node = commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], treeNode.FullPath);
                 TreeNode customScriptFile2Node = commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], treeNode.FullPath);
 
-                netsuiteCustomScriptFile netsuiteCustomScriptFile1 = new netsuiteCustomScriptFile();
-                netsuiteCustomScriptFile netsuiteCustomScriptFile2 = new netsuiteCustomScriptFile();
+                netsuiteCustomScriptFile netsuiteCustomScriptFile1 = netsuiteClient1.getCustomScriptFile(customScriptFile1Node.Nodes[0].Nodes[0].Text);
+                netsuiteCustomScriptFile netsuiteCustomScriptFile2 = netsuiteClient2.getCustomScriptFile(customScriptFile2Node.Nodes[0].Nodes[0].Text);
 
-                netsuiteCustomScriptFile1.internalId = customScriptFile1Node.Nodes[0].Nodes[0].Text;
-                netsuiteCustomScriptFile1.name = customScriptFile1Node.Nodes[1].Nodes[0].Text;
-                netsuiteCustomScriptFile1.folder = customScriptFile1Node.Nodes[2].Nodes[0].Text;
-                netsuiteCustomScriptFile1.type = customScriptFile1Node.Nodes[3].Nodes[0].Text;
-                netsuiteCustomScriptFile1.size = customScriptFile1Node.Nodes[4].Nodes[0].Text;
-                netsuiteCustomScriptFile1.content = customScriptFile1Node.Nodes[5].Nodes[0].Text;
+                FileViewer scriptFileViewer = new FileViewer();
 
-                netsuiteCustomScriptFile2.internalId = customScriptFile2Node.Nodes[0].Nodes[0].Text;
-                netsuiteCustomScriptFile2.name = customScriptFile2Node.Nodes[1].Nodes[0].Text;
-                netsuiteCustomScriptFile2.folder = customScriptFile2Node.Nodes[2].Nodes[0].Text;
-                netsuiteCustomScriptFile2.type = customScriptFile2Node.Nodes[3].Nodes[0].Text;
-                netsuiteCustomScriptFile2.size = customScriptFile2Node.Nodes[4].Nodes[0].Text;
-                netsuiteCustomScriptFile2.content = customScriptFile2Node.Nodes[5].Nodes[0].Text;
-
-                ScriptFileViewer scriptFileViewer = new ScriptFileViewer();
-
-                scriptFileViewer.netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
-                scriptFileViewer.netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+                scriptFileViewer.netsuiteClient1 = netsuiteClient1;
+                scriptFileViewer.netsuiteClient2 = netsuiteClient2;
 
                 scriptFileViewer.netsuiteCustomScriptFile1 = netsuiteCustomScriptFile1;
                 scriptFileViewer.netsuiteCustomScriptFile2 = netsuiteCustomScriptFile2;
@@ -853,74 +932,6 @@ namespace NetsuiteEnvironmentViewer
             else if(treeNode.Level > 2)
             {
                 loadCustomScript(treeNode.Parent);
-            }
-        }
-
-        private void btnSaveSettings_Click(object sender, EventArgs e)
-        {
-            DialogResult dialogResult = MessageBox.Show(saveSettingsConfirmationText, confirmationTitle, MessageBoxButtons.YesNo);
-
-            if (dialogResult == DialogResult.Yes)
-            {
-                settingsClient settingsClient = new settingsClient();
-                settings settings = new settings();
-
-                settings.useSameCredentialsChecked = chkUseSameCredentials.Checked;
-                settings.customRecordsChecked = chkCustomRecords.Checked;
-                settings.customScriptsChecked = chkcustomScripts.Checked;
-
-                settings.environment1Url = txtUrl1.Text;
-                settings.environment1Account = txtAccount1.Text;
-                settings.environment1Email = txtEmail1.Text;
-                settings.environment1Signature = txtSignature1.Text;
-                settings.environment1Role = txtRole1.Text;
-
-                settings.environment2Url = txtUrl2.Text;
-                settings.environment2Account = txtAccount2.Text;
-                settings.environment2Email = txtEmail2.Text;
-                settings.environment2Signature = txtSignature2.Text;
-                settings.environment2Role = txtRole2.Text;
-
-                settingsClient.saveSettings(settings);
-            }
-        }
-
-        private void btnCompare_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("This functionality it is in progress and not completed.");
-            string customRecords1TreeString = "";
-            string customRecords2TreeString = "";
-            string customScripts1TreeString = "";
-            string customScripts2TreeString = "";
-
-            if (tvEnvironment1CustomRecords.Nodes.Count > 0)
-            {
-                customRecords1TreeString = convertTreeViewToString("", tvEnvironment1CustomRecords.Nodes[0]);
-            }
-            
-            if(tvEnvironment2CustomRecords.Nodes.Count > 0)
-            {
-                customRecords2TreeString = convertTreeViewToString("", tvEnvironment2CustomRecords.Nodes[0]);
-            }
-
-            if(tvEnvironment1CustomScripts.Nodes.Count > 0)
-            {
-                customScripts1TreeString = convertTreeViewToString("", tvEnvironment1CustomScripts.Nodes[0]);
-            }
-            
-            if(tvEnvironment2CustomScripts.Nodes.Count > 0)
-            {
-                customScripts2TreeString = convertTreeViewToString("", tvEnvironment2CustomScripts.Nodes[0]);
-            }
-
-            if(customRecords1TreeString != "" && customRecords2TreeString != "")
-            {
-                compareTreeViewStrings(tvEnvironment1CustomRecords, customRecords1TreeString, tvEnvironment2CustomRecords, customRecords2TreeString);
-            }
-
-            if(customScripts1TreeString != "" && customScripts2TreeString != "")
-            {
-                compareTreeViewStrings(tvEnvironment1CustomScripts, customScripts1TreeString, tvEnvironment2CustomScripts, customScripts2TreeString);
             }
         }
 
