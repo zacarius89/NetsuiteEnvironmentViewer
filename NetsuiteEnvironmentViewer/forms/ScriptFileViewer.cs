@@ -68,7 +68,7 @@ namespace NetsuiteEnvironmentViewer
         private void compareTexts(MyRichTextBox newRichTextBox, string newText, MyRichTextBox oldRichTextBox, string oldText)
         {
             ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
-            SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(newText, oldText);
+            SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(oldText, newText);
 
             colorRichTextBox(newRichTextBox, sideBySideModel.NewText.Lines);
             colorRichTextBox(oldRichTextBox, sideBySideModel.OldText.Lines);

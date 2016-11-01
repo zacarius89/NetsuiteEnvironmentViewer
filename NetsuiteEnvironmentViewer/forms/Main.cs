@@ -528,7 +528,7 @@ namespace NetsuiteEnvironmentViewer
         private void compareTreeViewStrings(MyTreeView newTreeView, string newText, MyTreeView oldTreeView, string oldText)
         {
             ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
-            SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(newText, oldText);
+            SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(oldText, newText);
 
             newTreeView.Nodes.Clear();
             oldTreeView.Nodes.Clear();
@@ -536,8 +536,8 @@ namespace NetsuiteEnvironmentViewer
             TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
             TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
 
-            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1);
-            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1);
+            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1);
+            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1);
 
             newTreeView.AddLinkedTreeView(oldTreeView);
         }
@@ -560,7 +560,7 @@ namespace NetsuiteEnvironmentViewer
                 {
                     TreeNode treeNode = parentTreeNode.Nodes.Add(diffPiece.Text.Replace(parentFullPath + "\\", ""));
 
-                    if (diffPiece.Type == ChangeType.Inserted)
+                    if (diffPiece.Type == ChangeType.Inserted || diffPiece.Type == ChangeType.Imaginary)
                     {
                         if(parentTreeNode.Text == "internalId")
                         {
@@ -576,10 +576,6 @@ namespace NetsuiteEnvironmentViewer
                     else if (diffPiece.Type == ChangeType.Modified)
                     {
                         commonClient.setNodeColor(treeNode, commonClient.warningColor);
-                    }
-                    else if (diffPiece.Type == ChangeType.Imaginary)
-                    {
-                        commonClient.setNodeColor(treeNode, commonClient.errorColor);
                     }
 
                     i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1);
