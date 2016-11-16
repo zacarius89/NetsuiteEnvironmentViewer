@@ -67,7 +67,7 @@ namespace NetsuiteEnvironmentViewer
     public class netsuiteClient
     {
         private string netsuiteAuthorization;
-        private string querySchemaUrl = "/app/site/hosting/restlet.nl?script=customscript_queryschema&deploy=customdeploy_queryschema";
+        private string querySchemaUrl = "/app/site/hosting/restlet.nl?script=customscript_commonnetsuitefunctions&deploy=customdeploy_commonnetsuitefunctions";
 
         public netsuiteClient(string url, string account, string email, string signature, string role)
         {
