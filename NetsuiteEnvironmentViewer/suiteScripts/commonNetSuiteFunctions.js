@@ -9,6 +9,7 @@
 		
 		var returnJSON = {};
 		
+		
 		if(!datain.method)
 		{
 			datain.method = 'noMethod';
@@ -37,17 +38,21 @@
 		{
 			returnJSON = commonNetSuiteFunctions.getCustomScripts(datain.internalId, datain.includeAll);
 		}
-		else if(datain.method == 'saveCustomScriptFile')
-		{
-			returnJSON = commonNetSuiteFunctions.saveCustomScriptFile(datain.name, datain.content);
-		}
 		else if(datain.method == 'getFile')
 		{
 			returnJSON = commonNetSuiteFunctions.getFile(datain.internalId);
 		}
+		else if(datain.method == 'saveCustomScriptFile')
+		{
+			returnJSON = commonNetSuiteFunctions.saveCustomScriptFile(datain.name, datain.content);
+		}
 		else if(datain.method == 'saveFile')
 		{
 			returnJSON = commonNetSuiteFunctions.saveFile(datain.name, datain.fileType, datain.content, datain.folderId);
+		}
+		else if(datain.method == 'deleteFile')
+		{
+			returnJSON = commonNetSuiteFunctions.deleteFile(datain.internalId);
 		}
 		else if(datain.method == 'getFolders')
 		{
@@ -55,11 +60,15 @@
 		}
 		else if(datain.method == 'importCSVFile')
 		{
-			returnJSON = commonNetSuiteFunctions.importCSVFile(datain.fileInternalId, datain.csvImportId);
+			returnJSON = commonNetSuiteFunctions.importCSVFile(datain.internalId, datain.csvImportId);
+		}
+		else if(datain.method == 'getDocumentation')
+		{
+			returnJSON = commonNetSuiteFunctions.getDocumentation();
 		}
 		else
 		{
-			returnJSON = {'unsupportedMethod': datain.method};
+			returnJSON = {'unsupportedMethod': datain.method, 'supportedMethods': ['getCustomRecords', 'getCustomScripts', 'getFile', 'saveCustomScriptFile', 'saveFile', 'deleteFile', 'getFolders', 'importCSVFile', 'getDocumentation'], 'information': 'Post {"method": "getDocumentation"} for documentation'};
 		}
 		
 		return returnJSON;
@@ -292,21 +301,6 @@
 		};
 	};
 	
-	commonNetSuiteFunctions.saveCustomScriptFile = function(name, content)
-	{
-		try
-		{			
-			
-			return commonNetSuiteFunctions.saveFile(name, 'JAVASCRIPT', content, '-15');
-		}
-		catch (e)
-		{
-			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveCustomScriptFile', e.message);
-			
-			return e.message;
-		};
-	};
-	
 	commonNetSuiteFunctions.getFile = function(internalId)
 	{
 		try
@@ -355,6 +349,21 @@
 		};
 	};
 	
+	commonNetSuiteFunctions.saveCustomScriptFile = function(name, content)
+	{
+		try
+		{			
+			
+			return commonNetSuiteFunctions.saveFile(name, 'JAVASCRIPT', content, '-15');
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveCustomScriptFile', e.message);
+			
+			return e.message;
+		};
+	};
+	
 	commonNetSuiteFunctions.saveFile = function(name, fileType, content, folderId)
 	{
 		try
@@ -371,6 +380,20 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFile', e.message);
+			
+			return e.message;
+		};
+	};
+	
+	commonNetSuiteFunctions.deleteFile = function(internalId)
+	{
+		try
+		{			
+			return nlapiDeleteFile(internalId);
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.deleteFile', e.message);
 			
 			return e.message;
 		};
@@ -429,11 +452,11 @@
 		};
 	};
 	
-	commonNetSuiteFunctions.importCSVFile = function(fileInternalId, csvImportId)
+	commonNetSuiteFunctions.importCSVFile = function(internalId, csvImportId)
 	{
 		try
 		{
-			var csvFileRecord = nlapiLoadFile(fileInternalId);
+			var csvFileRecord = nlapiLoadFile(internalId);
 			var csvImportJob = nlapiCreateCSVImport();
 			
 			csvImportJob.setMapping(csvImportId);
@@ -444,7 +467,7 @@
 		}
 		catch (e)
 		{
-			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFile', e.message);
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.importCSVFile', e.message);
 			
 			return e.message;
 		};
@@ -480,6 +503,162 @@
 		];
 		
 		return scriptFunctions;
+	};
+	
+	commonNetSuiteFunctions.getDocumentation = function()
+	{		
+		var supportedMethods = [];
+		
+		var supportedMethod;
+		var input;
+		
+		//getCustomRecords
+		supportedMethod = {};
+		supportedMethod.method = 'getCustomRecords';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'internalId';
+		input.optional = true;
+		input.description = 'If internalId is specified, only that specific custom record will be returned.  Otherwise, all custom records will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'includeAll';
+		input.optional = true;
+		input.description = 'If includeAll is "T", all custom fields will be returned as well.  Otherwise, just basic information will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//getCustomScripts
+		supportedMethod = {};
+		supportedMethod.method = 'getCustomScripts';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'internalId';
+		input.optional = true;
+		input.description = 'If internalId is specified, only that specific custom script will be returned.  Otherwise, all custom scripts will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'includeAll';
+		input.optional = true;
+		input.description = 'If includeAll is "T", script file and script deployments will be returned as well.  Otherwise, just basic information will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//getFile
+		supportedMethod = {};
+		supportedMethod.method = 'getFile';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'internalId';
+		input.optional = false;
+		input.description = 'The internalId of the file must be specified to load that specific file. Content will be encoded in Base64.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//saveCustomScriptFile
+		supportedMethod = {};
+		supportedMethod.method = 'saveCustomScriptFile';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'name';
+		input.optional = false;
+		input.description = 'The name of the file must be specified.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'content';
+		input.optional = false;
+		input.description = 'The content must be specified and must be encoded in Base64.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//saveFile
+		supportedMethod = {};
+		supportedMethod.method = 'saveFile';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'name';
+		input.optional = false;
+		input.description = 'The name of the file must be specified.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'fileType';
+		input.optional = false;
+		input.description = 'The fileType must be specified and be supported by NetSuite. See https://netsuite.custhelp.com/app/answers/detail/a_id/10496 for more information';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'content';
+		input.optional = false;
+		input.description = 'The content must be specified and must be encoded in Base64.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'folderId';
+		input.optional = false;
+		input.description = 'The folderId must be specified and must be an existing folder in the NetSuite File Cabinet.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//deleteFile
+		supportedMethod = {};
+		supportedMethod.method = 'deleteFile';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'internalId';
+		input.optional = false;
+		input.description = 'The internalId of the file must be specified.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//getFolders
+		supportedMethod = {};
+		supportedMethod.method = 'getFolders';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'parentFolderInternalId';
+		input.optional = true;
+		input.description = 'If The parentFolderInternalId is specified, then only the subfolders of that folder will be returned.  Otherwise, only the top-level folders will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//importCSVFile
+		supportedMethod = {};
+		supportedMethod.method = 'importCSVFile';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'internalId';
+		input.optional = false;
+		input.description = 'The internalId of the csv file must be specified.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'csvImportId';
+		input.optional = false;
+		input.description = 'The csvImportId of the Saved CSV Import must be specified.  The import will use the saved mappings, queue, and any advanced settings specified.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		return {'information': 'method must be specified in post', 'supported methods': supportedMethods};
 	};
 	
 	_global.commonNetSuiteFunctions = commonNetSuiteFunctions;
