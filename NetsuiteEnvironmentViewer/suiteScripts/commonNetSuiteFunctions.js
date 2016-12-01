@@ -1,5 +1,6 @@
 (function (){
 	var _global = this;
+	var returnStatus = 'ok';
 
 	var commonNetSuiteFunctions = {};
 	
@@ -68,9 +69,11 @@
 		}
 		else
 		{
+			returnStatus = 'failed';
 			returnJSON = {'unsupportedMethod': datain.method, 'supportedMethods': ['getCustomRecords', 'getCustomScripts', 'getFile', 'saveCustomScriptFile', 'saveFile', 'deleteFile', 'getFolders', 'importCSVFile', 'getDocumentation'], 'information': 'Post {"method": "getDocumentation"} for documentation'};
 		}
 		
+		returnJSON.status = returnStatus;
 		return returnJSON;
 	};
 	
@@ -128,6 +131,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomRecords', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -245,6 +249,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScripts', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -296,6 +301,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptDeployments', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -344,6 +350,10 @@
 			{
 				return {'content': e.message};
 			}
+			else
+			{
+				returnStatus = 'failed';
+			}
 			
 			return e.message;
 		};
@@ -359,6 +369,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveCustomScriptFile', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -380,6 +391,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFile', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -394,6 +406,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.deleteFile', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -447,6 +460,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getFolders', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
@@ -468,6 +482,7 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.importCSVFile', e.message);
+			returnStatus = 'failed';
 			
 			return e.message;
 		};
