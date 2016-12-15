@@ -26,11 +26,6 @@
 			datain.internalId = null;
 		}
 		
-		if(!datain.parentFolderInternalId)
-		{
-			datain.parentFolderInternalId = '@NONE@';
-		}
-		
 		if(datain.method == 'getCustomRecords')
 		{
 			returnJSON = commonNetSuiteFunctions.getCustomRecords(datain.internalId, datain.includeAll);
@@ -57,11 +52,21 @@
 		}
 		else if(datain.method == 'getFolders')
 		{
+			if(!datain.parentFolderInternalId)
+			{
+				datain.parentFolderInternalId = '@NONE@';
+			}
+		
 			returnJSON = commonNetSuiteFunctions.getFolders(datain.parentFolderInternalId);
 		}
 		else if(datain.method == 'importCSVFile')
 		{
-			returnJSON = commonNetSuiteFunctions.importCSVFile(datain.internalId, datain.csvImportId);
+			if(!datain.queue)
+			{
+				datain.queue = '0';
+			}
+			
+			returnJSON = commonNetSuiteFunctions.importCSVFile(datain.internalId, datain.csvImportId, datain.queue);
 		}
 		else if(datain.method == 'getDocumentation')
 		{
@@ -133,7 +138,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomRecords', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -251,7 +256,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScripts', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	}
 	
@@ -303,7 +308,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptDeployments', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -355,7 +360,7 @@
 				returnStatus = 'failed';
 			}
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -371,7 +376,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveCustomScriptFile', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -393,7 +398,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFile', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -401,14 +406,16 @@
 	{
 		try
 		{			
-			return nlapiDeleteFile(internalId);
+			nlapiDeleteFile(internalId);
+			
+			return {"internalId": internalId}
 		}
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.deleteFile', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -462,11 +469,11 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getFolders', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
-	commonNetSuiteFunctions.importCSVFile = function(internalId, csvImportId)
+	commonNetSuiteFunctions.importCSVFile = function(internalId, csvImportId, queue)
 	{
 		try
 		{
@@ -477,14 +484,26 @@
 			csvImportJob.setPrimaryFile(csvFileRecord);
 			csvImportJob.setOption('jobName', 'Custom CSV Import (via RESTlet) - ' + new Date());
 			
-			return nlapiSubmitCSVImport(csvImportJob);
+			if(queue != '0')
+			{
+				csvImportJob.setQueue(queue);
+			}
+			
+			var csvImportInternalId = nlapiSubmitCSVImport(csvImportJob);
+			
+			if(csvImportInternalId == 'Your CSV file must have more than 1 line to be imported.')
+			{
+				csvImportInternalId = '0';
+			}
+			
+			return {"internalId": csvImportInternalId};
 		}
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.importCSVFile', e.message);
 			returnStatus = 'failed';
 			
-			return e.message;
+			return {"error": e.message};
 		};
 	};
 	
@@ -669,6 +688,12 @@
 		input.name = 'csvImportId';
 		input.optional = false;
 		input.description = 'The csvImportId of the Saved CSV Import must be specified.  The import will use the saved mappings, queue, and any advanced settings specified.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'queue';
+		input.optional = true;
+		input.description = 'The queue of the Saved CSV Import is optional.  This will override the saved queue on the Saved CSV Import.';
 		supportedMethod.inputs.push(input);
 		
 		supportedMethods.push(supportedMethod);
