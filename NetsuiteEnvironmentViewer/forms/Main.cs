@@ -430,8 +430,8 @@ namespace NetsuiteEnvironmentViewer
                 TreeNode customScriptScriptFileNode = commonClient.addNode(customScriptNode, "scriptFile");
                 commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "internalId"), customScript.scriptFile.internalId);
                 commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "name"), customScript.scriptFile.name);
-                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "folder"), customScript.scriptFile.folder);
-                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "type"), customScript.scriptFile.type);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "folder"), customScript.scriptFile.folderId);
+                commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "type"), customScript.scriptFile.fileType);
                 commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "size"), customScript.scriptFile.size);
                 commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "content"), customScript.scriptFile.content);
 
@@ -491,8 +491,8 @@ namespace NetsuiteEnvironmentViewer
                 netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
                 netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 
-                netsuiteCustomScriptFile netsuiteCustomScriptFile1 = netsuiteClient1.getCustomScriptFile(scriptFile1InternalId);
-                netsuiteCustomScriptFile netsuiteCustomScriptFile2 = netsuiteClient2.getCustomScriptFile(scriptFile2InternalId);
+                netsuiteFile netsuiteCustomScriptFile1 = netsuiteClient1.getCustomScriptFile(scriptFile1InternalId);
+                netsuiteFile netsuiteCustomScriptFile2 = netsuiteClient2.getCustomScriptFile(scriptFile2InternalId);
 
                 FileViewer scriptFileViewer = new FileViewer();
 
@@ -587,6 +587,13 @@ namespace NetsuiteEnvironmentViewer
             }
 
             return 0;
+        }
+
+        private void btnOpenCSVImport_Click(object sender, EventArgs e)
+        {
+            CSVImportTool csvImportTool = new CSVImportTool();
+            csvImportTool.netsuiteClient = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+            csvImportTool.Show();
         }
     }
 }

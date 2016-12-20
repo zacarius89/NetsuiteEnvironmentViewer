@@ -66,6 +66,7 @@
             this.chkcustomScripts = new System.Windows.Forms.CheckBox();
             this.btnSaveSettings = new System.Windows.Forms.Button();
             this.btnCompare = new System.Windows.Forms.Button();
+            this.btnOpenCSVImport = new System.Windows.Forms.Button();
             this.grpEnvironment1.SuspendLayout();
             this.grpEnvironment2.SuspendLayout();
             this.tbCtrlEnvironment1.SuspendLayout();
@@ -452,11 +453,22 @@
             this.btnCompare.UseVisualStyleBackColor = true;
             this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
             // 
+            // btnOpenCSVImport
+            // 
+            this.btnOpenCSVImport.Location = new System.Drawing.Point(534, 104);
+            this.btnOpenCSVImport.Name = "btnOpenCSVImport";
+            this.btnOpenCSVImport.Size = new System.Drawing.Size(104, 23);
+            this.btnOpenCSVImport.TabIndex = 19;
+            this.btnOpenCSVImport.Text = "Open CSV Import";
+            this.btnOpenCSVImport.UseVisualStyleBackColor = true;
+            this.btnOpenCSVImport.Click += new System.EventHandler(this.btnOpenCSVImport_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(899, 514);
+            this.Controls.Add(this.btnOpenCSVImport);
             this.Controls.Add(this.btnCompare);
             this.Controls.Add(this.btnSaveSettings);
             this.Controls.Add(this.chkcustomScripts);
@@ -528,6 +540,7 @@
         private System.Windows.Forms.CheckBox chkcustomScripts;
         private System.Windows.Forms.Button btnSaveSettings;
         private System.Windows.Forms.Button btnCompare;
+        private System.Windows.Forms.Button btnOpenCSVImport;
     }
 }
 

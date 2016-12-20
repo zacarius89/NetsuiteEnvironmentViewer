@@ -337,8 +337,8 @@
 				
 				var customScriptFileRecord = nlapiLoadFile(customScriptFile.internalId);
 				
-				customScriptFile.folder = customScriptFileRecord.getFolder();
-				customScriptFile.type = customScriptFileRecord.getType();
+				customScriptFile.folderId = customScriptFileRecord.getFolder();
+				customScriptFile.fileType = customScriptFileRecord.getType();
 				customScriptFile.size = customScriptFileRecord.getSize();
 				customScriptFile.content = nlapiEncrypt(customScriptFileRecord.getValue(), 'base64');
 			}

@@ -12,8 +12,8 @@ namespace NetsuiteEnvironmentViewer
         private string confirmationTitle = "Confirmation";
         private string confirmationText = "Are you sure you want to push this content to the other environment?  This will overwrite the existing content.";
 
-        public netsuiteCustomScriptFile netsuiteCustomScriptFile1;
-        public netsuiteCustomScriptFile netsuiteCustomScriptFile2;
+        public netsuiteFile netsuiteCustomScriptFile1;
+        public netsuiteFile netsuiteCustomScriptFile2;
 
         public netsuiteClient netsuiteClient1;
         public netsuiteClient netsuiteClient2;
@@ -30,13 +30,13 @@ namespace NetsuiteEnvironmentViewer
         {
             txtInternalId1.Text = netsuiteCustomScriptFile1.internalId;
             txtName1.Text = netsuiteCustomScriptFile1.name;
-            txtType1.Text = netsuiteCustomScriptFile1.type;
+            txtType1.Text = netsuiteCustomScriptFile1.fileType;
             txtSize1.Text = netsuiteCustomScriptFile1.size;
             rTxtContent1.Text = base64Decode(netsuiteCustomScriptFile1.content);
 
             txtInternalId2.Text = netsuiteCustomScriptFile2.internalId;
             txtName2.Text = netsuiteCustomScriptFile2.name;
-            txtType2.Text = netsuiteCustomScriptFile2.type;
+            txtType2.Text = netsuiteCustomScriptFile2.fileType;
             txtSize2.Text = netsuiteCustomScriptFile2.size;
             rTxtContent2.Text = base64Decode(netsuiteCustomScriptFile2.content);
 

@@ -29,7 +29,7 @@ namespace NetsuiteEnvironmentViewer
         public string scriptName { get; set; }
         public string scriptType { get; set; }
         public string scriptAPIVersion { get; set; }
-        public netsuiteCustomScriptFile scriptFile { get; set; }
+        public netsuiteFile scriptFile { get; set; }
         public netsuiteCustomScriptFunction[] scriptFunctions { get; set; }
         public netsuiteCustomScriptDeployment[] scriptDeployments { get; set; }
     }
@@ -40,17 +40,27 @@ namespace NetsuiteEnvironmentViewer
         public string function { get; set; }
     }
 
-    public class netsuiteCustomScriptFile
+    public class netsuiteFile
     {
         public string internalId { get; set; }
         public string name { get; set; }
-        public string folder { get; set; }
-        public string type { get; set; }
+        public string folderId { get; set; }
+        public string fileType { get; set; }
         public string size { get; set; }
         public string content { get; set; }
     }
 
-    public partial class netsuiteCustomScriptFileSave : netsuiteCustomScriptFile
+    public partial class netsuiteFileSave : netsuiteFile
+    {
+        public string method = "saveFile";
+    }
+
+    public partial class netsuiteFileDelete : netsuiteFile
+    {
+        public string method = "deleteFile";
+    }
+
+    public partial class netsuiteCustomScriptFileSave : netsuiteFile
     {
         public string method = "saveCustomScriptFile";
     }
@@ -62,6 +72,14 @@ namespace NetsuiteEnvironmentViewer
         public string isDeployed { get; set; }
         public string recordType { get; set; }
         public string status { get; set; }
+    }
+
+    public class netsuiteCSVImportJob
+    {
+        public string method = "importCSVFile";
+        public string internalId { get; set; }
+        public string csvImportId { get; set; }
+        public string queue { get; set; }
     }
 
     public class netsuiteClient
@@ -95,15 +113,15 @@ namespace NetsuiteEnvironmentViewer
             return JsonConvert.DeserializeObject<netsuiteCustomScripts>(result);
         }
 
-        public netsuiteCustomScriptFile getCustomScriptFile(string internalId)
+        public netsuiteFile getCustomScriptFile(string internalId)
         {
             //string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\", \"internalId\":\"47\"}";
             string payload = "{\"method\":\"getFile\", \"internalId\":\"" + internalId + "\"}";
             string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
-            return JsonConvert.DeserializeObject<netsuiteCustomScriptFile>(result);
+            return JsonConvert.DeserializeObject<netsuiteFile>(result);
         }
 
-        public string saveCustomScriptFileContents(netsuiteCustomScriptFile netsuiteCustomScriptFile1, netsuiteCustomScriptFile netsuiteCustomScriptFile2)
+        public string saveCustomScriptFileContents(netsuiteFile netsuiteCustomScriptFile1, netsuiteFile netsuiteCustomScriptFile2)
         {
             netsuiteCustomScriptFileSave customScriptFile = new netsuiteCustomScriptFileSave();
 
@@ -112,6 +130,30 @@ namespace NetsuiteEnvironmentViewer
             customScriptFile.content = netsuiteCustomScriptFile1.content;
 
             string payload = JsonConvert.SerializeObject(customScriptFile);
+
+            return restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
+        }
+
+        public netsuiteFile saveFile(netsuiteFileSave netsuiteFile)
+        {
+            string payload = JsonConvert.SerializeObject(netsuiteFile);
+
+            return JsonConvert.DeserializeObject<netsuiteFile>(restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization));
+        }
+
+        public string deleteFile(netsuiteFile netsuiteFile)
+        {
+            netsuiteFileDelete netsuiteFileToDelete = new netsuiteFileDelete();
+            netsuiteFileToDelete.internalId = netsuiteFile.internalId;
+
+            string payload = JsonConvert.SerializeObject(netsuiteFileToDelete);
+        
+            return restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
+        }
+
+        public string importCSVFile(netsuiteCSVImportJob netsuiteCSVImportJob)
+        {
+            string payload = JsonConvert.SerializeObject(netsuiteCSVImportJob);
 
             return restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
         }
