@@ -50,6 +50,11 @@ namespace NetsuiteEnvironmentViewer
         public string content { get; set; }
     }
 
+    public partial class netsuiteCustomScriptFileSave : netsuiteFile
+    {
+        public string method = "saveCustomScriptFile";
+    }
+
     public partial class netsuiteFileSave : netsuiteFile
     {
         public string method = "saveFile";
@@ -60,9 +65,21 @@ namespace NetsuiteEnvironmentViewer
         public string method = "deleteFile";
     }
 
-    public partial class netsuiteCustomScriptFileSave : netsuiteFile
+    public class netsuiteFolder
     {
-        public string method = "saveCustomScriptFile";
+        public string internalId { get; set; }
+        public string name { get; set; }
+        public string parentFolderInternalId { get; set; }
+    }
+
+    public partial class netsuiteFolderSave : netsuiteFolder
+    {
+        public string method = "saveFolder";
+    }
+
+    public partial class netsuiteFolderDelete : netsuiteFolder
+    {
+        public string method = "deleteFolder";
     }
 
     public class netsuiteCustomScriptDeployment
@@ -148,6 +165,23 @@ namespace NetsuiteEnvironmentViewer
 
             string payload = JsonConvert.SerializeObject(netsuiteFileToDelete);
         
+            return restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
+        }
+
+        public netsuiteFolder saveFolder(netsuiteFolderSave netsuiteFolder)
+        {
+            string payload = JsonConvert.SerializeObject(netsuiteFolder);
+
+            return JsonConvert.DeserializeObject<netsuiteFolder>(restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization));
+        }
+
+        public string deleteFolder(netsuiteFolder netsuiteFolder)
+        {
+            netsuiteFolderDelete netsuiteFolderToDelete = new netsuiteFolderDelete();
+            netsuiteFolderToDelete.internalId = netsuiteFolder.internalId;
+
+            string payload = JsonConvert.SerializeObject(netsuiteFolderToDelete);
+
             return restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
         }
 

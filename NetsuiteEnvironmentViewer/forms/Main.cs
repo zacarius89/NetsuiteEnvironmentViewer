@@ -589,10 +589,17 @@ namespace NetsuiteEnvironmentViewer
             return 0;
         }
 
-        private void btnOpenCSVImport_Click(object sender, EventArgs e)
+        private void btnOpenCSVImport1_Click(object sender, EventArgs e)
         {
             CSVImportTool csvImportTool = new CSVImportTool();
             csvImportTool.netsuiteClient = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+            csvImportTool.Show();
+        }
+
+        private void btnOpenCSVImport2_Click(object sender, EventArgs e)
+        {
+            CSVImportTool csvImportTool = new CSVImportTool();
+            csvImportTool.netsuiteClient = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
             csvImportTool.Show();
         }
     }

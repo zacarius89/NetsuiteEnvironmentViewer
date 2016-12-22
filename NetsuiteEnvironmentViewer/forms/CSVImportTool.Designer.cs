@@ -37,8 +37,6 @@
             this.btnUpload = new System.Windows.Forms.Button();
             this.lblQueue = new System.Windows.Forms.Label();
             this.txtQueue = new System.Windows.Forms.TextBox();
-            this.lblFolderId = new System.Windows.Forms.Label();
-            this.txtFolderId = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // ofdOpenFile
@@ -91,7 +89,7 @@
             // 
             // btnUpload
             // 
-            this.btnUpload.Location = new System.Drawing.Point(277, 91);
+            this.btnUpload.Location = new System.Drawing.Point(277, 67);
             this.btnUpload.Name = "btnUpload";
             this.btnUpload.Size = new System.Drawing.Size(75, 23);
             this.btnUpload.TabIndex = 5;
@@ -115,29 +113,11 @@
             this.txtQueue.Size = new System.Drawing.Size(77, 20);
             this.txtQueue.TabIndex = 7;
             // 
-            // lblFolderId
-            // 
-            this.lblFolderId.AutoSize = true;
-            this.lblFolderId.Location = new System.Drawing.Point(36, 96);
-            this.lblFolderId.Name = "lblFolderId";
-            this.lblFolderId.Size = new System.Drawing.Size(50, 13);
-            this.lblFolderId.TabIndex = 8;
-            this.lblFolderId.Text = "Folder ID";
-            // 
-            // txtFolderId
-            // 
-            this.txtFolderId.Location = new System.Drawing.Point(92, 93);
-            this.txtFolderId.Name = "txtFolderId";
-            this.txtFolderId.Size = new System.Drawing.Size(77, 20);
-            this.txtFolderId.TabIndex = 9;
-            // 
             // CSVImportTool
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(364, 124);
-            this.Controls.Add(this.txtFolderId);
-            this.Controls.Add(this.lblFolderId);
+            this.ClientSize = new System.Drawing.Size(364, 96);
             this.Controls.Add(this.txtQueue);
             this.Controls.Add(this.lblQueue);
             this.Controls.Add(this.btnUpload);
@@ -165,7 +145,5 @@
         private System.Windows.Forms.Button btnUpload;
         private System.Windows.Forms.Label lblQueue;
         private System.Windows.Forms.TextBox txtQueue;
-        private System.Windows.Forms.Label lblFolderId;
-        private System.Windows.Forms.TextBox txtFolderId;
     }
 }

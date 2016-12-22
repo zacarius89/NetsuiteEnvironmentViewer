@@ -62,16 +62,22 @@ namespace NetsuiteEnvironmentViewer
 
         private void btnUpload_Click(object sender, EventArgs e)
         {
+            netsuiteFolderSave netsuiteFolder = new netsuiteFolderSave();
+            netsuiteFolder.name = "NetsuiteEnvironmentViewer Temp Folder - " + DateTime.Now.ToString();
+
             netsuiteFileSave netsuiteFile = new netsuiteFileSave();
 
             netsuiteFile.name = safeFileName;
-            netsuiteFile.folderId = txtFolderId.Text;
             netsuiteFile.fileType = "CSV";
             netsuiteFile.content = contentBase64;
 
-            if(netsuiteFile.name != "" && txtCSVImportId.Text != "" && txtFolderId.Text != "")
+            if(netsuiteFile.name != "" && txtCSVImportId.Text != "")
             {
+                netsuiteFolder savedNetsuiteFolder = new netsuiteFolder();
                 netsuiteFile savedNetsuiteFile = new netsuiteFile();
+
+                savedNetsuiteFolder = netsuiteClient.saveFolder(netsuiteFolder);
+                netsuiteFile.folderId = savedNetsuiteFolder.internalId;
 
                 savedNetsuiteFile = netsuiteClient.saveFile(netsuiteFile);
 
@@ -82,10 +88,13 @@ namespace NetsuiteEnvironmentViewer
 
                 netsuiteClient.importCSVFile(netsuiteCSVImportJob);
                 netsuiteClient.deleteFile(savedNetsuiteFile);
+                netsuiteClient.deleteFolder(savedNetsuiteFolder);
+
+                MessageBox.Show("Upload Complete!");
             }
             else
             {
-                MessageBox.Show("Please choose a file and specify a CSV Import ID and Folder ID before uploading.");
+                MessageBox.Show("Please choose a file and specify a CSV Import ID before uploading.");
             }
         }
     }
