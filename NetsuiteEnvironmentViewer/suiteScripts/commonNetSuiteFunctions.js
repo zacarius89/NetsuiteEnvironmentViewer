@@ -344,24 +344,24 @@
 			
 			var results = nlapiSearchRecord('file', null, filters, columns);
 			
-			var customScriptFile = {};
+			var file = {};
 			
 			if (results && results.length > 0)
 			{
-				customScriptFile.internalId = results[0].getValue('internalid');
-				customScriptFile.name = results[0].getValue('name');
+				file.internalId = results[0].getValue('internalid');
+				file.name = results[0].getValue('name');
 				
-				nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.getFile', customScriptFile.internalId);
+				nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.getFile', file.internalId);
 				
-				var customScriptFileRecord = nlapiLoadFile(customScriptFile.internalId);
+				var customScriptFileRecord = nlapiLoadFile(file.internalId);
 				
-				customScriptFile.folderId = customScriptFileRecord.getFolder();
-				customScriptFile.fileType = customScriptFileRecord.getType();
-				customScriptFile.size = customScriptFileRecord.getSize();
-				customScriptFile.content = nlapiEncrypt(customScriptFileRecord.getValue(), 'base64');
+				file.folderId = customScriptFileRecord.getFolder();
+				file.fileType = customScriptFileRecord.getType();
+				file.size = customScriptFileRecord.getSize();
+				file.content = nlapiEncrypt(customScriptFileRecord.getValue(), 'base64');
 			}
 			
-			return customScriptFile;
+			return file;
 		}
 		catch (e)
 		{
