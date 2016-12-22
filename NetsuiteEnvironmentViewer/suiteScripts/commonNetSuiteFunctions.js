@@ -44,6 +44,11 @@
 		}
 		else if(datain.method == 'saveFile')
 		{
+			if(!datain.folderId)
+			{
+				datain.folderId = '0';
+			}
+			
 			returnJSON = commonNetSuiteFunctions.saveFile(datain.name, datain.fileType, datain.content, datain.folderId);
 		}
 		else if(datain.method == 'deleteFile')
@@ -58,6 +63,19 @@
 			}
 		
 			returnJSON = commonNetSuiteFunctions.getFolders(datain.parentFolderInternalId);
+		}
+		else if(datain.method == 'saveFolder')
+		{
+			if(!datain.parentFolderInternalId)
+			{
+				datain.parentFolderInternalId = '@NONE@';
+			}
+			
+			returnJSON = commonNetSuiteFunctions.saveFolder(datain.name, datain.parentFolderInternalId);
+		}
+		else if(datain.method == 'deleteFolder')
+		{
+			returnJSON = commonNetSuiteFunctions.deleteFolder(datain.internalId);
 		}
 		else if(datain.method == 'importCSVFile')
 		{
@@ -387,7 +405,11 @@
 			content = nlapiDecrypt(content, 'base64');
 			
 			var file = nlapiCreateFile(name, fileType, content);
-			file.setFolder(folderId);
+			
+			if(folderId != '0')
+			{
+				file.setFolder(folderId);
+			}
 			
 			var fileId = nlapiSubmitFile(file);
 			
@@ -473,6 +495,54 @@
 		};
 	};
 	
+	commonNetSuiteFunctions.saveFolder = function(name, parentFolderInternalId)
+	{
+		nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.saveFolder');
+		
+		try
+		{
+			var folderRecord = nlapiCreateRecord('folder');
+			
+			folderRecord.setFieldValue('name', name);
+			
+			if(parentFolderInternalId != '@NONE@')
+			{
+				folderRecord.setFieldValue('parent', parentFolderInternalId);
+			}
+			
+			var internalId = nlapiSubmitRecord(folderRecord);
+			parentFolderInternalId = folderRecord.getFieldValue('parent');
+			
+			return {'internalId': internalId, 'name': name, 'parentFolderInternalId': parentFolderInternalId};
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFolder', e.message);
+			returnStatus = 'failed';
+			
+			return {"error": e.message};
+		};
+	};
+	
+	commonNetSuiteFunctions.deleteFolder = function(internalId)
+	{
+		nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.deleteFolder');
+		
+		try
+		{	
+			var internalId = nlapiDeleteRecord('folder', internalId);
+			
+			return {'internalId': internalId};
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.createFolder', e.message);
+			returnStatus = 'failed';
+			
+			return {"error": e.message};
+		};
+	};
+	
 	commonNetSuiteFunctions.importCSVFile = function(internalId, csvImportId, queue)
 	{
 		try
@@ -482,7 +552,7 @@
 			
 			csvImportJob.setMapping(csvImportId);
 			csvImportJob.setPrimaryFile(csvFileRecord);
-			csvImportJob.setOption('jobName', 'Custom CSV Import (via RESTlet) - ' + new Date());
+			csvImportJob.setOption('jobName', '[' + csvFileRecord.getName() + '] Custom CSV Import (via RESTlet) - ' + new Date());
 			
 			if(queue != '0')
 			{
@@ -672,6 +742,34 @@
 		supportedMethod.inputs.push(input);
 		
 		supportedMethods.push(supportedMethod);
+		
+		//saveFolder
+		supportedMethod = {};
+		supportedMethod.method = 'saveFolder';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'name';
+		input.optional = false;
+		input.description = 'The name of the folder must be specified.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'parentFolderInternalId';
+		input.optional = true;
+		input.description = 'The parentFolderInternalId may be specified; if it is left blank, the folder will not have a parent folder.';
+		supportedMethod.inputs.push(input);
+		
+		//deleteFolder
+		supportedMethod = {};
+		supportedMethod.method = 'deleteFolder';
+		supportedMethod.inputs = [];
+		
+		input = {};
+		input.name = 'internalId';
+		input.optional = false;
+		input.description = 'The internalId of the folder must be specified.';
+		supportedMethod.inputs.push(input);
 		
 		//importCSVFile
 		supportedMethod = {};
