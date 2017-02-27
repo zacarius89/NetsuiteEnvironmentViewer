@@ -93,7 +93,7 @@
 		else
 		{
 			returnStatus = 'failed';
-			returnJSON = {'unsupportedMethod': datain.method, 'supportedMethods': ['getCustomRecords', 'getCustomScripts', 'getFile', 'saveCustomScriptFile', 'saveFile', 'deleteFile', 'getFolders', 'importCSVFile', 'getDocumentation'], 'information': 'Post {"method": "getDocumentation"} for documentation'};
+			returnJSON = {'unsupportedMethod': datain.method, 'documentation': commonNetSuiteFunctions.getDocumentation()};
 		}
 		
 		returnJSON.status = returnStatus;
@@ -617,6 +617,13 @@
 		
 		var supportedMethod;
 		var input;
+
+        //getDocumentation
+		supportedMethod = {};
+		supportedMethod.method = 'getDocumentation';
+		supportedMethod.inputs = [];
+
+		supportedMethods.push(supportedMethod);
 		
 		//getCustomRecords
 		supportedMethod = {};
@@ -793,7 +800,7 @@
 		input = {};
 		input.name = 'queue';
 		input.optional = true;
-		input.description = 'The queue of the Saved CSV Import is optional.  This will override the saved queue on the Saved CSV Import.';
+		input.description = 'If the queue of the Saved CSV Import is specified, this will override the saved queue on the Saved CSV Import.';
 		supportedMethod.inputs.push(input);
 		
 		supportedMethods.push(supportedMethod);
