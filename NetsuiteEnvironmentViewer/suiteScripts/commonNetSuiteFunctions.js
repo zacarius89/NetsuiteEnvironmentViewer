@@ -6,7 +6,7 @@
 	
 	commonNetSuiteFunctions.postRESTlet = function(datain)
 	{
-		nlapiLogExecution('AUDIT', 'commonNetSuiteFunctions.postRESTlet', JSON.stringify(datain));
+		nlapiLogExecution('AUDIT', 'commonNetSuiteFunctions.postRESTlet - datain', JSON.stringify(datain));
 		
 		var returnJSON = {};
 		
@@ -97,6 +97,9 @@
 		}
 		
 		returnJSON.status = returnStatus;
+		
+		nlapiLogExecution('AUDIT', 'commonNetSuiteFunctions.postRESTlet - returnJSON', JSON.stringify(returnJSON));
+		
 		return returnJSON;
 	};
 	

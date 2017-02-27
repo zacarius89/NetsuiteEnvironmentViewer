@@ -15,6 +15,7 @@ namespace NetsuiteEnvironmentViewer
         private string haveNotComparedText = "Have you compared the environments yet?  Please compare before opening the File Viewer.";
         private string missingCustomScriptFileText = "Cannot compare scriptFile(s).  The scriptFile does not exist in one of the environments.";
 
+        private bool dataPulled = false;
         private bool compared = false;
 
         public Main()
@@ -84,67 +85,7 @@ namespace NetsuiteEnvironmentViewer
         #region "Click"
         private void btnPullNetsuiteEnvironmentData_Click(object sender, EventArgs e)
         {
-            compared = false;
-
-            netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
-            netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
-
-            netsuiteCustomRecords records1 = null;
-            netsuiteCustomRecords records2 = null;
-
-            netsuiteCustomScripts scripts1 = null;
-            netsuiteCustomScripts scripts2 = null;
-
-            List<Task> tasks = new List<Task>()
-            {
-                Task.Factory.StartNew(() =>
-                {
-                    if(chkCustomRecords.Checked)
-                    {
-                        records1 = netsuiteClient1.getCustomRecords();
-                    }
-                }),
-                Task.Factory.StartNew(() =>
-                {
-                    if(chkCustomRecords.Checked)
-                    {
-                        records2 = netsuiteClient2.getCustomRecords();
-                    }
-                }),
-                Task.Factory.StartNew(() =>
-                {
-                    if(chkcustomScripts.Checked)
-                    {
-                        scripts1 = netsuiteClient1.getCustomScripts();
-                    }
-                }),
-                Task.Factory.StartNew(() =>
-                {
-                    if(chkcustomScripts.Checked)
-                    {
-                        scripts2 = netsuiteClient2.getCustomScripts();
-                    }
-                })
-            };
-
-            Task.WaitAll(tasks.ToArray());
-
-            if(chkCustomRecords.Checked)
-            {
-                buildCustomRecordTree(tvEnvironment1CustomRecords, records1.customRecords);
-                buildCustomRecordTree(tvEnvironment2CustomRecords, records2.customRecords);
-                //buildCustomRecordTrees(records1, records2);
-                tvEnvironment1CustomRecords.AddLinkedTreeView(tvEnvironment2CustomRecords);
-            }
-            
-            if(chkcustomScripts.Checked)
-            {
-                buildCustomScriptTree(tvEnvironment1CustomScripts, scripts1.customScripts);
-                buildCustomScriptTree(tvEnvironment2CustomScripts, scripts2.customScripts);
-
-                //buildCustomScriptTrees(scripts1, scripts2);
-                tvEnvironment1CustomScripts.AddLinkedTreeView(tvEnvironment2CustomScripts);
-            }
+            pullNetsuiteEnvironmentData();
         }
 
         private void btnSaveSettings_Click(object sender, EventArgs e)
@@ -178,49 +119,21 @@ namespace NetsuiteEnvironmentViewer
 
         private void btnCompare_Click(object sender, EventArgs e)
         {
-            if(compared)
-            {
-                MessageBox.Show("Cannot compare until Netsuite Environment Data has been pulled again.");
+            compareNetsuiteEnvironmentData();
+        }
 
-                return;
-            }
+        private void btnOpenCSVImport1_Click(object sender, EventArgs e)
+        {
+            CSVImportTool csvImportTool = new CSVImportTool();
+            csvImportTool.netsuiteClient = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+            csvImportTool.Show();
+        }
 
-            compared = true;
-
-            string customRecords1TreeString = "";
-            string customRecords2TreeString = "";
-            string customScripts1TreeString = "";
-            string customScripts2TreeString = "";
-
-            if (tvEnvironment1CustomRecords.Nodes.Count > 0)
-            {
-                customRecords1TreeString = convertTreeViewToString("", tvEnvironment1CustomRecords.Nodes[0]);
-            }
-
-            if (tvEnvironment2CustomRecords.Nodes.Count > 0)
-            {
-                customRecords2TreeString = convertTreeViewToString("", tvEnvironment2CustomRecords.Nodes[0]);
-            }
-
-            if (tvEnvironment1CustomScripts.Nodes.Count > 0)
-            {
-                customScripts1TreeString = convertTreeViewToString("", tvEnvironment1CustomScripts.Nodes[0]);
-            }
-
-            if (tvEnvironment2CustomScripts.Nodes.Count > 0)
-            {
-                customScripts2TreeString = convertTreeViewToString("", tvEnvironment2CustomScripts.Nodes[0]);
-            }
-
-            if (customRecords1TreeString != "" && customRecords2TreeString != "")
-            {
-                compareTreeViewStrings(tvEnvironment1CustomRecords, customRecords1TreeString, tvEnvironment2CustomRecords, customRecords2TreeString);
-            }
-
-            if (customScripts1TreeString != "" && customScripts2TreeString != "")
-            {
-                compareTreeViewStrings(tvEnvironment1CustomScripts, customScripts1TreeString, tvEnvironment2CustomScripts, customScripts2TreeString);
-            }
+        private void btnOpenCSVImport2_Click(object sender, EventArgs e)
+        {
+            CSVImportTool csvImportTool = new CSVImportTool();
+            csvImportTool.netsuiteClient = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+            csvImportTool.Show();
         }
 
         #endregion
@@ -505,13 +418,152 @@ namespace NetsuiteEnvironmentViewer
                 scriptFileViewer.Show();
 
             }
-            else if (treeNode.Level > 2)
+            else if (treeNode.Level > 2 && treeNode.Text == "content")
             {
                 loadCustomScript(treeNode.Parent);
             }
         }
 
         #endregion
+
+        private void pullNetsuiteEnvironmentData()
+        {
+            dataPulled = true;
+            compared = false;
+
+            netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+            netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+
+            netsuiteCustomRecords records1 = null;
+            netsuiteCustomRecords records2 = null;
+
+            netsuiteCustomScripts scripts1 = null;
+            netsuiteCustomScripts scripts2 = null;
+
+            List<Task> tasks = new List<Task>()
+            {
+                Task.Factory.StartNew(() =>
+                {
+                    if(chkCustomRecords.Checked)
+                    {
+                        records1 = netsuiteClient1.getCustomRecords();
+                    }
+                }),
+                Task.Factory.StartNew(() =>
+                {
+                    if(chkCustomRecords.Checked)
+                    {
+                        records2 = netsuiteClient2.getCustomRecords();
+                    }
+                }),
+                Task.Factory.StartNew(() =>
+                {
+                    if(chkcustomScripts.Checked)
+                    {
+                        scripts1 = netsuiteClient1.getCustomScripts();
+                    }
+                }),
+                Task.Factory.StartNew(() =>
+                {
+                    if(chkcustomScripts.Checked)
+                    {
+                        scripts2 = netsuiteClient2.getCustomScripts();
+                    }
+                })
+            };
+
+            Task.WaitAll(tasks.ToArray());
+
+            if (chkCustomRecords.Checked)
+            {
+                buildCustomRecordTree(tvEnvironment1CustomRecords, records1.customRecords);
+                buildCustomRecordTree(tvEnvironment2CustomRecords, records2.customRecords);
+                //buildCustomRecordTrees(records1, records2);
+                tvEnvironment1CustomRecords.AddLinkedTreeView(tvEnvironment2CustomRecords);
+            }
+            else
+            {
+                tvEnvironment1CustomRecords.Nodes.Clear();
+                tvEnvironment2CustomRecords.Nodes.Clear();
+            }
+
+            if (chkcustomScripts.Checked)
+            {
+                buildCustomScriptTree(tvEnvironment1CustomScripts, scripts1.customScripts);
+                buildCustomScriptTree(tvEnvironment2CustomScripts, scripts2.customScripts);
+
+                //buildCustomScriptTrees(scripts1, scripts2);
+                tvEnvironment1CustomScripts.AddLinkedTreeView(tvEnvironment2CustomScripts);
+            }
+            else
+            {
+                tvEnvironment1CustomScripts.Nodes.Clear();
+                tvEnvironment2CustomScripts.Nodes.Clear();
+            }
+        } 
+
+        private void compareNetsuiteEnvironmentData()
+        {
+            if(!dataPulled)
+            {
+                DialogResult dialogResult = MessageBox.Show("Cannot compare until Netsuite Environment Data has been pulled.  Do you want to do this now?", confirmationTitle, MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    pullNetsuiteEnvironmentData();
+                    compareNetsuiteEnvironmentData();
+                }
+            }
+            else if (compared)
+            {
+                DialogResult dialogResult = MessageBox.Show("Cannot compare until Netsuite Environment Data has been pulled again.  Do you want to do this now?", confirmationTitle, MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    pullNetsuiteEnvironmentData();
+                    compareNetsuiteEnvironmentData();
+                }
+            }
+            else
+            {
+                compared = true;
+
+                string customRecords1TreeString = "";
+                string customRecords2TreeString = "";
+                string customScripts1TreeString = "";
+                string customScripts2TreeString = "";
+
+                if (tvEnvironment1CustomRecords.Nodes.Count > 0)
+                {
+                    customRecords1TreeString = convertTreeViewToString("", tvEnvironment1CustomRecords.Nodes[0]);
+                }
+
+                if (tvEnvironment2CustomRecords.Nodes.Count > 0)
+                {
+                    customRecords2TreeString = convertTreeViewToString("", tvEnvironment2CustomRecords.Nodes[0]);
+                }
+
+                if (tvEnvironment1CustomScripts.Nodes.Count > 0)
+                {
+                    customScripts1TreeString = convertTreeViewToString("", tvEnvironment1CustomScripts.Nodes[0]);
+                }
+
+                if (tvEnvironment2CustomScripts.Nodes.Count > 0)
+                {
+                    customScripts2TreeString = convertTreeViewToString("", tvEnvironment2CustomScripts.Nodes[0]);
+                }
+
+                if (customRecords1TreeString != "" && customRecords2TreeString != "")
+                {
+                    compareTreeViewStrings(tvEnvironment1CustomRecords, customRecords1TreeString, tvEnvironment2CustomRecords, customRecords2TreeString);
+                }
+
+                if (customScripts1TreeString != "" && customScripts2TreeString != "")
+                {
+                    compareTreeViewStrings(tvEnvironment1CustomScripts, customScripts1TreeString, tvEnvironment2CustomScripts, customScripts2TreeString);
+                }
+            }
+        }
 
         private string convertTreeViewToString(string treeViewString, TreeNode parentTreeNode)
         {
@@ -562,17 +614,17 @@ namespace NetsuiteEnvironmentViewer
 
                     if (diffPiece.Type == ChangeType.Inserted)
                     {
-                        if(parentTreeNode.Text == "internalId")
-                        {
-                            treeNode.Text = "0";
-                        }
-
                         if(productionEnvironment)
                         {
                             commonClient.setNodeColor(treeNode, commonClient.insertedColor);
                         }
                         else
                         {
+                            if (parentTreeNode.Text == "internalId")
+                            {
+                                treeNode.Text = "0";
+                            }
+
                             commonClient.setNodeColor(treeNode, commonClient.deletedColor);
                         }
                     }
@@ -583,7 +635,7 @@ namespace NetsuiteEnvironmentViewer
                             treeNode.Text = "0";
                         }
 
-                        if(productionEnvironment)
+                        if (productionEnvironment)
                         {
                             commonClient.setNodeColor(treeNode, commonClient.imaginaryColor);
                         }
@@ -594,13 +646,13 @@ namespace NetsuiteEnvironmentViewer
                     }
                     else if (diffPiece.Type == ChangeType.Deleted)
                     {
-                        if (parentTreeNode.Text == "internalId")
-                        {
-                            treeNode.Text = "0";
-                        }
-
                         if (productionEnvironment)
                         {
+                            if (parentTreeNode.Text == "internalId")
+                            {
+                                treeNode.Text = "0";
+                            }
+
                             commonClient.setNodeColor(treeNode, commonClient.deletedColor);
                         }
                         else
@@ -610,7 +662,10 @@ namespace NetsuiteEnvironmentViewer
                     }
                     else if (diffPiece.Type == ChangeType.Modified)
                     {
-                        commonClient.setNodeColor(treeNode, commonClient.modifiedColor);
+                        if(parentTreeNode.Text != "internalId")
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.modifiedColor);
+                        }
                     }
 
                     i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1, productionEnvironment);
@@ -622,20 +677,6 @@ namespace NetsuiteEnvironmentViewer
             }
 
             return 0;
-        }
-
-        private void btnOpenCSVImport1_Click(object sender, EventArgs e)
-        {
-            CSVImportTool csvImportTool = new CSVImportTool();
-            csvImportTool.netsuiteClient = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
-            csvImportTool.Show();
-        }
-
-        private void btnOpenCSVImport2_Click(object sender, EventArgs e)
-        {
-            CSVImportTool csvImportTool = new CSVImportTool();
-            csvImportTool.netsuiteClient = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
-            csvImportTool.Show();
         }
     }
 }

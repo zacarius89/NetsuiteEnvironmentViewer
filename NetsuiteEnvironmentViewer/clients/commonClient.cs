@@ -90,7 +90,7 @@ namespace NetsuiteEnvironmentViewer
                         setNodeColor(treeNode.Parent, color);
                     }
                 }
-                else if (treeNode.ForeColor == insertedColor)
+                else if (treeNode.ForeColor == insertedColor || treeNode.ForeColor == imaginaryColor)
                 {
                     if (color == deletedColor || color == modifiedColor)
                     {
