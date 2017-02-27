@@ -563,7 +563,9 @@
 			
 			if(csvImportInternalId === 'Your CSV file must have more than 1 line to be imported.')
 			{
-				csvImportInternalId = '0';
+                returnStatus = 'failed';
+
+                return {"error": csvImportInternalId};
 			}
 			
 			return {"internalId": csvImportInternalId};
