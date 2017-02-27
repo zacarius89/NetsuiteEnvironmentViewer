@@ -12,9 +12,10 @@ namespace NetsuiteEnvironmentViewer
 
     public class commonClient
     {
-        public Color newColor = Color.Green;
-        public Color errorColor = Color.Red;
-        public Color warningColor = Color.Orange;
+        public Color insertedColor = Color.Green;
+        public Color imaginaryColor = Color.Gray;
+        public Color deletedColor = Color.Red;
+        public Color modifiedColor = Color.Orange;
 
         public int findMaxLength(int length1, int length2)
         {
@@ -77,21 +78,21 @@ namespace NetsuiteEnvironmentViewer
 
             if (treeNode != null)
             {
-                if (treeNode.ForeColor == errorColor)
+                if (treeNode.ForeColor == deletedColor)
                 {
                     // Do Nothing; node is set to the highest level
                 }
-                else if (treeNode.ForeColor == warningColor)
+                else if (treeNode.ForeColor == modifiedColor)
                 {
-                    if (color == errorColor)
+                    if (color == deletedColor)
                     {
                         treeNode.ForeColor = color;
                         setNodeColor(treeNode.Parent, color);
                     }
                 }
-                else if (treeNode.ForeColor == newColor)
+                else if (treeNode.ForeColor == insertedColor)
                 {
-                    if (color == errorColor || color == warningColor)
+                    if (color == deletedColor || color == modifiedColor)
                     {
                         treeNode.ForeColor = color;
                         setNodeColor(treeNode.Parent, color);

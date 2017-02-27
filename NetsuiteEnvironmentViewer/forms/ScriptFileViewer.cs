@@ -70,13 +70,13 @@ namespace NetsuiteEnvironmentViewer
             ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
             SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(oldText, newText);
 
-            colorRichTextBox(newRichTextBox, sideBySideModel.NewText.Lines);
-            colorRichTextBox(oldRichTextBox, sideBySideModel.OldText.Lines);
+            colorRichTextBox(newRichTextBox, sideBySideModel.NewText.Lines, true);
+            colorRichTextBox(oldRichTextBox, sideBySideModel.OldText.Lines, false);
 
             newRichTextBox.AddLinkedRichTextBox(oldRichTextBox);
         }
 
-        private void colorRichTextBox(MyRichTextBox richTextBox, List<DiffPiece> textLines)
+        private void colorRichTextBox(MyRichTextBox richTextBox, List<DiffPiece> textLines, bool productionEnvironment)
         {
             commonClient commonClient = new commonClient();
             richTextBox.Text = "";
@@ -89,19 +89,33 @@ namespace NetsuiteEnvironmentViewer
                 }
                 else if (diffPiece.Type == ChangeType.Inserted)
                 {
-                    richTextBox.AppendText(diffPiece.Text + "\n", commonClient.newColor);
+                    if(productionEnvironment)
+                    {
+                        richTextBox.AppendText(diffPiece.Text + "\n", commonClient.insertedColor);
+                    }
+                    else
+                    {
+                        richTextBox.AppendText(diffPiece.Text + "\n", commonClient.deletedColor);
+                    }
                 }
                 else if (diffPiece.Type == ChangeType.Deleted)
                 {
-                    richTextBox.AppendText(diffPiece.Text + "\n", commonClient.errorColor);
+                    if(productionEnvironment)
+                    {
+                        richTextBox.AppendText(diffPiece.Text + "\n", commonClient.deletedColor);
+                    }
+                    else
+                    {
+                        richTextBox.AppendText(diffPiece.Text + "\n", commonClient.insertedColor);
+                    }
                 }
                 else if (diffPiece.Type == ChangeType.Modified)
                 {
-                    richTextBox.AppendText(diffPiece.Text + "\n", commonClient.warningColor);
+                    richTextBox.AppendText(diffPiece.Text + "\n", commonClient.modifiedColor);
                 }
                 else if (diffPiece.Type == ChangeType.Imaginary)
                 {
-                    richTextBox.AppendText("\n");
+                    richTextBox.AppendText(diffPiece.Text + "\n", commonClient.deletedColor);
                 }
             }
         }

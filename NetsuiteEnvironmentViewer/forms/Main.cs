@@ -536,13 +536,13 @@ namespace NetsuiteEnvironmentViewer
             TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
             TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
 
-            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1);
-            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1);
+            colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1, true);
+            colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1, false);
 
             newTreeView.AddLinkedTreeView(oldTreeView);
         }
 
-        private int colorTreeView(string parentFullPath, TreeNode parentTreeNode, List<DiffPiece> textLines1, List<DiffPiece> textLines2, int currentIndex)
+        private int colorTreeView(string parentFullPath, TreeNode parentTreeNode, List<DiffPiece> textLines1, List<DiffPiece> textLines2, int currentIndex, bool productionEnvironment)
         {
             commonClient commonClient = new commonClient();
             int i = currentIndex;
@@ -560,25 +560,60 @@ namespace NetsuiteEnvironmentViewer
                 {
                     TreeNode treeNode = parentTreeNode.Nodes.Add(diffPiece.Text.Replace(parentFullPath + "\\", ""));
 
-                    if (diffPiece.Type == ChangeType.Inserted || diffPiece.Type == ChangeType.Imaginary)
+                    if (diffPiece.Type == ChangeType.Inserted)
                     {
                         if(parentTreeNode.Text == "internalId")
                         {
                             treeNode.Text = "0";
                         }
 
-                        commonClient.setNodeColor(treeNode, commonClient.newColor);
+                        if(productionEnvironment)
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.insertedColor);
+                        }
+                        else
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.deletedColor);
+                        }
+                    }
+                    else if(diffPiece.Type == ChangeType.Imaginary)
+                    {
+                        if (parentTreeNode.Text == "internalId")
+                        {
+                            treeNode.Text = "0";
+                        }
+
+                        if(productionEnvironment)
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.imaginaryColor);
+                        }
+                        else
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.deletedColor);
+                        }
                     }
                     else if (diffPiece.Type == ChangeType.Deleted)
                     {
-                        commonClient.setNodeColor(treeNode, commonClient.errorColor);
+                        if (parentTreeNode.Text == "internalId")
+                        {
+                            treeNode.Text = "0";
+                        }
+
+                        if (productionEnvironment)
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.deletedColor);
+                        }
+                        else
+                        {
+                            commonClient.setNodeColor(treeNode, commonClient.insertedColor);
+                        }
                     }
                     else if (diffPiece.Type == ChangeType.Modified)
                     {
-                        commonClient.setNodeColor(treeNode, commonClient.warningColor);
+                        commonClient.setNodeColor(treeNode, commonClient.modifiedColor);
                     }
 
-                    i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1);
+                    i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1, productionEnvironment);
                 }
                 else
                 {
