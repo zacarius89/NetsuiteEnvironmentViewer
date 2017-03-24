@@ -10,7 +10,7 @@ namespace NetsuiteEnvironmentViewer
 {
     public partial class Main : Form
     {
-        private string confirmationTitle = "Confirmation";
+        private string confirmationTitle = "";
         private string saveSettingsConfirmationText = "Are you sure you want to save the settings?  This will overwrite the existing settings.";
         private string haveNotComparedText = "Have you compared the environments yet?  Please compare before opening the File Viewer.";
         private string missingCustomScriptFileText = "Cannot compare scriptFile(s).  The scriptFile does not exist in one of the environments.";
@@ -359,9 +359,10 @@ namespace NetsuiteEnvironmentViewer
 
                 for (int j = 0; j < customScriptDeployments.Length; j++)
                 {
-                    TreeNode customScriptScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, "deployment " + (j + 1).ToString());
+                    TreeNode customScriptScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, customScriptDeployments[j].scriptDeploymentId);
+                    //TreeNode customScriptScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, "deployment " + (j + 1).ToString());
                     commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployments[j].internalId);
-                    commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployments[j].scriptDeploymentId);
+                    //commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployments[j].scriptDeploymentId);
                     commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployments[j].isDeployed);
                     commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployments[j].recordType);
                     commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployments[j].status);

@@ -9,7 +9,7 @@ namespace NetsuiteEnvironmentViewer
 {
     public partial class FileViewer : Form
     {
-        private string confirmationTitle = "Confirmation";
+        private string confirmationTitle = "";
         private string confirmationText = "Are you sure you want to push this content to the other environment?  This will overwrite the existing content.";
 
         public netsuiteFile netsuiteCustomScriptFile1;
