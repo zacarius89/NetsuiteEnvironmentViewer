@@ -178,7 +178,15 @@ namespace NetsuiteEnvironmentViewer
         private void tvEnvironment2CustomScripts_AfterCollapse(object sender, TreeViewEventArgs e)
         {
             commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Collapse();
+
+            try
+            {
+                commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Collapse();
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
         #endregion
 
@@ -223,7 +231,15 @@ namespace NetsuiteEnvironmentViewer
         private void tvEnvironment2CustomScripts_AfterExpand(object sender, TreeViewEventArgs e)
         {
             commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Expand();
+
+            try
+            {
+                commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Expand();
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
         #endregion
 

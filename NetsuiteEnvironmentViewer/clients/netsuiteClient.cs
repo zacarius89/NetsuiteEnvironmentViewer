@@ -145,6 +145,7 @@ namespace NetsuiteEnvironmentViewer
             customScriptFile.internalId = netsuiteCustomScriptFile2.internalId;
             customScriptFile.name = netsuiteCustomScriptFile1.name;
             customScriptFile.content = netsuiteCustomScriptFile1.content;
+            customScriptFile.folderId = netsuiteCustomScriptFile1.folderId;
 
             string payload = JsonConvert.SerializeObject(customScriptFile);
 

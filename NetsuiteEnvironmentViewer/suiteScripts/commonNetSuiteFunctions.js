@@ -40,7 +40,12 @@
 		}
 		else if(datain.method === 'saveCustomScriptFile')
 		{
-			returnJSON = commonNetSuiteFunctions.saveCustomScriptFile(datain.name, datain.content);
+			if(!datain.folderId)
+			{
+				datain.folderId = '-15';
+			}
+			
+			returnJSON = commonNetSuiteFunctions.saveCustomScriptFile(datain.name, datain.content, datain.folderId);
 		}
 		else if(datain.method === 'saveFile')
 		{
@@ -385,12 +390,12 @@
 		}
 	};
 	
-	commonNetSuiteFunctions.saveCustomScriptFile = function(name, content)
+	commonNetSuiteFunctions.saveCustomScriptFile = function(name, content, folderId)
 	{
 		try
 		{			
 			
-			return commonNetSuiteFunctions.saveFile(name, 'JAVASCRIPT', content, '-15');
+			return commonNetSuiteFunctions.saveFile(name, 'JAVASCRIPT', content, folderId);
 		}
 		catch (e)
 		{
