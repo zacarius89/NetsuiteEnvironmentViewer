@@ -230,6 +230,7 @@
 					var scriptFunctions = [];
 					var scriptFile;
 					var scriptDeployments;
+					var scriptLibraries;
 					
 					for(j = 0; j < possibleScriptFunctionTypes.length; j++)
 					{
@@ -254,6 +255,11 @@
 						scriptDeployments = commonNetSuiteFunctions.getCustomScriptDeployments(scriptInternalId, includeAll)
 					}
 					
+					if(includeAll === 'T')
+					{
+						scriptLibraries = commonNetSuiteFunctions.getCustomScriptLibraries(scriptInternalId, includeAll)
+					}
+					
 					customScript.internalId = scriptInternalId;
 					customScript.scriptId = scriptId;
 					customScript.scriptName = scriptName;
@@ -269,6 +275,11 @@
 					if(scriptDeployments)
 					{
 						customScript.scriptDeployments = scriptDeployments;
+					}
+					
+					if(scriptLibraries)
+					{
+						customScript.scriptLibraries = scriptLibraries;
 					}
 					
 					customScripts.push(customScript);
@@ -332,6 +343,33 @@
 		catch (e)
 		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptDeployments', e.message);
+			returnStatus = 'failed';
+			
+			return {"error": e.message};
+		}
+	};
+	
+	commonNetSuiteFunctions.getCustomScriptLibraries = function(scriptInternalId, includeAll)
+	{
+		try
+		{
+			var scriptRecord = nlapiLoadRecord('script', scriptInternalId);
+			
+			var customScriptLibraries = [];
+
+			for(j = 1; j <= scriptRecord.getLineItemCount('libraries'); j++)
+			{
+				var internalId = scriptRecord.getLineItemValue('libraries', 'scriptfile', j);
+				var customScriptLibrary = commonNetSuiteFunctions.getFile(internalId);
+				
+				customScriptLibraries.push(customScriptLibrary);
+			}
+			
+			return customScriptLibraries;
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptLibraries', e.message);
 			returnStatus = 'failed';
 			
 			return {"error": e.message};

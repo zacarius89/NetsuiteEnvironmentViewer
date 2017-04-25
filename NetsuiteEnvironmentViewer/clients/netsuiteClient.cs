@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace NetsuiteEnvironmentViewer
 {
@@ -30,8 +31,9 @@ namespace NetsuiteEnvironmentViewer
         public string scriptType { get; set; }
         public string scriptAPIVersion { get; set; }
         public netsuiteFile scriptFile { get; set; }
-        public netsuiteCustomScriptFunction[] scriptFunctions { get; set; }
-        public netsuiteCustomScriptDeployment[] scriptDeployments { get; set; }
+        public List<netsuiteCustomScriptFunction> scriptFunctions { get; set; } = new List<netsuiteCustomScriptFunction>();
+        public List<netsuiteCustomScriptDeployment> scriptDeployments { get; set; } = new List<netsuiteCustomScriptDeployment>();
+        public List<netsuiteFile> scriptLibraries { get; set; } = new List<netsuiteFile>();
     }
 
     public class netsuiteCustomScriptFunction
@@ -43,7 +45,7 @@ namespace NetsuiteEnvironmentViewer
     public class netsuiteFile
     {
         public string internalId { get; set; }
-        public string name { get; set; }
+        public string name { get; set; } = string.Empty;
         public string folderId { get; set; }
         public string fileType { get; set; }
         public string size { get; set; }

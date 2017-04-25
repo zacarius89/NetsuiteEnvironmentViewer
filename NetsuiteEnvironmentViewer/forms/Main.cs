@@ -343,11 +343,11 @@ namespace NetsuiteEnvironmentViewer
 
                 TreeNode customScriptScriptFunctionsNode = commonClient.addNode(customScriptNode, "scriptFunctions");
 
-                netsuiteCustomScriptFunction[] customScriptFunctions = customScript.scriptFunctions;
+                netsuiteCustomScriptFunction[] customScriptFunctions = customScript.scriptFunctions.ToArray();
 
-                Array.Sort(customScriptFunctions, delegate (netsuiteCustomScriptFunction scripFunction1, netsuiteCustomScriptFunction scripFunction2)
+                Array.Sort(customScriptFunctions, delegate (netsuiteCustomScriptFunction scriptFunction1, netsuiteCustomScriptFunction scriptFunction2)
                 {
-                    return scripFunction1.functionType.CompareTo(scripFunction2.functionType);
+                    return scriptFunction1.functionType.CompareTo(scriptFunction2.functionType);
                 });
 
                 for (int j = 0; j < customScriptFunctions.Length; j++)
@@ -364,9 +364,28 @@ namespace NetsuiteEnvironmentViewer
                 commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "size"), customScript.scriptFile.size);
                 commonClient.addNode(commonClient.addNode(customScriptScriptFileNode, "content"), customScript.scriptFile.content);
 
+                TreeNode customScriptScriptLibrariesNode = commonClient.addNode(customScriptNode, "scriptLibraries");
+
+                netsuiteFile[] customScriptLibraries = customScript.scriptLibraries.ToArray();
+
+                Array.Sort(customScriptLibraries, delegate (netsuiteFile scriptLibrary1, netsuiteFile scriptLibrary2)
+                {
+                    return scriptLibrary1.name.CompareTo(scriptLibrary2.name);
+                });
+
+                for (int j = 0; j < customScriptLibraries.Length; j++)
+                {
+                    TreeNode customScriptLibrariesScriptLibraryNode = commonClient.addNode(customScriptScriptLibrariesNode, customScriptLibraries[j].name);
+                    commonClient.addNode(commonClient.addNode(customScriptLibrariesScriptLibraryNode, "internalId"), customScriptLibraries[j].internalId);
+                    commonClient.addNode(commonClient.addNode(customScriptLibrariesScriptLibraryNode, "folder"), customScriptLibraries[j].folderId);
+                    commonClient.addNode(commonClient.addNode(customScriptLibrariesScriptLibraryNode, "type"), customScriptLibraries[j].fileType);
+                    commonClient.addNode(commonClient.addNode(customScriptLibrariesScriptLibraryNode, "size"), customScriptLibraries[j].size);
+                    commonClient.addNode(commonClient.addNode(customScriptLibrariesScriptLibraryNode, "content"), customScriptLibraries[j].content);
+                }
+
                 TreeNode customScriptScriptDeploymentsNode = commonClient.addNode(customScriptNode, "scriptDeployments");
 
-                netsuiteCustomScriptDeployment[] customScriptDeployments = customScript.scriptDeployments;
+                netsuiteCustomScriptDeployment[] customScriptDeployments = customScript.scriptDeployments.ToArray();
 
                 Array.Sort(customScriptDeployments, delegate (netsuiteCustomScriptDeployment scriptDeployment1, netsuiteCustomScriptDeployment scriptDeployment2)
                 {
