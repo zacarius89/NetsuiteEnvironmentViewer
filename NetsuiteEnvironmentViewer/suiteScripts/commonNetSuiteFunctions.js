@@ -4,6 +4,8 @@
 
 	var commonNetSuiteFunctions = {};
 	
+	var files = new Array();
+	
 	commonNetSuiteFunctions.postRESTlet = function(datain)
 	{
 		nlapiLogExecution('AUDIT', 'commonNetSuiteFunctions.postRESTlet - datain', JSON.stringify(datain));
@@ -345,7 +347,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptDeployments', e.message);
 			returnStatus = 'failed';
 			
-			return {"error": e.message};
+			return [{"error": e.message}];
 		}
 	};
 	
@@ -372,7 +374,7 @@
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptLibraries', e.message);
 			returnStatus = 'failed';
 			
-			return {"error": e.message};
+			return [{"error": e.message}];
 		}
 	};
 	
@@ -380,6 +382,13 @@
 	{
 		try
 		{
+			if(files[internalId])
+			{
+				nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.getFile', 'found - ' + internalId);
+				
+				return files[internalId];
+			}
+			
 			var filters = new Array();
 			
 			filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId)
@@ -405,14 +414,14 @@
 				file.fileType = customScriptFileRecord.getType();
 				file.size = customScriptFileRecord.getSize();
 				file.content = nlapiEncrypt(customScriptFileRecord.getValue(), 'base64');
+				
+				files[internalId] = file;
 			}
 			
 			return file;
 		}
 		catch (e)
 		{
-			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getFile', e.message);
-			
 			//Check to see if the user does not have permission for the script
 			//Most likely, this error comes from an installed bundle
 			if(e.message === 'You do not have access to the media item you selected.')
@@ -421,6 +430,7 @@
 			}
 			else
 			{
+				nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getFile', e.message);
 				returnStatus = 'failed';
 			}
 			
