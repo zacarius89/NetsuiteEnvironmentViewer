@@ -159,31 +159,51 @@ namespace NetsuiteEnvironmentViewer
         #region "AfterCollapse"
         private void tvEnvironment1CustomRecords_AfterCollapse(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment2CustomRecords.Nodes[0], e.Node.FullPath).Collapse();
+            try
+            {
+                commonClient commonClient = new commonClient();
+                commonClient.getNodeFromPath(tvEnvironment2CustomRecords.Nodes[0], e.Node.FullPath).Collapse();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void tvEnvironment2CustomRecords_AfterCollapse(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment1CustomRecords.Nodes[0], e.Node.FullPath).Collapse();
+            try
+            {
+                commonClient commonClient = new commonClient();
+                commonClient.getNodeFromPath(tvEnvironment1CustomRecords.Nodes[0], e.Node.FullPath).Collapse();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void tvEnvironment1CustomScripts_AfterCollapse(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], e.Node.FullPath).Collapse();
+            try
+            {
+                commonClient commonClient = new commonClient();
+                commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], e.Node.FullPath).Collapse();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void tvEnvironment2CustomScripts_AfterCollapse(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-
             try
             {
+                commonClient commonClient = new commonClient();
                 commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Collapse();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -193,17 +213,31 @@ namespace NetsuiteEnvironmentViewer
         #region "BeforeExpand"
         private void tvEnvironment1CustomScripts_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            if (e.Node.Level == 3 && e.Node.Text == "content")
+            try
             {
-                e.Cancel = true;
+                if ((e.Node.Level == 3 || e.Node.Level == 4) && e.Node.Text == "content")
+                {
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
         private void tvEnvironment2CustomScripts_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            if (e.Node.Level == 3 && e.Node.Text == "content")
+            try
             {
-                e.Cancel = true;
+                if ((e.Node.Level == 3 || e.Node.Level == 4) && e.Node.Text == "content")
+                {
+                    e.Cancel = true;
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
         }
 
@@ -212,31 +246,51 @@ namespace NetsuiteEnvironmentViewer
         #region "AfterExpand"
         private void tvEnvironment1CustomRecords_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment2CustomRecords.Nodes[0], e.Node.FullPath).Expand();
+            try
+            {
+                commonClient commonClient = new commonClient();
+                commonClient.getNodeFromPath(tvEnvironment2CustomRecords.Nodes[0], e.Node.FullPath).Expand();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void tvEnvironment2CustomRecords_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment1CustomRecords.Nodes[0], e.Node.FullPath).Expand();
+            try
+            {
+                commonClient commonClient = new commonClient();
+                commonClient.getNodeFromPath(tvEnvironment1CustomRecords.Nodes[0], e.Node.FullPath).Expand();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void tvEnvironment1CustomScripts_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-            commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], e.Node.FullPath).Expand();
+            try
+            {
+                commonClient commonClient = new commonClient();
+                commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], e.Node.FullPath).Expand();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         private void tvEnvironment2CustomScripts_AfterExpand(object sender, TreeViewEventArgs e)
         {
-            commonClient commonClient = new commonClient();
-
             try
             {
+                commonClient commonClient = new commonClient();
                 commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], e.Node.FullPath).Expand();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
@@ -407,25 +461,25 @@ namespace NetsuiteEnvironmentViewer
 
         private void loadCustomScript(TreeNode treeNode)
         {
-            if (treeNode.Level == 2 && treeNode.Text == "scriptFile")
+            if ((treeNode.Level == 2 && treeNode.Text == "scriptFile") || (treeNode.Level == 3 && treeNode.Parent.Text == "scriptLibraries"))
             {
+                string scriptFile1InternalId = "0";
+                string scriptFile2InternalId = "0";
+
                 commonClient commonClient = new commonClient();
 
                 TreeNode customScriptFile1Node = commonClient.getNodeFromPath(tvEnvironment1CustomScripts.Nodes[0], treeNode.FullPath);
                 TreeNode customScriptFile2Node = commonClient.getNodeFromPath(tvEnvironment2CustomScripts.Nodes[0], treeNode.FullPath);
-
-                string scriptFile1InternalId = "0";
-                string scriptFile2InternalId = "0";
 
                 if (compared)
                 {
                     scriptFile1InternalId = customScriptFile1Node.Nodes[0].Nodes[0].Text;
                     scriptFile2InternalId = customScriptFile2Node.Nodes[0].Nodes[0].Text;
                 }
-                
+
                 if (scriptFile1InternalId == "0" || scriptFile2InternalId == "0")
                 {
-                    if(!compared)
+                    if (!compared)
                     {
                         MessageBox.Show(haveNotComparedText);
                     }
@@ -433,7 +487,7 @@ namespace NetsuiteEnvironmentViewer
                     {
                         MessageBox.Show(missingCustomScriptFileText);
                     }
-                    
+
                     return;
                 }
 
@@ -536,11 +590,11 @@ namespace NetsuiteEnvironmentViewer
                 tvEnvironment1CustomScripts.Nodes.Clear();
                 tvEnvironment2CustomScripts.Nodes.Clear();
             }
-        } 
+        }
 
         private void compareNetsuiteEnvironmentData()
         {
-            if(!dataPulled)
+            if (!dataPulled)
             {
                 DialogResult dialogResult = MessageBox.Show("Cannot compare until Netsuite Environment Data has been pulled.  Do you want to do this now?", confirmationTitle, MessageBoxButtons.YesNo);
 
@@ -639,7 +693,7 @@ namespace NetsuiteEnvironmentViewer
             {
                 DiffPiece diffPiece = textLines1[i];
 
-                if(diffPiece.Type == ChangeType.Imaginary)
+                if (diffPiece.Type == ChangeType.Imaginary)
                 {
                     diffPiece.Text = textLines2[i].Text;
                 }
@@ -650,7 +704,7 @@ namespace NetsuiteEnvironmentViewer
 
                     if (diffPiece.Type == ChangeType.Inserted)
                     {
-                        if(productionEnvironment)
+                        if (productionEnvironment)
                         {
                             commonClient.setNodeColor(treeNode, commonClient.insertedColor);
                         }
@@ -664,7 +718,7 @@ namespace NetsuiteEnvironmentViewer
                             commonClient.setNodeColor(treeNode, commonClient.deletedColor);
                         }
                     }
-                    else if(diffPiece.Type == ChangeType.Imaginary)
+                    else if (diffPiece.Type == ChangeType.Imaginary)
                     {
                         if (parentTreeNode.Text == "internalId")
                         {
@@ -698,7 +752,7 @@ namespace NetsuiteEnvironmentViewer
                     }
                     else if (diffPiece.Type == ChangeType.Modified)
                     {
-                        if(parentTreeNode.Text != "internalId")
+                        if (parentTreeNode.Text != "internalId")
                         {
                             commonClient.setNodeColor(treeNode, commonClient.modifiedColor);
                         }
