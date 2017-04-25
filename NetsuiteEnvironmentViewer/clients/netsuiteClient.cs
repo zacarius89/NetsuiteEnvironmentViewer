@@ -118,7 +118,6 @@ namespace NetsuiteEnvironmentViewer
 
         public netsuiteCustomRecords getCustomRecords()
         {
-            //string payload = "{\"method\":\"getCustomRecords\", \"includeAll\":\"T\", \"internalId\":\"180\"}";
             string payload = "{\"method\":\"getCustomRecords\", \"includeAll\":\"T\"}";
             string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
             return JsonConvert.DeserializeObject<netsuiteCustomRecords>(result);
@@ -126,7 +125,6 @@ namespace NetsuiteEnvironmentViewer
 
         public netsuiteCustomScripts getCustomScripts()
         {
-            //string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\", \"internalId\":\"47\"}";
             string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\"}";
             string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
             return JsonConvert.DeserializeObject<netsuiteCustomScripts>(result);
@@ -134,7 +132,6 @@ namespace NetsuiteEnvironmentViewer
 
         public netsuiteFile getCustomScriptFile(string internalId)
         {
-            //string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\", \"internalId\":\"47\"}";
             string payload = "{\"method\":\"getFile\", \"internalId\":\"" + internalId + "\"}";
             string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
             return JsonConvert.DeserializeObject<netsuiteFile>(result);
