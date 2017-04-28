@@ -193,7 +193,7 @@
             // btnSaveSettings
             // 
             this.btnSaveSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveSettings.Location = new System.Drawing.Point(347, 12);
+            this.btnSaveSettings.Location = new System.Drawing.Point(347, 94);
             this.btnSaveSettings.Name = "btnSaveSettings";
             this.btnSaveSettings.Size = new System.Drawing.Size(82, 23);
             this.btnSaveSettings.TabIndex = 17;
@@ -271,6 +271,7 @@
             this.btnOpenCSVImport1.TabIndex = 19;
             this.btnOpenCSVImport1.Text = "CSV Import";
             this.btnOpenCSVImport1.UseVisualStyleBackColor = true;
+            this.btnOpenCSVImport1.Click += new System.EventHandler(this.btnOpenCSVImport1_Click);
             // 
             // lblUrl1
             // 
@@ -312,6 +313,7 @@
             this.txtRole1.Name = "txtRole1";
             this.txtRole1.Size = new System.Drawing.Size(100, 20);
             this.txtRole1.TabIndex = 10;
+            this.txtRole1.TextChanged += new System.EventHandler(this.txtRole1_TextChanged);
             // 
             // lblEmail1
             // 
@@ -337,6 +339,7 @@
             this.txtAccount1.Name = "txtAccount1";
             this.txtAccount1.Size = new System.Drawing.Size(100, 20);
             this.txtAccount1.TabIndex = 4;
+            this.txtAccount1.TextChanged += new System.EventHandler(this.txtAccount1_TextChanged);
             // 
             // txtEmail1
             // 
@@ -344,6 +347,7 @@
             this.txtEmail1.Name = "txtEmail1";
             this.txtEmail1.Size = new System.Drawing.Size(100, 20);
             this.txtEmail1.TabIndex = 6;
+            this.txtEmail1.TextChanged += new System.EventHandler(this.txtEmail1_TextChanged);
             // 
             // txtSignature1
             // 
@@ -351,6 +355,7 @@
             this.txtSignature1.Name = "txtSignature1";
             this.txtSignature1.Size = new System.Drawing.Size(100, 20);
             this.txtSignature1.TabIndex = 8;
+            this.txtSignature1.TextChanged += new System.EventHandler(this.txtSignature1_TextChanged);
             // 
             // pnlEnvironment1TreeViews
             // 
@@ -403,6 +408,7 @@
             this.btnOpenCSVImport2.TabIndex = 20;
             this.btnOpenCSVImport2.Text = "CSV Import";
             this.btnOpenCSVImport2.UseVisualStyleBackColor = true;
+            this.btnOpenCSVImport2.Click += new System.EventHandler(this.btnOpenCSVImport2_Click);
             // 
             // chkUseSameCredentials
             // 
@@ -415,6 +421,7 @@
             this.chkUseSameCredentials.TabIndex = 22;
             this.chkUseSameCredentials.Text = "Use Same Credentials";
             this.chkUseSameCredentials.UseVisualStyleBackColor = true;
+            this.chkUseSameCredentials.CheckedChanged += new System.EventHandler(this.chkUseSameCredentials_CheckedChanged);
             // 
             // lblUrl2
             // 
@@ -558,6 +565,7 @@
             this.MinimumSize = new System.Drawing.Size(900, 330);
             this.Name = "Main";
             this.Text = "Netsuite Environment Viewer";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Main_Load);
             this.tbCtrlEnvironment1.ResumeLayout(false);
             this.tbPgEnvironment1CustomRecords.ResumeLayout(false);

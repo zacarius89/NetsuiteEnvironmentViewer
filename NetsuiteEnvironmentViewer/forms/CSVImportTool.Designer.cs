@@ -126,6 +126,8 @@
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.btnOpenFile);
+            this.MaximumSize = new System.Drawing.Size(380, 135);
+            this.MinimumSize = new System.Drawing.Size(380, 135);
             this.Name = "CSVImportTool";
             this.Text = "CSVImportTool";
             this.Load += new System.EventHandler(this.CSVImportTool_Load);
