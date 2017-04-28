@@ -29,8 +29,7 @@
         private void InitializeComponent()
         {
             this.grpEnvironment1 = new System.Windows.Forms.GroupBox();
-            this.btnCompare = new System.Windows.Forms.Button();
-            this.rTxtContent1 = new NetsuiteEnvironmentViewer.MyRichTextBox();
+            this.btnCompareToEnvironment2 = new System.Windows.Forms.Button();
             this.btnPushToEnvironment2 = new System.Windows.Forms.Button();
             this.txtSize1 = new System.Windows.Forms.TextBox();
             this.txtType1 = new System.Windows.Forms.TextBox();
@@ -41,9 +40,9 @@
             this.lvlType1 = new System.Windows.Forms.Label();
             this.lblName1 = new System.Windows.Forms.Label();
             this.lblInternalId1 = new System.Windows.Forms.Label();
+            this.rTxtContent1 = new NetsuiteEnvironmentViewer.MyRichTextBox();
             this.grpEnvironment2 = new System.Windows.Forms.GroupBox();
             this.btnCompareToEnvironment1 = new System.Windows.Forms.Button();
-            this.rTxtContent2 = new NetsuiteEnvironmentViewer.MyRichTextBox();
             this.txtSize2 = new System.Windows.Forms.TextBox();
             this.txtType2 = new System.Windows.Forms.TextBox();
             this.txtName2 = new System.Windows.Forms.TextBox();
@@ -53,11 +52,13 @@
             this.lblType2 = new System.Windows.Forms.Label();
             this.lblName2 = new System.Windows.Forms.Label();
             this.lblInternalId2 = new System.Windows.Forms.Label();
+            this.rTxtContent2 = new NetsuiteEnvironmentViewer.MyRichTextBox();
             this.tblLayout = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
+            this.btnPushToEnvironment1 = new System.Windows.Forms.Button();
             this.grpEnvironment1.SuspendLayout();
             this.grpEnvironment2.SuspendLayout();
             this.tblLayout.SuspendLayout();
@@ -69,7 +70,7 @@
             // 
             // grpEnvironment1
             // 
-            this.grpEnvironment1.Controls.Add(this.btnCompare);
+            this.grpEnvironment1.Controls.Add(this.btnCompareToEnvironment2);
             this.grpEnvironment1.Controls.Add(this.btnPushToEnvironment2);
             this.grpEnvironment1.Controls.Add(this.txtSize1);
             this.grpEnvironment1.Controls.Add(this.txtType1);
@@ -88,28 +89,16 @@
             this.grpEnvironment1.TabStop = false;
             this.grpEnvironment1.Text = "Environment 1";
             // 
-            // btnCompare
+            // btnCompareToEnvironment2
             // 
-            this.btnCompare.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCompare.Location = new System.Drawing.Point(301, 9);
-            this.btnCompare.Name = "btnCompare";
-            this.btnCompare.Size = new System.Drawing.Size(104, 23);
-            this.btnCompare.TabIndex = 10;
-            this.btnCompare.Text = "Compare To Env 2";
-            this.btnCompare.UseVisualStyleBackColor = true;
-            this.btnCompare.Click += new System.EventHandler(this.btnCompare_Click);
-            // 
-            // rTxtContent1
-            // 
-            this.rTxtContent1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.rTxtContent1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rTxtContent1.Location = new System.Drawing.Point(0, 0);
-            this.rTxtContent1.Name = "rTxtContent1";
-            this.rTxtContent1.ReadOnly = true;
-            this.rTxtContent1.Size = new System.Drawing.Size(411, 130);
-            this.rTxtContent1.TabIndex = 9;
-            this.rTxtContent1.Text = "";
-            this.rTxtContent1.WordWrap = false;
+            this.btnCompareToEnvironment2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCompareToEnvironment2.Location = new System.Drawing.Point(301, 9);
+            this.btnCompareToEnvironment2.Name = "btnCompareToEnvironment2";
+            this.btnCompareToEnvironment2.Size = new System.Drawing.Size(104, 23);
+            this.btnCompareToEnvironment2.TabIndex = 10;
+            this.btnCompareToEnvironment2.Text = "Compare To Env 2";
+            this.btnCompareToEnvironment2.UseVisualStyleBackColor = true;
+            this.btnCompareToEnvironment2.Click += new System.EventHandler(this.btnCompareToEnvironment2_Click);
             // 
             // btnPushToEnvironment2
             // 
@@ -200,8 +189,21 @@
             this.lblInternalId1.TabIndex = 0;
             this.lblInternalId1.Text = "internalId";
             // 
+            // rTxtContent1
+            // 
+            this.rTxtContent1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.rTxtContent1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rTxtContent1.Location = new System.Drawing.Point(0, 0);
+            this.rTxtContent1.Name = "rTxtContent1";
+            this.rTxtContent1.ReadOnly = true;
+            this.rTxtContent1.Size = new System.Drawing.Size(411, 130);
+            this.rTxtContent1.TabIndex = 9;
+            this.rTxtContent1.Text = "";
+            this.rTxtContent1.WordWrap = false;
+            // 
             // grpEnvironment2
             // 
+            this.grpEnvironment2.Controls.Add(this.btnPushToEnvironment1);
             this.grpEnvironment2.Controls.Add(this.btnCompareToEnvironment1);
             this.grpEnvironment2.Controls.Add(this.txtSize2);
             this.grpEnvironment2.Controls.Add(this.txtType2);
@@ -229,18 +231,7 @@
             this.btnCompareToEnvironment1.TabIndex = 11;
             this.btnCompareToEnvironment1.Text = "Compare To Env 1";
             this.btnCompareToEnvironment1.UseVisualStyleBackColor = true;
-            // 
-            // rTxtContent2
-            // 
-            this.rTxtContent2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.rTxtContent2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.rTxtContent2.Location = new System.Drawing.Point(0, 0);
-            this.rTxtContent2.Name = "rTxtContent2";
-            this.rTxtContent2.ReadOnly = true;
-            this.rTxtContent2.Size = new System.Drawing.Size(411, 130);
-            this.rTxtContent2.TabIndex = 10;
-            this.rTxtContent2.Text = "";
-            this.rTxtContent2.WordWrap = false;
+            this.btnCompareToEnvironment1.Click += new System.EventHandler(this.btnCompareToEnvironment1_Click);
             // 
             // txtSize2
             // 
@@ -320,6 +311,18 @@
             this.lblInternalId2.TabIndex = 0;
             this.lblInternalId2.Text = "internalId";
             // 
+            // rTxtContent2
+            // 
+            this.rTxtContent2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.rTxtContent2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rTxtContent2.Location = new System.Drawing.Point(0, 0);
+            this.rTxtContent2.Name = "rTxtContent2";
+            this.rTxtContent2.ReadOnly = true;
+            this.rTxtContent2.Size = new System.Drawing.Size(411, 130);
+            this.rTxtContent2.TabIndex = 10;
+            this.rTxtContent2.Text = "";
+            this.rTxtContent2.WordWrap = false;
+            // 
             // tblLayout
             // 
             this.tblLayout.ColumnCount = 2;
@@ -374,6 +377,17 @@
             this.panel4.Size = new System.Drawing.Size(411, 130);
             this.panel4.TabIndex = 3;
             // 
+            // btnPushToEnvironment1
+            // 
+            this.btnPushToEnvironment1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPushToEnvironment1.Location = new System.Drawing.Point(298, 38);
+            this.btnPushToEnvironment1.Name = "btnPushToEnvironment1";
+            this.btnPushToEnvironment1.Size = new System.Drawing.Size(104, 23);
+            this.btnPushToEnvironment1.TabIndex = 12;
+            this.btnPushToEnvironment1.Text = "Push To Env 1";
+            this.btnPushToEnvironment1.UseVisualStyleBackColor = true;
+            this.btnPushToEnvironment1.Click += new System.EventHandler(this.btnPushToEnvironment1_Click);
+            // 
             // FileViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -423,12 +437,13 @@
         private System.Windows.Forms.Button btnPushToEnvironment2;
         private MyRichTextBox rTxtContent1;
         private MyRichTextBox rTxtContent2;
-        private System.Windows.Forms.Button btnCompare;
+        private System.Windows.Forms.Button btnCompareToEnvironment2;
         private System.Windows.Forms.Button btnCompareToEnvironment1;
         private System.Windows.Forms.TableLayoutPanel tblLayout;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Button btnPushToEnvironment1;
     }
 }

@@ -285,7 +285,7 @@
             // lblRole1
             // 
             this.lblRole1.AutoSize = true;
-            this.lblRole1.Location = new System.Drawing.Point(325, 42);
+            this.lblRole1.Location = new System.Drawing.Point(362, 42);
             this.lblRole1.Name = "lblRole1";
             this.lblRole1.Size = new System.Drawing.Size(29, 13);
             this.lblRole1.TabIndex = 9;
@@ -295,13 +295,13 @@
             // 
             this.txtUrl1.Location = new System.Drawing.Point(32, 19);
             this.txtUrl1.Name = "txtUrl1";
-            this.txtUrl1.Size = new System.Drawing.Size(183, 20);
+            this.txtUrl1.Size = new System.Drawing.Size(188, 20);
             this.txtUrl1.TabIndex = 2;
             // 
             // lblSignature1
             // 
             this.lblSignature1.AutoSize = true;
-            this.lblSignature1.Location = new System.Drawing.Point(218, 42);
+            this.lblSignature1.Location = new System.Drawing.Point(238, 42);
             this.lblSignature1.Name = "lblSignature1";
             this.lblSignature1.Size = new System.Drawing.Size(52, 13);
             this.lblSignature1.TabIndex = 7;
@@ -309,16 +309,16 @@
             // 
             // txtRole1
             // 
-            this.txtRole1.Location = new System.Drawing.Point(328, 58);
+            this.txtRole1.Location = new System.Drawing.Point(372, 58);
             this.txtRole1.Name = "txtRole1";
-            this.txtRole1.Size = new System.Drawing.Size(100, 20);
+            this.txtRole1.Size = new System.Drawing.Size(57, 20);
             this.txtRole1.TabIndex = 10;
             this.txtRole1.TextChanged += new System.EventHandler(this.txtRole1_TextChanged);
             // 
             // lblEmail1
             // 
             this.lblEmail1.AutoSize = true;
-            this.lblEmail1.Location = new System.Drawing.Point(112, 42);
+            this.lblEmail1.Location = new System.Drawing.Point(77, 42);
             this.lblEmail1.Name = "lblEmail1";
             this.lblEmail1.Size = new System.Drawing.Size(32, 13);
             this.lblEmail1.TabIndex = 5;
@@ -337,23 +337,24 @@
             // 
             this.txtAccount1.Location = new System.Drawing.Point(9, 58);
             this.txtAccount1.Name = "txtAccount1";
-            this.txtAccount1.Size = new System.Drawing.Size(100, 20);
+            this.txtAccount1.Size = new System.Drawing.Size(65, 20);
             this.txtAccount1.TabIndex = 4;
             this.txtAccount1.TextChanged += new System.EventHandler(this.txtAccount1_TextChanged);
             // 
             // txtEmail1
             // 
-            this.txtEmail1.Location = new System.Drawing.Point(115, 58);
+            this.txtEmail1.Location = new System.Drawing.Point(80, 58);
             this.txtEmail1.Name = "txtEmail1";
-            this.txtEmail1.Size = new System.Drawing.Size(100, 20);
+            this.txtEmail1.Size = new System.Drawing.Size(140, 20);
             this.txtEmail1.TabIndex = 6;
             this.txtEmail1.TextChanged += new System.EventHandler(this.txtEmail1_TextChanged);
             // 
             // txtSignature1
             // 
-            this.txtSignature1.Location = new System.Drawing.Point(221, 58);
+            this.txtSignature1.Location = new System.Drawing.Point(226, 58);
             this.txtSignature1.Name = "txtSignature1";
-            this.txtSignature1.Size = new System.Drawing.Size(100, 20);
+            this.txtSignature1.PasswordChar = '●';
+            this.txtSignature1.Size = new System.Drawing.Size(140, 20);
             this.txtSignature1.TabIndex = 8;
             this.txtSignature1.TextChanged += new System.EventHandler(this.txtSignature1_TextChanged);
             // 
@@ -415,7 +416,7 @@
             this.chkUseSameCredentials.AutoSize = true;
             this.chkUseSameCredentials.Checked = true;
             this.chkUseSameCredentials.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseSameCredentials.Location = new System.Drawing.Point(221, 21);
+            this.chkUseSameCredentials.Location = new System.Drawing.Point(226, 21);
             this.chkUseSameCredentials.Name = "chkUseSameCredentials";
             this.chkUseSameCredentials.Size = new System.Drawing.Size(130, 17);
             this.chkUseSameCredentials.TabIndex = 22;
@@ -435,7 +436,7 @@
             // lblRole2
             // 
             this.lblRole2.AutoSize = true;
-            this.lblRole2.Location = new System.Drawing.Point(325, 42);
+            this.lblRole2.Location = new System.Drawing.Point(369, 42);
             this.lblRole2.Name = "lblRole2";
             this.lblRole2.Size = new System.Drawing.Size(29, 13);
             this.lblRole2.TabIndex = 20;
@@ -445,13 +446,13 @@
             // 
             this.txtUrl2.Location = new System.Drawing.Point(32, 19);
             this.txtUrl2.Name = "txtUrl2";
-            this.txtUrl2.Size = new System.Drawing.Size(183, 20);
+            this.txtUrl2.Size = new System.Drawing.Size(188, 20);
             this.txtUrl2.TabIndex = 13;
             // 
             // lblSignature2
             // 
             this.lblSignature2.AutoSize = true;
-            this.lblSignature2.Location = new System.Drawing.Point(218, 42);
+            this.lblSignature2.Location = new System.Drawing.Point(223, 42);
             this.lblSignature2.Name = "lblSignature2";
             this.lblSignature2.Size = new System.Drawing.Size(52, 13);
             this.lblSignature2.TabIndex = 18;
@@ -459,15 +460,15 @@
             // 
             // txtRole2
             // 
-            this.txtRole2.Location = new System.Drawing.Point(328, 58);
+            this.txtRole2.Location = new System.Drawing.Point(372, 58);
             this.txtRole2.Name = "txtRole2";
-            this.txtRole2.Size = new System.Drawing.Size(100, 20);
+            this.txtRole2.Size = new System.Drawing.Size(57, 20);
             this.txtRole2.TabIndex = 21;
             // 
             // lblEmail2
             // 
             this.lblEmail2.AutoSize = true;
-            this.lblEmail2.Location = new System.Drawing.Point(112, 42);
+            this.lblEmail2.Location = new System.Drawing.Point(77, 42);
             this.lblEmail2.Name = "lblEmail2";
             this.lblEmail2.Size = new System.Drawing.Size(32, 13);
             this.lblEmail2.TabIndex = 16;
@@ -486,21 +487,22 @@
             // 
             this.txtAccount2.Location = new System.Drawing.Point(9, 58);
             this.txtAccount2.Name = "txtAccount2";
-            this.txtAccount2.Size = new System.Drawing.Size(100, 20);
+            this.txtAccount2.Size = new System.Drawing.Size(65, 20);
             this.txtAccount2.TabIndex = 15;
             // 
             // txtEmail2
             // 
-            this.txtEmail2.Location = new System.Drawing.Point(115, 58);
+            this.txtEmail2.Location = new System.Drawing.Point(80, 58);
             this.txtEmail2.Name = "txtEmail2";
-            this.txtEmail2.Size = new System.Drawing.Size(100, 20);
+            this.txtEmail2.Size = new System.Drawing.Size(140, 20);
             this.txtEmail2.TabIndex = 17;
             // 
             // txtSignature2
             // 
-            this.txtSignature2.Location = new System.Drawing.Point(221, 58);
+            this.txtSignature2.Location = new System.Drawing.Point(226, 58);
             this.txtSignature2.Name = "txtSignature2";
-            this.txtSignature2.Size = new System.Drawing.Size(100, 20);
+            this.txtSignature2.PasswordChar = '●';
+            this.txtSignature2.Size = new System.Drawing.Size(140, 20);
             this.txtSignature2.TabIndex = 19;
             // 
             // pnlEnvironment2TreeViews

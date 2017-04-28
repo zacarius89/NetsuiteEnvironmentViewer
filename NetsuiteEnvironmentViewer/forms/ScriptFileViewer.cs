@@ -46,9 +46,14 @@ namespace NetsuiteEnvironmentViewer
         #endregion
 
         #region "Click"
-        private void btnCompare_Click(object sender, EventArgs e)
+        private void btnCompareToEnvironment2_Click(object sender, EventArgs e)
         {
             compareTexts(rTxtContent1, base64Decode(netsuiteCustomScriptFile1.content), rTxtContent2, base64Decode(netsuiteCustomScriptFile2.content));
+        }
+
+        private void btnCompareToEnvironment1_Click(object sender, EventArgs e)
+        {
+            compareTexts(rTxtContent2, base64Decode(netsuiteCustomScriptFile2.content), rTxtContent1, base64Decode(netsuiteCustomScriptFile1.content));
         }
 
         private void btnPushToEnvironment2_Click(object sender, EventArgs e)
@@ -58,6 +63,16 @@ namespace NetsuiteEnvironmentViewer
             if (dialogResult == DialogResult.Yes)
             {
                 netsuiteClient2.saveCustomScriptFileContents(netsuiteCustomScriptFile1, netsuiteCustomScriptFile2);
+            }
+        }
+
+        private void btnPushToEnvironment1_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show(confirmationText, confirmationTitle, MessageBoxButtons.YesNo);
+
+            if (dialogResult == DialogResult.Yes)
+            {
+                netsuiteClient1.saveCustomScriptFileContents(netsuiteCustomScriptFile2, netsuiteCustomScriptFile1);
             }
         }
 
