@@ -10,7 +10,7 @@ namespace NetsuiteEnvironmentViewer
     public partial class FileViewer : Form
     {
         private string confirmationTitle = "";
-        private string confirmationText = "Are you sure you want to push this content to the other environment?  This will overwrite the existing content.";
+        private string confirmationText = "Are you sure you want to push this content to [environment]?  This will overwrite the existing content.";
 
         public netsuiteFile netsuiteCustomScriptFile1;
         public netsuiteFile netsuiteCustomScriptFile2;
@@ -58,7 +58,7 @@ namespace NetsuiteEnvironmentViewer
 
         private void btnPushToEnvironment2_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show(confirmationText, confirmationTitle, MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show(confirmationText.Replace("[environment]", "Environment 2"), confirmationTitle, MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
@@ -68,7 +68,7 @@ namespace NetsuiteEnvironmentViewer
 
         private void btnPushToEnvironment1_Click(object sender, EventArgs e)
         {
-            DialogResult dialogResult = MessageBox.Show(confirmationText, confirmationTitle, MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show(confirmationText.Replace("[environment]", "Environment 1"), confirmationTitle, MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
