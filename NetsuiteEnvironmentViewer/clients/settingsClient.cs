@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace NetsuiteEnvironmentViewer
 {
-    public class settings
+    public class Settings
     {
         public bool useSameCredentialsChecked = true;
         public bool customRecordsChecked = true;
@@ -29,18 +29,18 @@ namespace NetsuiteEnvironmentViewer
         public string environment2Signature = "";
         public string environment2Role = "3";
 
-        public List<string> ignoreEnv1Scripts = new List<string>();
-        public List<string> ignoreEnv2Scripts = new List<string>();
+        public List<string> environment1IgnoreScripts = new List<string>();
+        public List<string> environment2IgnoreScripts = new List<string>();
     }
 
-    public class settingsClient
+    public class SettingsClient
     {
         private string directoryPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\NetsuiteEnvironmentViewer\\";
         private string filePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\NetsuiteEnvironmentViewer\\system.settings";
 
-        public settings loadSettings()
+        public Settings loadSettings()
         {
-            settings localSettings = new settings();
+            Settings localSettings = new Settings();
 
             if (!Directory.Exists(directoryPath))
             {
@@ -54,13 +54,16 @@ namespace NetsuiteEnvironmentViewer
 
             string decryptedSettings = decrypt(File.ReadAllText(filePath));
 
-            localSettings = JsonConvert.DeserializeObject<settings>(decryptedSettings);
+            localSettings = JsonConvert.DeserializeObject<Settings>(decryptedSettings);
 
             return localSettings;
         }
 
-        public void saveSettings(settings localSettings)
+        public void saveSettings(Settings localSettings)
         {
+            localSettings.environment1IgnoreScripts.Sort();
+            localSettings.environment2IgnoreScripts.Sort();
+
             string settings = JsonConvert.SerializeObject(localSettings);
 
             string encryptedSettings = encrypt(settings);

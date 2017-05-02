@@ -10,15 +10,16 @@ namespace NetsuiteEnvironmentViewer
 {
     public partial class Main : Form
     {
-        private string confirmationTitle = "";
-        private string saveSettingsConfirmationText = "Are you sure you want to save the settings?  This will overwrite the existing settings.";
+        public static string confirmationTitle = "";
+        public static string saveSettingsConfirmationText = "Are you sure you want to save the settings?  This will overwrite the existing settings.";
         private string haveNotComparedText = "Have you compared the environments yet?  Please compare before opening the File Viewer.";
         private string missingCustomScriptFileText = "Cannot compare scriptFile(s).  The scriptFile does not exist in one of the environments.";
 
         private bool dataPulled = false;
         private bool compared = false;
 
-        private settings settings;
+        public static SettingsClient settingsClient = new SettingsClient();
+        public static Settings settings = new Settings();
 
         public Main()
         {
@@ -30,7 +31,6 @@ namespace NetsuiteEnvironmentViewer
         #region "Load"
         private void Main_Load(object sender, EventArgs e)
         {
-            settingsClient settingsClient = new settingsClient();
             settings = settingsClient.loadSettings();
 
             chkUseSameCredentials.Checked = settings.useSameCredentialsChecked;
@@ -90,15 +90,18 @@ namespace NetsuiteEnvironmentViewer
             pullNetsuiteEnvironmentData();
         }
 
+        private void btnIgnoreSettings_Click(object sender, EventArgs e)
+        {
+            IgnoreSettings ignoreSettings = new IgnoreSettings();
+            ignoreSettings.Show();
+        }
+
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
             DialogResult dialogResult = MessageBox.Show(saveSettingsConfirmationText, confirmationTitle, MessageBoxButtons.YesNo);
 
             if (dialogResult == DialogResult.Yes)
             {
-                settingsClient settingsClient = new settingsClient();
-                settings settings = new settings();
-
                 settings.useSameCredentialsChecked = chkUseSameCredentials.Checked;
                 settings.customRecordsChecked = chkCustomRecords.Checked;
                 settings.customScriptsChecked = chkcustomScripts.Checked;
@@ -552,14 +555,14 @@ namespace NetsuiteEnvironmentViewer
                 {
                     if(chkcustomScripts.Checked)
                     {
-                        scripts1 = netsuiteClient1.getCustomScripts(settings.ignoreEnv1Scripts);
+                        scripts1 = netsuiteClient1.getCustomScripts(settings.environment1IgnoreScripts);
                     }
                 }),
                 Task.Factory.StartNew(() =>
                 {
                     if(chkcustomScripts.Checked)
                     {
-                        scripts2 = netsuiteClient2.getCustomScripts(settings.ignoreEnv2Scripts);
+                        scripts2 = netsuiteClient2.getCustomScripts(settings.environment2IgnoreScripts);
                     }
                 })
             };

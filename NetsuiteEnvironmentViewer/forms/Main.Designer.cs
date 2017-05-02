@@ -31,10 +31,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.tbCtrlEnvironment1 = new System.Windows.Forms.TabControl();
             this.tbPgEnvironment1CustomRecords = new System.Windows.Forms.TabPage();
+            this.tvEnvironment1CustomRecords = new NetsuiteEnvironmentViewer.MyTreeView();
             this.tbPgEnvironment1CustomScripts = new System.Windows.Forms.TabPage();
+            this.tvEnvironment1CustomScripts = new NetsuiteEnvironmentViewer.MyTreeView();
             this.tbCtrlEnvironment2 = new System.Windows.Forms.TabControl();
             this.tbPgEnvironment2CustomRecords = new System.Windows.Forms.TabPage();
+            this.tvEnvironment2CustomRecords = new NetsuiteEnvironmentViewer.MyTreeView();
             this.tbPgEnvironment2CustomScripts = new System.Windows.Forms.TabPage();
+            this.tvEnvironment2CustomScripts = new NetsuiteEnvironmentViewer.MyTreeView();
             this.chkCustomRecords = new System.Windows.Forms.CheckBox();
             this.chkcustomScripts = new System.Windows.Forms.CheckBox();
             this.btnSaveSettings = new System.Windows.Forms.Button();
@@ -55,6 +59,7 @@
             this.txtSignature1 = new System.Windows.Forms.TextBox();
             this.pnlEnvironment1TreeViews = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.btnIgnoreSettings = new System.Windows.Forms.Button();
             this.grpEnvironment2 = new System.Windows.Forms.GroupBox();
             this.btnOpenCSVImport2 = new System.Windows.Forms.Button();
             this.chkUseSameCredentials = new System.Windows.Forms.CheckBox();
@@ -69,10 +74,6 @@
             this.txtEmail2 = new System.Windows.Forms.TextBox();
             this.txtSignature2 = new System.Windows.Forms.TextBox();
             this.pnlEnvironment2TreeViews = new System.Windows.Forms.Panel();
-            this.tvEnvironment1CustomRecords = new NetsuiteEnvironmentViewer.MyTreeView();
-            this.tvEnvironment1CustomScripts = new NetsuiteEnvironmentViewer.MyTreeView();
-            this.tvEnvironment2CustomRecords = new NetsuiteEnvironmentViewer.MyTreeView();
-            this.tvEnvironment2CustomScripts = new NetsuiteEnvironmentViewer.MyTreeView();
             this.tbCtrlEnvironment1.SuspendLayout();
             this.tbPgEnvironment1CustomRecords.SuspendLayout();
             this.tbPgEnvironment1CustomScripts.SuspendLayout();
@@ -121,6 +122,16 @@
             this.tbPgEnvironment1CustomRecords.Text = "Custom Records";
             this.tbPgEnvironment1CustomRecords.UseVisualStyleBackColor = true;
             // 
+            // tvEnvironment1CustomRecords
+            // 
+            this.tvEnvironment1CustomRecords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvEnvironment1CustomRecords.Location = new System.Drawing.Point(3, 3);
+            this.tvEnvironment1CustomRecords.Name = "tvEnvironment1CustomRecords";
+            this.tvEnvironment1CustomRecords.Size = new System.Drawing.Size(422, 128);
+            this.tvEnvironment1CustomRecords.TabIndex = 0;
+            this.tvEnvironment1CustomRecords.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomRecords_AfterCollapse);
+            this.tvEnvironment1CustomRecords.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomRecords_AfterExpand);
+            // 
             // tbPgEnvironment1CustomScripts
             // 
             this.tbPgEnvironment1CustomScripts.Controls.Add(this.tvEnvironment1CustomScripts);
@@ -131,6 +142,18 @@
             this.tbPgEnvironment1CustomScripts.TabIndex = 1;
             this.tbPgEnvironment1CustomScripts.Text = "Custom Scripts";
             this.tbPgEnvironment1CustomScripts.UseVisualStyleBackColor = true;
+            // 
+            // tvEnvironment1CustomScripts
+            // 
+            this.tvEnvironment1CustomScripts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvEnvironment1CustomScripts.Location = new System.Drawing.Point(3, 3);
+            this.tvEnvironment1CustomScripts.Name = "tvEnvironment1CustomScripts";
+            this.tvEnvironment1CustomScripts.Size = new System.Drawing.Size(422, 128);
+            this.tvEnvironment1CustomScripts.TabIndex = 0;
+            this.tvEnvironment1CustomScripts.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomScripts_AfterCollapse);
+            this.tvEnvironment1CustomScripts.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvEnvironment1CustomScripts_BeforeExpand);
+            this.tvEnvironment1CustomScripts.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomScripts_AfterExpand);
+            this.tvEnvironment1CustomScripts.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvEnvironment1CustomScripts_NodeMouseDoubleClick);
             // 
             // tbCtrlEnvironment2
             // 
@@ -155,6 +178,16 @@
             this.tbPgEnvironment2CustomRecords.Text = "Custom Records";
             this.tbPgEnvironment2CustomRecords.UseVisualStyleBackColor = true;
             // 
+            // tvEnvironment2CustomRecords
+            // 
+            this.tvEnvironment2CustomRecords.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvEnvironment2CustomRecords.Location = new System.Drawing.Point(3, 3);
+            this.tvEnvironment2CustomRecords.Name = "tvEnvironment2CustomRecords";
+            this.tvEnvironment2CustomRecords.Size = new System.Drawing.Size(422, 128);
+            this.tvEnvironment2CustomRecords.TabIndex = 0;
+            this.tvEnvironment2CustomRecords.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomRecords_AfterCollapse);
+            this.tvEnvironment2CustomRecords.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomRecords_AfterExpand);
+            // 
             // tbPgEnvironment2CustomScripts
             // 
             this.tbPgEnvironment2CustomScripts.Controls.Add(this.tvEnvironment2CustomScripts);
@@ -165,6 +198,18 @@
             this.tbPgEnvironment2CustomScripts.TabIndex = 1;
             this.tbPgEnvironment2CustomScripts.Text = "Custom Scripts";
             this.tbPgEnvironment2CustomScripts.UseVisualStyleBackColor = true;
+            // 
+            // tvEnvironment2CustomScripts
+            // 
+            this.tvEnvironment2CustomScripts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tvEnvironment2CustomScripts.Location = new System.Drawing.Point(3, 3);
+            this.tvEnvironment2CustomScripts.Name = "tvEnvironment2CustomScripts";
+            this.tvEnvironment2CustomScripts.Size = new System.Drawing.Size(422, 128);
+            this.tvEnvironment2CustomScripts.TabIndex = 0;
+            this.tvEnvironment2CustomScripts.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomScripts_AfterCollapse);
+            this.tvEnvironment2CustomScripts.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvEnvironment2CustomScripts_BeforeExpand);
+            this.tvEnvironment2CustomScripts.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomScripts_AfterExpand);
+            this.tvEnvironment2CustomScripts.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvEnvironment2CustomScripts_NodeMouseDoubleClick);
             // 
             // chkCustomRecords
             // 
@@ -369,6 +414,7 @@
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.btnIgnoreSettings);
             this.panel3.Controls.Add(this.grpEnvironment2);
             this.panel3.Controls.Add(this.btnCompare);
             this.panel3.Controls.Add(this.btnSaveSettings);
@@ -377,6 +423,17 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(436, 119);
             this.panel3.TabIndex = 2;
+            // 
+            // btnIgnoreSettings
+            // 
+            this.btnIgnoreSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnIgnoreSettings.Location = new System.Drawing.Point(255, 94);
+            this.btnIgnoreSettings.Name = "btnIgnoreSettings";
+            this.btnIgnoreSettings.Size = new System.Drawing.Size(86, 23);
+            this.btnIgnoreSettings.TabIndex = 17;
+            this.btnIgnoreSettings.Text = "Ignore Settings";
+            this.btnIgnoreSettings.UseVisualStyleBackColor = true;
+            this.btnIgnoreSettings.Click += new System.EventHandler(this.btnIgnoreSettings_Click);
             // 
             // grpEnvironment2
             // 
@@ -514,50 +571,6 @@
             this.pnlEnvironment2TreeViews.Size = new System.Drawing.Size(436, 160);
             this.pnlEnvironment2TreeViews.TabIndex = 3;
             // 
-            // tvEnvironment1CustomRecords
-            // 
-            this.tvEnvironment1CustomRecords.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvEnvironment1CustomRecords.Location = new System.Drawing.Point(3, 3);
-            this.tvEnvironment1CustomRecords.Name = "tvEnvironment1CustomRecords";
-            this.tvEnvironment1CustomRecords.Size = new System.Drawing.Size(422, 128);
-            this.tvEnvironment1CustomRecords.TabIndex = 0;
-            this.tvEnvironment1CustomRecords.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomRecords_AfterCollapse);
-            this.tvEnvironment1CustomRecords.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomRecords_AfterExpand);
-            // 
-            // tvEnvironment1CustomScripts
-            // 
-            this.tvEnvironment1CustomScripts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvEnvironment1CustomScripts.Location = new System.Drawing.Point(3, 3);
-            this.tvEnvironment1CustomScripts.Name = "tvEnvironment1CustomScripts";
-            this.tvEnvironment1CustomScripts.Size = new System.Drawing.Size(422, 128);
-            this.tvEnvironment1CustomScripts.TabIndex = 0;
-            this.tvEnvironment1CustomScripts.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomScripts_AfterCollapse);
-            this.tvEnvironment1CustomScripts.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvEnvironment1CustomScripts_BeforeExpand);
-            this.tvEnvironment1CustomScripts.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment1CustomScripts_AfterExpand);
-            this.tvEnvironment1CustomScripts.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvEnvironment1CustomScripts_NodeMouseDoubleClick);
-            // 
-            // tvEnvironment2CustomRecords
-            // 
-            this.tvEnvironment2CustomRecords.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvEnvironment2CustomRecords.Location = new System.Drawing.Point(3, 3);
-            this.tvEnvironment2CustomRecords.Name = "tvEnvironment2CustomRecords";
-            this.tvEnvironment2CustomRecords.Size = new System.Drawing.Size(422, 128);
-            this.tvEnvironment2CustomRecords.TabIndex = 0;
-            this.tvEnvironment2CustomRecords.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomRecords_AfterCollapse);
-            this.tvEnvironment2CustomRecords.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomRecords_AfterExpand);
-            // 
-            // tvEnvironment2CustomScripts
-            // 
-            this.tvEnvironment2CustomScripts.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tvEnvironment2CustomScripts.Location = new System.Drawing.Point(3, 3);
-            this.tvEnvironment2CustomScripts.Name = "tvEnvironment2CustomScripts";
-            this.tvEnvironment2CustomScripts.Size = new System.Drawing.Size(422, 128);
-            this.tvEnvironment2CustomScripts.TabIndex = 0;
-            this.tvEnvironment2CustomScripts.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomScripts_AfterCollapse);
-            this.tvEnvironment2CustomScripts.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvEnvironment2CustomScripts_BeforeExpand);
-            this.tvEnvironment2CustomScripts.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvEnvironment2CustomScripts_AfterExpand);
-            this.tvEnvironment2CustomScripts.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvEnvironment2CustomScripts_NodeMouseDoubleClick);
-            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -639,6 +652,7 @@
         private System.Windows.Forms.TextBox txtEmail2;
         private System.Windows.Forms.TextBox txtSignature2;
         private System.Windows.Forms.Panel pnlEnvironment2TreeViews;
+        private System.Windows.Forms.Button btnIgnoreSettings;
     }
 }
 
