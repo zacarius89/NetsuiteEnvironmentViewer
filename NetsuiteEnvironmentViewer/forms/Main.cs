@@ -18,6 +18,8 @@ namespace NetsuiteEnvironmentViewer
         private bool dataPulled = false;
         private bool compared = false;
 
+        private settings settings;
+
         public Main()
         {
             InitializeComponent();
@@ -29,7 +31,7 @@ namespace NetsuiteEnvironmentViewer
         private void Main_Load(object sender, EventArgs e)
         {
             settingsClient settingsClient = new settingsClient();
-            settings settings = settingsClient.loadSettings();
+            settings = settingsClient.loadSettings();
 
             chkUseSameCredentials.Checked = settings.useSameCredentialsChecked;
             chkCustomRecords.Checked = settings.customRecordsChecked;
@@ -550,14 +552,14 @@ namespace NetsuiteEnvironmentViewer
                 {
                     if(chkcustomScripts.Checked)
                     {
-                        scripts1 = netsuiteClient1.getCustomScripts();
+                        scripts1 = netsuiteClient1.getCustomScripts(settings.ignoreEnv1Scripts);
                     }
                 }),
                 Task.Factory.StartNew(() =>
                 {
                     if(chkcustomScripts.Checked)
                     {
-                        scripts2 = netsuiteClient2.getCustomScripts();
+                        scripts2 = netsuiteClient2.getCustomScripts(settings.ignoreEnv2Scripts);
                     }
                 })
             };

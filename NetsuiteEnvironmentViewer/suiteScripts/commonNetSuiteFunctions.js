@@ -5,6 +5,7 @@
 	var commonNetSuiteFunctions = {};
 	
 	var files = new Array();
+	var ignoreScripts = new Array();
 	
 	commonNetSuiteFunctions.postRESTlet = function(datain)
 	{
@@ -34,6 +35,11 @@
 		}
 		else if(datain.method === 'getCustomScripts')
 		{
+			if(datain.ignoreScripts)
+			{
+				ignoreScripts = datain.ignoreScripts;
+			}
+			
 			returnJSON = commonNetSuiteFunctions.getCustomScripts(datain.internalId, datain.includeAll);
 		}
 		else if(datain.method === 'getFile')
@@ -194,7 +200,12 @@
 			
 			if(internalId)
 			{
-				filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId)
+				filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId);
+			}
+			
+			if(ignoreScripts.length > 0)
+			{
+				filters[filters.length] = new nlobjSearchFilter('scriptfile', null, 'noneof', ignoreScripts);
 			}
 
 			var columns = new Array();
@@ -362,9 +373,12 @@
 			for(j = 1; j <= scriptRecord.getLineItemCount('libraries'); j++)
 			{
 				var internalId = scriptRecord.getLineItemValue('libraries', 'scriptfile', j);
-				var customScriptLibrary = commonNetSuiteFunctions.getFile(internalId);
 				
-				customScriptLibraries.push(customScriptLibrary);
+				if(ignoreScripts.indexOf(internalId) == -1)
+				{
+					var customScriptLibrary = commonNetSuiteFunctions.getFile(internalId);
+					customScriptLibraries.push(customScriptLibrary);
+				}
 			}
 			
 			return customScriptLibraries;
@@ -426,7 +440,7 @@
 			//Most likely, this error comes from an installed bundle
 			if(e.message === 'You do not have access to the media item you selected.')
 			{
-				return {'content': e.message};
+				return {'internalId': internalId, 'content': e.message};
 			}
 			else
 			{
@@ -715,6 +729,12 @@
 		input.name = 'includeAll';
 		input.optional = true;
 		input.description = 'If includeAll is "T", script file and script deployments will be returned as well.  Otherwise, just basic information will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		input = {};
+		input.name = 'ignoreScripts';
+		input.optional = true;
+		input.description = 'If ignoreScripts contain the internalId of the scriptFile, it will ignore returning the file.  This is useful for bundle installations or configuration files.';
 		supportedMethod.inputs.push(input);
 		
 		supportedMethods.push(supportedMethod);

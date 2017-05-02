@@ -2,6 +2,7 @@
 using System.Net;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NetsuiteEnvironmentViewer
 {
@@ -123,9 +124,9 @@ namespace NetsuiteEnvironmentViewer
             return JsonConvert.DeserializeObject<netsuiteCustomRecords>(result);
         }
 
-        public netsuiteCustomScripts getCustomScripts()
+        public netsuiteCustomScripts getCustomScripts(List<string> ignoreScripts)
         {
-            string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\"}";
+            string payload = "{\"method\":\"getCustomScripts\", \"includeAll\":\"T\", \"ignoreScripts\":[" + string.Join(",", ignoreScripts.Select(x => "\"" + x + "\"")) + "]}";
             string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
             return JsonConvert.DeserializeObject<netsuiteCustomScripts>(result);
         }

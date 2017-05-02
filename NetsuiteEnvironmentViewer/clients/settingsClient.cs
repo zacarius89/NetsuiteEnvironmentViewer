@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 
 namespace NetsuiteEnvironmentViewer
 {
@@ -27,6 +28,9 @@ namespace NetsuiteEnvironmentViewer
         public string environment2Email = "";
         public string environment2Signature = "";
         public string environment2Role = "3";
+
+        public List<string> ignoreEnv1Scripts = new List<string>();
+        public List<string> ignoreEnv2Scripts = new List<string>();
     }
 
     public class settingsClient
