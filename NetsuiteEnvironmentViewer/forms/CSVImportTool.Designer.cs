@@ -129,8 +129,7 @@
             this.MaximumSize = new System.Drawing.Size(380, 135);
             this.MinimumSize = new System.Drawing.Size(380, 135);
             this.Name = "CSVImportTool";
-            this.Text = "CSVImportTool";
-            this.Load += new System.EventHandler(this.CSVImportTool_Load);
+            this.Text = "CSV Import Tool";
             this.ResumeLayout(false);
             this.PerformLayout();
 

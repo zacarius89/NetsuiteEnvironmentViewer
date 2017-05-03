@@ -49,11 +49,6 @@ namespace NetsuiteEnvironmentViewer
             txtFileName.Text = safeFileName;
         }
 
-        private void CSVImportTool_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnUpload_Click(object sender, EventArgs e)
         {
             netsuiteFolderSave netsuiteFolder = new netsuiteFolderSave();
