@@ -36,10 +36,12 @@
             this.lblEnvironment2Scripts = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvEnvironment1IgnoreScripts = new System.Windows.Forms.DataGridView();
-            this.Env1InternalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel4 = new System.Windows.Forms.Panel();
             this.dgvEnvironment2IgnoreScripts = new System.Windows.Forms.DataGridView();
             this.Env2InternalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Env1InternalId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Env1ScriptFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Env2ScriptFileName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -130,18 +132,13 @@
             // 
             this.dgvEnvironment1IgnoreScripts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEnvironment1IgnoreScripts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Env1InternalId});
+            this.Env1InternalId,
+            this.Env1ScriptFileName});
             this.dgvEnvironment1IgnoreScripts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEnvironment1IgnoreScripts.Location = new System.Drawing.Point(0, 0);
             this.dgvEnvironment1IgnoreScripts.Name = "dgvEnvironment1IgnoreScripts";
             this.dgvEnvironment1IgnoreScripts.Size = new System.Drawing.Size(228, 220);
             this.dgvEnvironment1IgnoreScripts.TabIndex = 0;
-            // 
-            // Env1InternalId
-            // 
-            this.Env1InternalId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Env1InternalId.HeaderText = "InternalId";
-            this.Env1InternalId.Name = "Env1InternalId";
             // 
             // panel4
             // 
@@ -156,7 +153,8 @@
             // 
             this.dgvEnvironment2IgnoreScripts.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEnvironment2IgnoreScripts.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Env2InternalId});
+            this.Env2InternalId,
+            this.Env2ScriptFileName});
             this.dgvEnvironment2IgnoreScripts.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEnvironment2IgnoreScripts.Location = new System.Drawing.Point(0, 0);
             this.dgvEnvironment2IgnoreScripts.Name = "dgvEnvironment2IgnoreScripts";
@@ -168,6 +166,22 @@
             this.Env2InternalId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Env2InternalId.HeaderText = "InternalId";
             this.Env2InternalId.Name = "Env2InternalId";
+            // 
+            // Env1InternalId
+            // 
+            this.Env1InternalId.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Env1InternalId.HeaderText = "InternalId";
+            this.Env1InternalId.Name = "Env1InternalId";
+            // 
+            // Env1ScriptFileName
+            // 
+            this.Env1ScriptFileName.HeaderText = "ScriptFileName";
+            this.Env1ScriptFileName.Name = "Env1ScriptFileName";
+            // 
+            // Env2ScriptFileName
+            // 
+            this.Env2ScriptFileName.HeaderText = "ScriptFileName";
+            this.Env2ScriptFileName.Name = "Env2ScriptFileName";
             // 
             // IgnoreSettings
             // 
@@ -203,8 +217,10 @@
         private System.Windows.Forms.DataGridView dgvEnvironment1IgnoreScripts;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.DataGridView dgvEnvironment2IgnoreScripts;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Env1InternalId;
         private System.Windows.Forms.DataGridViewTextBoxColumn Env2InternalId;
         private System.Windows.Forms.Button btnSaveSettings;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Env1InternalId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Env1ScriptFileName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Env2ScriptFileName;
     }
 }

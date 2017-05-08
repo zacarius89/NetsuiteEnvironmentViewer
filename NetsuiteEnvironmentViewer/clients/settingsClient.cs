@@ -18,19 +18,25 @@ namespace NetsuiteEnvironmentViewer
         public bool customScriptsChecked = true;
 
         public string environment1Url = "https://rest.netsuite.com";
-        public string environment1Account = "";
-        public string environment1Email = "";
-        public string environment1Signature = "";
+        public string environment1Account = string.Empty;
+        public string environment1Email = string.Empty;
+        public string environment1Signature = string.Empty;
         public string environment1Role = "3";
 
         public string environment2Url = "https://rest.sandbox.netsuite.com";
-        public string environment2Account = "";
-        public string environment2Email = "";
-        public string environment2Signature = "";
+        public string environment2Account = string.Empty;
+        public string environment2Email = string.Empty;
+        public string environment2Signature = string.Empty;
         public string environment2Role = "3";
 
-        public List<string> environment1IgnoreScripts = new List<string>();
-        public List<string> environment2IgnoreScripts = new List<string>();
+        public List<IgnoredScript> environment1IgnoreScripts = new List<IgnoredScript>();
+        public List<IgnoredScript> environment2IgnoreScripts = new List<IgnoredScript>();
+    }
+
+    public class IgnoredScript
+    {
+        public string internalId = string.Empty;
+        public string fileName = string.Empty;
     }
 
     public class SettingsClient
@@ -61,9 +67,6 @@ namespace NetsuiteEnvironmentViewer
 
         public void saveSettings(Settings localSettings)
         {
-            localSettings.environment1IgnoreScripts.Sort();
-            localSettings.environment2IgnoreScripts.Sort();
-
             string settings = JsonConvert.SerializeObject(localSettings);
 
             string encryptedSettings = encrypt(settings);

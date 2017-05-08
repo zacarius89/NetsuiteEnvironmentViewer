@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using DiffPlex;
 using DiffPlex.DiffBuilder;
 using DiffPlex.DiffBuilder.Model;
+using System.Linq;
 
 namespace NetsuiteEnvironmentViewer
 {
@@ -555,14 +556,14 @@ namespace NetsuiteEnvironmentViewer
                 {
                     if(chkcustomScripts.Checked)
                     {
-                        scripts1 = netsuiteClient1.getCustomScripts(settings.environment1IgnoreScripts);
+                        scripts1 = netsuiteClient1.getCustomScripts(settings.environment1IgnoreScripts.Select(x => x.internalId).ToList());
                     }
                 }),
                 Task.Factory.StartNew(() =>
                 {
                     if(chkcustomScripts.Checked)
                     {
-                        scripts2 = netsuiteClient2.getCustomScripts(settings.environment2IgnoreScripts);
+                        scripts2 = netsuiteClient2.getCustomScripts(settings.environment1IgnoreScripts.Select(x => x.internalId).ToList());
                     }
                 })
             };
