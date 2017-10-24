@@ -1,4 +1,5 @@
-(function () {
+(function ()
+{
 	var _global = this;
 	var returnStatus = 'ok';
 
@@ -7,88 +8,112 @@
 	var files = new Array();
 	var ignoreScripts = new Array();
 
-	commonNetSuiteFunctions.postRESTlet = function (datain) {
+	commonNetSuiteFunctions.postRESTlet = function (datain)
+	{
 		nlapiLogExecution('AUDIT', 'commonNetSuiteFunctions.postRESTlet - datain', JSON.stringify(datain));
 
 		var returnJSON = {};
 
 
-		if (!datain.method) {
+		if (!datain.method)
+		{
 			datain.method = 'noMethod';
 		}
 
-		if (!datain.includeAll) {
+		if (!datain.includeAll)
+		{
 			datain.includeAll = 'F';
 		}
 
-		if (!datain.internalId) {
+		if (!datain.internalId)
+		{
 			datain.internalId = null;
 		}
 
-		if (datain.method === 'getEntityRecords') {
+		if (datain.method === 'getEntityRecords')
+		{
 			returnJSON = commonNetSuiteFunctions.getEntityRecords(datain.internalId, datain.includeAll);
 		}
-		else if (datain.method === 'getItemRecords') {
+		else if (datain.method === 'getItemRecords')
+		{
 			returnJSON = commonNetSuiteFunctions.getItemRecords(datain.internalId, datain.includeAll);
 		}
-		else if (datain.method === 'getCustomRecords') {
+		else if (datain.method === 'getCustomRecords')
+		{
 			returnJSON = commonNetSuiteFunctions.getCustomRecords(datain.internalId, datain.includeAll);
 		}
-		else if (datain.method === 'getCustomScripts') {
-			if (datain.ignoreScripts) {
+		else if (datain.method === 'getCustomScripts')
+		{
+			if (datain.ignoreScripts)
+			{
 				ignoreScripts = datain.ignoreScripts;
 			}
 
 			returnJSON = commonNetSuiteFunctions.getCustomScripts(datain.internalId, datain.includeAll);
 		}
-		else if (datain.method === 'getFile') {
+		else if (datain.method === 'getFile')
+		{
 			returnJSON = commonNetSuiteFunctions.getFile(datain.internalId);
 		}
-		else if (datain.method === 'saveCustomScriptFile') {
-			if (!datain.folderId) {
+		else if (datain.method === 'saveCustomScriptFile')
+		{
+			if (!datain.folderId)
+			{
 				datain.folderId = '-15';
 			}
 
 			returnJSON = commonNetSuiteFunctions.saveCustomScriptFile(datain.name, datain.content, datain.folderId);
 		}
-		else if (datain.method === 'saveFile') {
-			if (!datain.folderId) {
+		else if (datain.method === 'saveFile')
+		{
+			if (!datain.folderId)
+			{
 				datain.folderId = '0';
 			}
 
 			returnJSON = commonNetSuiteFunctions.saveFile(datain.name, datain.fileType, datain.content, datain.folderId);
 		}
-		else if (datain.method === 'deleteFile') {
+		else if (datain.method === 'deleteFile')
+		{
 			returnJSON = commonNetSuiteFunctions.deleteFile(datain.internalId);
 		}
-		else if (datain.method === 'getFolders') {
-			if (!datain.parentFolderInternalId) {
+		else if (datain.method === 'getFolders')
+		{
+			if (!datain.parentFolderInternalId)
+			{
 				datain.parentFolderInternalId = '@NONE@';
 			}
 
 			returnJSON = commonNetSuiteFunctions.getFolders(datain.parentFolderInternalId);
 		}
-		else if (datain.method === 'saveFolder') {
-			if (!datain.parentFolderInternalId) {
+		else if (datain.method === 'saveFolder')
+		{
+			if (!datain.parentFolderInternalId)
+			{
 				datain.parentFolderInternalId = '@NONE@';
 			}
 
 			returnJSON = commonNetSuiteFunctions.saveFolder(datain.name, datain.parentFolderInternalId);
 		}
-		else if (datain.method === 'deleteFolder') {
+		else if (datain.method === 'deleteFolder')
+		{
 			returnJSON = commonNetSuiteFunctions.deleteFolder(datain.internalId);
 		}
-		else if (datain.method === 'importCSVFile') {
-			if (!datain.queue) {
+		else if (datain.method === 'importCSVFile')
+		{
+			if (!datain.queue)
+			{
 				datain.queue = '0';
 			}
 
 			returnJSON = commonNetSuiteFunctions.importCSVFile(datain.internalId, datain.csvImportId, datain.queue);
 		}
-		else if (datain.method === 'getDocumentation') {
+		else if (datain.method === 'getDocumentation')
+		{
 			returnJSON = commonNetSuiteFunctions.getDocumentation();
 		}
-		else {
+		else
+		{
 			returnStatus = 'failed';
 			returnJSON = { 'unsupportedMethod': datain.method, 'documentation': commonNetSuiteFunctions.getDocumentation() };
 		}
@@ -100,8 +125,10 @@
 		return returnJSON;
 	};
 
-	commonNetSuiteFunctions.getEntityRecords = function (internalId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getEntityRecords = function (internalId, includeAll)
+	{
+		try
+		{
 			var entityRecords = [];
 
 			//Customer
@@ -138,7 +165,8 @@
 
 			return { 'entityRecords': entityRecords };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getEntityRecords', e.message);
 			returnStatus = 'failed';
 
@@ -146,8 +174,10 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getItemRecords = function (internalId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getItemRecords = function (internalId, includeAll)
+	{
+		try
+		{
 			var itemRecords = [];
 
 			//Inventory Item
@@ -176,7 +206,8 @@
 
 			return { 'itemRecords': itemRecords };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getItemRecords', e.message);
 			returnStatus = 'failed';
 
@@ -184,25 +215,30 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getStandardRecord = function (recordId, recordName, includeAll) {
-		try {
+	commonNetSuiteFunctions.getStandardRecord = function (recordId, recordName, includeAll)
+	{
+		try
+		{
 			var record = {};
 
 			record.internalId = '-1';
 			record.recordId = recordId;
 			record.recordName = recordName;
 
-			if (includeAll === 'T') {
+			if (includeAll === 'T')
+			{
 				recordFields = commonNetSuiteFunctions.getRecordFields(record.recordId, includeAll)
 			}
 
-			if (recordFields) {
+			if (recordFields)
+			{
 				record.recordFields = recordFields;
 			}
 
 			return record;
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getStandardRecord', e.message);
 			returnStatus = 'failed';
 
@@ -210,11 +246,14 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getCustomRecords = function (internalId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getCustomRecords = function (internalId, includeAll)
+	{
+		try
+		{
 			var filters = new Array();
 
-			if (internalId) {
+			if (internalId)
+			{
 				filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId)
 			}
 
@@ -227,8 +266,10 @@
 
 			var customRecords = [];
 
-			if (results && results.length > 0) {
-				for (i = 0; i < results.length; i++) {
+			if (results && results.length > 0)
+			{
+				for (i = 0; i < results.length; i++)
+				{
 					var customRecord = {};
 
 					var recordInternalId = results[i].getValue('internalid');
@@ -236,7 +277,8 @@
 					var recordName = results[i].getValue('name');
 					var recordFields;
 
-					if (includeAll === 'T') {
+					if (includeAll === 'T')
+					{
 						recordFields = commonNetSuiteFunctions.getRecordFields(recordId, includeAll)
 					}
 
@@ -244,7 +286,8 @@
 					customRecord.recordId = recordId;
 					customRecord.recordName = recordName;
 
-					if (recordFields) {
+					if (recordFields)
+					{
 						customRecord.recordFields = recordFields;
 					}
 
@@ -254,7 +297,8 @@
 
 			return { 'customRecords': customRecords };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomRecords', e.message);
 			returnStatus = 'failed';
 
@@ -262,14 +306,18 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getRecordFields = function (recordId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getRecordFields = function (recordId, includeAll)
+	{
+		try
+		{
 			var record;
 
-			if (recordId === 'entitygroup') {
+			if (recordId === 'entitygroup')
+			{
 				record = nlapiCreateRecord(recordId, { dynamic: 'T', grouptype: 'customer' });
 			}
-			else {
+			else
+			{
 				record = nlapiCreateRecord(recordId);
 			}
 
@@ -277,20 +325,25 @@
 
 			return recordFields;
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getRecordFields', e.message);
 		}
 	};
 
-	commonNetSuiteFunctions.getCustomScripts = function (internalId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getCustomScripts = function (internalId, includeAll)
+	{
+		try
+		{
 			var filters = new Array();
 
-			if (internalId) {
+			if (internalId)
+			{
 				filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId);
 			}
 
-			if (ignoreScripts.length > 0) {
+			if (ignoreScripts.length > 0)
+			{
 				filters[filters.length] = new nlobjSearchFilter('scriptfile', null, 'noneof', ignoreScripts);
 			}
 
@@ -304,7 +357,8 @@
 
 			var possibleScriptFunctionTypes = commonNetSuiteFunctions.getScriptFunctionTypes();
 
-			for (i = 0; i < possibleScriptFunctionTypes.length; i++) {
+			for (i = 0; i < possibleScriptFunctionTypes.length; i++)
+			{
 				columns[i + 6] = new nlobjSearchColumn(possibleScriptFunctionTypes[i]);
 			}
 
@@ -312,8 +366,10 @@
 
 			var customScripts = [];
 
-			if (results && results.length > 0) {
-				for (i = 0; i < results.length; i++) {
+			if (results && results.length > 0)
+			{
+				for (i = 0; i < results.length; i++)
+				{
 					var customScript = {};
 
 					var scriptInternalId = results[i].getValue('internalid');
@@ -328,26 +384,31 @@
 					var scriptDeployments;
 					var scriptLibraries;
 
-					for (j = 0; j < possibleScriptFunctionTypes.length; j++) {
+					for (j = 0; j < possibleScriptFunctionTypes.length; j++)
+					{
 						var scriptFunction = {};
 
 						scriptFunction.functionType = possibleScriptFunctionTypes[j];
 						scriptFunction.function = results[i].getValue(possibleScriptFunctionTypes[j]);
 
-						if (results[i].getValue(possibleScriptFunctionTypes[j]) !== '') {
+						if (results[i].getValue(possibleScriptFunctionTypes[j]) !== '')
+						{
 							scriptFunctions.push(scriptFunction);
 						}
 					}
 
-					if (includeAll === 'T') {
+					if (includeAll === 'T')
+					{
 						scriptFile = commonNetSuiteFunctions.getFile(scriptFileInternalId);
 					}
 
-					if (includeAll === 'T') {
+					if (includeAll === 'T')
+					{
 						scriptDeployments = commonNetSuiteFunctions.getCustomScriptDeployments(scriptInternalId, includeAll)
 					}
 
-					if (includeAll === 'T') {
+					if (includeAll === 'T')
+					{
 						scriptLibraries = commonNetSuiteFunctions.getCustomScriptLibraries(scriptInternalId, includeAll)
 					}
 
@@ -358,15 +419,18 @@
 					customScript.scriptAPIVersion = scriptAPIVersion;
 					customScript.scriptFunctions = scriptFunctions;
 
-					if (scriptFile) {
+					if (scriptFile)
+					{
 						customScript.scriptFile = scriptFile;
 					}
 
-					if (scriptDeployments) {
+					if (scriptDeployments)
+					{
 						customScript.scriptDeployments = scriptDeployments;
 					}
 
-					if (scriptLibraries) {
+					if (scriptLibraries)
+					{
 						customScript.scriptLibraries = scriptLibraries;
 					}
 
@@ -376,7 +440,8 @@
 
 			return { 'customScripts': customScripts };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScripts', e.message);
 			returnStatus = 'failed';
 
@@ -384,8 +449,10 @@
 		}
 	}
 
-	commonNetSuiteFunctions.getCustomScriptDeployments = function (scriptInternalId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getCustomScriptDeployments = function (scriptInternalId, includeAll)
+	{
+		try
+		{
 			var filters = new Array();
 
 			filters[0] = new nlobjSearchFilter('script', null, 'anyof', scriptInternalId);
@@ -401,8 +468,10 @@
 
 			var customScriptDeployments = [];
 
-			if (results && results.length > 0) {
-				for (j = 0; j < results.length; j++) {
+			if (results && results.length > 0)
+			{
+				for (j = 0; j < results.length; j++)
+				{
 					var customScriptDeployment = {};
 
 					var internalId = results[j].getValue('internalid');
@@ -423,7 +492,8 @@
 
 			return customScriptDeployments;
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptDeployments', e.message);
 			returnStatus = 'failed';
 
@@ -431,16 +501,20 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getCustomScriptLibraries = function (scriptInternalId, includeAll) {
-		try {
+	commonNetSuiteFunctions.getCustomScriptLibraries = function (scriptInternalId, includeAll)
+	{
+		try
+		{
 			var scriptRecord = nlapiLoadRecord('script', scriptInternalId);
 
 			var customScriptLibraries = [];
 
-			for (j = 1; j <= scriptRecord.getLineItemCount('libraries'); j++) {
+			for (j = 1; j <= scriptRecord.getLineItemCount('libraries'); j++)
+			{
 				var internalId = scriptRecord.getLineItemValue('libraries', 'scriptfile', j);
 
-				if (ignoreScripts.indexOf(internalId) == -1) {
+				if (ignoreScripts.indexOf(internalId) == -1)
+				{
 					var customScriptLibrary = commonNetSuiteFunctions.getFile(internalId);
 					customScriptLibraries.push(customScriptLibrary);
 				}
@@ -448,7 +522,8 @@
 
 			return customScriptLibraries;
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomScriptLibraries', e.message);
 			returnStatus = 'failed';
 
@@ -456,9 +531,12 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getFile = function (internalId) {
-		try {
-			if (files[internalId]) {
+	commonNetSuiteFunctions.getFile = function (internalId)
+	{
+		try
+		{
+			if (files[internalId])
+			{
 				nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.getFile', 'found - ' + internalId);
 
 				return files[internalId];
@@ -476,7 +554,8 @@
 
 			var file = {};
 
-			if (results && results.length > 0) {
+			if (results && results.length > 0)
+			{
 				file.internalId = results[0].getValue('internalid');
 				file.name = results[0].getValue('name');
 
@@ -494,13 +573,16 @@
 
 			return file;
 		}
-		catch (e) {
+		catch (e)
+		{
 			//Check to see if the user does not have permission for the script
 			//Most likely, this error comes from an installed bundle
-			if (e.message === 'You do not have access to the media item you selected.') {
+			if (e.message === 'You do not have access to the media item you selected.')
+			{
 				return { 'internalId': internalId, 'content': e.message };
 			}
-			else {
+			else
+			{
 				nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getFile', e.message);
 				returnStatus = 'failed';
 			}
@@ -509,12 +591,15 @@
 		}
 	};
 
-	commonNetSuiteFunctions.saveCustomScriptFile = function (name, content, folderId) {
-		try {
+	commonNetSuiteFunctions.saveCustomScriptFile = function (name, content, folderId)
+	{
+		try
+		{
 
 			return commonNetSuiteFunctions.saveFile(name, 'JAVASCRIPT', content, folderId);
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveCustomScriptFile', e.message);
 			returnStatus = 'failed';
 
@@ -522,13 +607,16 @@
 		}
 	};
 
-	commonNetSuiteFunctions.saveFile = function (name, fileType, content, folderId) {
-		try {
+	commonNetSuiteFunctions.saveFile = function (name, fileType, content, folderId)
+	{
+		try
+		{
 			content = nlapiDecrypt(content, 'base64');
 
 			var file = nlapiCreateFile(name, fileType, content);
 
-			if (folderId !== '0') {
+			if (folderId !== '0')
+			{
 				file.setFolder(folderId);
 			}
 
@@ -536,7 +624,8 @@
 
 			return commonNetSuiteFunctions.getFile(fileId);
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFile', e.message);
 			returnStatus = 'failed';
 
@@ -544,13 +633,16 @@
 		}
 	};
 
-	commonNetSuiteFunctions.deleteFile = function (internalId) {
-		try {
+	commonNetSuiteFunctions.deleteFile = function (internalId)
+	{
+		try
+		{
 			nlapiDeleteFile(internalId);
 
 			return { "internalId": internalId }
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.deleteFile', e.message);
 			returnStatus = 'failed';
 
@@ -558,10 +650,12 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getFolders = function (parent) {
+	commonNetSuiteFunctions.getFolders = function (parent)
+	{
 		nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.getFolders');
 
-		try {
+		try
+		{
 			var filters = new Array();
 			filters[0] = new nlobjSearchFilter('parent', null, 'anyof', parent);
 
@@ -576,8 +670,10 @@
 
 			var folders = [];
 
-			if (results && results.length > 0) {
-				for (i = 0; i < results.length; i++) {
+			if (results && results.length > 0)
+			{
+				for (i = 0; i < results.length; i++)
+				{
 					var folder = {};
 
 					var internalId = results[i].getValue('internalid');
@@ -599,7 +695,8 @@
 
 			return { 'folders': folders };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getFolders', e.message);
 			returnStatus = 'failed';
 
@@ -607,15 +704,18 @@
 		}
 	};
 
-	commonNetSuiteFunctions.saveFolder = function (name, parentFolderInternalId) {
+	commonNetSuiteFunctions.saveFolder = function (name, parentFolderInternalId)
+	{
 		nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.saveFolder');
 
-		try {
+		try
+		{
 			var folderRecord = nlapiCreateRecord('folder');
 
 			folderRecord.setFieldValue('name', name);
 
-			if (parentFolderInternalId !== '@NONE@') {
+			if (parentFolderInternalId !== '@NONE@')
+			{
 				folderRecord.setFieldValue('parent', parentFolderInternalId);
 			}
 
@@ -624,7 +724,8 @@
 
 			return { 'internalId': internalId, 'name': name, 'parentFolderInternalId': parentFolderInternalId };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.saveFolder', e.message);
 			returnStatus = 'failed';
 
@@ -632,15 +733,18 @@
 		}
 	};
 
-	commonNetSuiteFunctions.deleteFolder = function (internalId) {
+	commonNetSuiteFunctions.deleteFolder = function (internalId)
+	{
 		nlapiLogExecution('DEBUG', 'commonNetSuiteFunctions.deleteFolder');
 
-		try {
+		try
+		{
 			internalId = nlapiDeleteRecord('folder', internalId);
 
 			return { 'internalId': internalId };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.createFolder', e.message);
 			returnStatus = 'failed';
 
@@ -648,8 +752,10 @@
 		}
 	};
 
-	commonNetSuiteFunctions.importCSVFile = function (internalId, csvImportId, queue) {
-		try {
+	commonNetSuiteFunctions.importCSVFile = function (internalId, csvImportId, queue)
+	{
+		try
+		{
 			var csvFileRecord = nlapiLoadFile(internalId);
 			var csvImportJob = nlapiCreateCSVImport();
 
@@ -657,13 +763,15 @@
 			csvImportJob.setPrimaryFile(csvFileRecord);
 			csvImportJob.setOption('jobName', '[' + csvFileRecord.getName() + '] Custom CSV Import (via RESTlet) - ' + new Date());
 
-			if (queue !== '0') {
+			if (queue !== '0')
+			{
 				csvImportJob.setQueue(queue);
 			}
 
 			var csvImportInternalId = nlapiSubmitCSVImport(csvImportJob);
 
-			if (csvImportInternalId === 'Your CSV file must have more than 1 line to be imported.') {
+			if (csvImportInternalId === 'Your CSV file must have more than 1 line to be imported.')
+			{
 				returnStatus = 'failed';
 
 				return { "error": csvImportInternalId };
@@ -671,7 +779,8 @@
 
 			return { "internalId": csvImportInternalId };
 		}
-		catch (e) {
+		catch (e)
+		{
 			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.importCSVFile', e.message);
 			returnStatus = 'failed';
 
@@ -679,7 +788,8 @@
 		}
 	};
 
-	commonNetSuiteFunctions.getScriptFunctionTypes = function () {
+	commonNetSuiteFunctions.getScriptFunctionTypes = function ()
+	{
 		var scriptFunctions =
 			[
 				'afterinstallfunction',
@@ -710,7 +820,8 @@
 		return scriptFunctions;
 	};
 
-	commonNetSuiteFunctions.getDocumentation = function () {
+	commonNetSuiteFunctions.getDocumentation = function ()
+	{
 		var supportedMethods = [];
 
 		var supportedMethod;
