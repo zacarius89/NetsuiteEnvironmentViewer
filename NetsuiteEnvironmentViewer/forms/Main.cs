@@ -98,7 +98,7 @@ namespace NetsuiteEnvironmentViewer
 
 				pullNetsuiteEnvironmentData();
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 
 			}
@@ -501,9 +501,7 @@ namespace NetsuiteEnvironmentViewer
 				for (int j = 0; j < customScriptDeployments.Length; j++)
 				{
 					TreeNode customScriptScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, customScriptDeployments[j].scriptDeploymentId);
-					//TreeNode customScriptScriptDeploymentsScriptDeploymentNode = commonClient.addNode(customScriptScriptDeploymentsNode, "deployment " + (j + 1).ToString());
 					commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "internalId"), customScriptDeployments[j].internalId);
-					//commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "scriptDeploymentId"), customScriptDeployments[j].scriptDeploymentId);
 					commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "isDeployed"), customScriptDeployments[j].isDeployed);
 					commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "recordType"), customScriptDeployments[j].recordType);
 					commonClient.addNode(commonClient.addNode(customScriptScriptDeploymentsScriptDeploymentNode, "status"), customScriptDeployments[j].status);
@@ -677,182 +675,181 @@ namespace NetsuiteEnvironmentViewer
 			}
 		}
 
-	private void compareNetsuiteEnvironmentData()
-	{
-		if (!dataPulled)
+		private void compareNetsuiteEnvironmentData()
 		{
-			DialogResult dialogResult = MessageBox.Show(cannotCompareText, confirmationTitle, MessageBoxButtons.YesNo);
-
-			if (dialogResult == DialogResult.Yes)
+			if (!dataPulled)
 			{
-				pullNetsuiteEnvironmentData();
-				compareNetsuiteEnvironmentData();
-			}
-		}
-		else if (compared)
-		{
-			DialogResult dialogResult = MessageBox.Show(compareAgainText, confirmationTitle, MessageBoxButtons.YesNo);
+				DialogResult dialogResult = MessageBox.Show(cannotCompareText, confirmationTitle, MessageBoxButtons.YesNo);
 
-			if (dialogResult == DialogResult.Yes)
-			{
-				pullNetsuiteEnvironmentData();
-				compareNetsuiteEnvironmentData();
-			}
-		}
-		else
-		{
-			compared = true;
-
-			string customRecords1TreeString = "";
-			string customRecords2TreeString = "";
-			string customScripts1TreeString = "";
-			string customScripts2TreeString = "";
-
-			if (tvEnvironment1Records.Nodes.Count > 0)
-			{
-				customRecords1TreeString = convertTreeViewToString("", tvEnvironment1Records.Nodes[0]);
-			}
-
-			if (tvEnvironment2Records.Nodes.Count > 0)
-			{
-				customRecords2TreeString = convertTreeViewToString("", tvEnvironment2Records.Nodes[0]);
-			}
-
-			if (tvEnvironment1Scripts.Nodes.Count > 0)
-			{
-				customScripts1TreeString = convertTreeViewToString("", tvEnvironment1Scripts.Nodes[0]);
-			}
-
-			if (tvEnvironment2Scripts.Nodes.Count > 0)
-			{
-				customScripts2TreeString = convertTreeViewToString("", tvEnvironment2Scripts.Nodes[0]);
-			}
-
-			if (customRecords1TreeString != "" && customRecords2TreeString != "")
-			{
-				compareTreeViewStrings(tvEnvironment1Records, customRecords1TreeString, tvEnvironment2Records, customRecords2TreeString);
-			}
-
-			if (customScripts1TreeString != "" && customScripts2TreeString != "")
-			{
-				compareTreeViewStrings(tvEnvironment1Scripts, customScripts1TreeString, tvEnvironment2Scripts, customScripts2TreeString);
-			}
-		}
-	}
-
-	private string convertTreeViewToString(string treeViewString, TreeNode parentTreeNode)
-	{
-		treeViewString = parentTreeNode.FullPath + "\n";
-
-		foreach (TreeNode childTreeNode in parentTreeNode.Nodes)
-		{
-			treeViewString = treeViewString + convertTreeViewToString(treeViewString, childTreeNode);
-		}
-
-		return treeViewString;
-	}
-
-	private void compareTreeViewStrings(MyTreeView newTreeView, string newText, MyTreeView oldTreeView, string oldText)
-	{
-		ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
-		SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(oldText, newText);
-
-		newTreeView.Nodes.Clear();
-		oldTreeView.Nodes.Clear();
-
-		TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
-		TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
-
-		//TODO fix hardcoded 1
-		colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1, true);
-		colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1, false);
-
-		newTreeView.AddLinkedTreeView(oldTreeView);
-	}
-
-	private int colorTreeView(string parentFullPath, TreeNode parentTreeNode, List<DiffPiece> textLines1, List<DiffPiece> textLines2, int currentIndex, bool productionEnvironment)
-	{
-		commonClient commonClient = new commonClient();
-		int i = currentIndex;
-
-		while (i < textLines1.Count)
-		{
-			DiffPiece diffPiece = textLines1[i];
-
-			if (diffPiece.Type == ChangeType.Imaginary)
-			{
-				diffPiece.Text = textLines2[i].Text;
-			}
-
-			if (diffPiece.Text != "" && parentFullPath == diffPiece.Text.Substring(0, diffPiece.Text.LastIndexOf("\\")))
-			{
-				TreeNode treeNode = parentTreeNode.Nodes.Add(diffPiece.Text.Replace(parentFullPath + "\\", ""));
-
-				if (diffPiece.Type == ChangeType.Inserted)
+				if (dialogResult == DialogResult.Yes)
 				{
-					if (productionEnvironment)
-					{
-						commonClient.setNodeColor(treeNode, commonClient.insertedColor);
-					}
-					else
-					{
-						if (parentTreeNode.Text == "internalId")
-						{
-							treeNode.Text = "0";
-						}
-
-						commonClient.setNodeColor(treeNode, commonClient.deletedColor);
-					}
+					pullNetsuiteEnvironmentData();
+					compareNetsuiteEnvironmentData();
 				}
-				else if (diffPiece.Type == ChangeType.Imaginary)
+			}
+			else if (compared)
+			{
+				DialogResult dialogResult = MessageBox.Show(compareAgainText, confirmationTitle, MessageBoxButtons.YesNo);
+
+				if (dialogResult == DialogResult.Yes)
 				{
-					if (parentTreeNode.Text == "internalId")
-					{
-						treeNode.Text = "0";
-					}
-
-					if (productionEnvironment)
-					{
-						commonClient.setNodeColor(treeNode, commonClient.imaginaryColor);
-					}
-					else
-					{
-						commonClient.setNodeColor(treeNode, commonClient.deletedColor);
-					}
+					pullNetsuiteEnvironmentData();
+					compareNetsuiteEnvironmentData();
 				}
-				else if (diffPiece.Type == ChangeType.Deleted)
-				{
-					if (productionEnvironment)
-					{
-						if (parentTreeNode.Text == "internalId")
-						{
-							treeNode.Text = "0";
-						}
-
-						commonClient.setNodeColor(treeNode, commonClient.deletedColor);
-					}
-					else
-					{
-						commonClient.setNodeColor(treeNode, commonClient.insertedColor);
-					}
-				}
-				else if (diffPiece.Type == ChangeType.Modified)
-				{
-					if (parentTreeNode.Text != "internalId")
-					{
-						commonClient.setNodeColor(treeNode, commonClient.modifiedColor);
-					}
-				}
-
-				i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1, productionEnvironment);
 			}
 			else
 			{
-				return i;
+				compared = true;
+
+				string customRecords1TreeString = "";
+				string customRecords2TreeString = "";
+				string customScripts1TreeString = "";
+				string customScripts2TreeString = "";
+
+				if (tvEnvironment1Records.Nodes.Count > 0)
+				{
+					customRecords1TreeString = convertTreeViewToString("", tvEnvironment1Records.Nodes[0]);
+				}
+
+				if (tvEnvironment2Records.Nodes.Count > 0)
+				{
+					customRecords2TreeString = convertTreeViewToString("", tvEnvironment2Records.Nodes[0]);
+				}
+
+				if (tvEnvironment1Scripts.Nodes.Count > 0)
+				{
+					customScripts1TreeString = convertTreeViewToString("", tvEnvironment1Scripts.Nodes[0]);
+				}
+
+				if (tvEnvironment2Scripts.Nodes.Count > 0)
+				{
+					customScripts2TreeString = convertTreeViewToString("", tvEnvironment2Scripts.Nodes[0]);
+				}
+
+				if (customRecords1TreeString != "" && customRecords2TreeString != "")
+				{
+					compareTreeViewStrings(tvEnvironment1Records, customRecords1TreeString, tvEnvironment2Records, customRecords2TreeString);
+				}
+
+				if (customScripts1TreeString != "" && customScripts2TreeString != "")
+				{
+					compareTreeViewStrings(tvEnvironment1Scripts, customScripts1TreeString, tvEnvironment2Scripts, customScripts2TreeString);
+				}
 			}
 		}
 
-		return 0;
+		private string convertTreeViewToString(string treeViewString, TreeNode parentTreeNode)
+		{
+			treeViewString = parentTreeNode.FullPath + "\n";
+
+			foreach (TreeNode childTreeNode in parentTreeNode.Nodes)
+			{
+				treeViewString = treeViewString + convertTreeViewToString(treeViewString, childTreeNode);
+			}
+
+			return treeViewString;
+		}
+
+		private void compareTreeViewStrings(MyTreeView newTreeView, string newText, MyTreeView oldTreeView, string oldText)
+		{
+			ISideBySideDiffBuilder diffBuilder = new SideBySideDiffBuilder(new Differ());
+			SideBySideDiffModel sideBySideModel = diffBuilder.BuildDiffModel(oldText, newText);
+
+			newTreeView.Nodes.Clear();
+			oldTreeView.Nodes.Clear();
+
+			TreeNode newParentNode = newTreeView.Nodes.Add(sideBySideModel.NewText.Lines[0].Text);
+			TreeNode oldParentNode = oldTreeView.Nodes.Add(sideBySideModel.OldText.Lines[0].Text);
+
+			colorTreeView(newParentNode.FullPath, newParentNode, sideBySideModel.NewText.Lines, sideBySideModel.OldText.Lines, 1, true);
+			colorTreeView(oldParentNode.FullPath, oldParentNode, sideBySideModel.OldText.Lines, sideBySideModel.NewText.Lines, 1, false);
+
+			newTreeView.AddLinkedTreeView(oldTreeView);
+		}
+
+		private int colorTreeView(string parentFullPath, TreeNode parentTreeNode, List<DiffPiece> textLines1, List<DiffPiece> textLines2, int currentIndex, bool productionEnvironment)
+		{
+			commonClient commonClient = new commonClient();
+			int i = currentIndex;
+
+			while (i < textLines1.Count)
+			{
+				DiffPiece diffPiece = textLines1[i];
+
+				if (diffPiece.Type == ChangeType.Imaginary)
+				{
+					diffPiece.Text = textLines2[i].Text;
+				}
+
+				if (diffPiece.Text != "" && parentFullPath == diffPiece.Text.Substring(0, diffPiece.Text.LastIndexOf("\\")))
+				{
+					TreeNode treeNode = parentTreeNode.Nodes.Add(diffPiece.Text.Replace(parentFullPath + "\\", ""));
+
+					if (diffPiece.Type == ChangeType.Inserted)
+					{
+						if (productionEnvironment)
+						{
+							commonClient.setNodeColor(treeNode, commonClient.insertedColor);
+						}
+						else
+						{
+							if (parentTreeNode.Text == "internalId")
+							{
+								treeNode.Text = "0";
+							}
+
+							commonClient.setNodeColor(treeNode, commonClient.deletedColor);
+						}
+					}
+					else if (diffPiece.Type == ChangeType.Imaginary)
+					{
+						if (parentTreeNode.Text == "internalId")
+						{
+							treeNode.Text = "0";
+						}
+
+						if (productionEnvironment)
+						{
+							commonClient.setNodeColor(treeNode, commonClient.imaginaryColor);
+						}
+						else
+						{
+							commonClient.setNodeColor(treeNode, commonClient.deletedColor);
+						}
+					}
+					else if (diffPiece.Type == ChangeType.Deleted)
+					{
+						if (productionEnvironment)
+						{
+							if (parentTreeNode.Text == "internalId")
+							{
+								treeNode.Text = "0";
+							}
+
+							commonClient.setNodeColor(treeNode, commonClient.deletedColor);
+						}
+						else
+						{
+							commonClient.setNodeColor(treeNode, commonClient.insertedColor);
+						}
+					}
+					else if (diffPiece.Type == ChangeType.Modified)
+					{
+						if (parentTreeNode.Text != "internalId")
+						{
+							commonClient.setNodeColor(treeNode, commonClient.modifiedColor);
+						}
+					}
+
+					i = colorTreeView(treeNode.FullPath, treeNode, textLines1, textLines2, i + 1, productionEnvironment);
+				}
+				else
+				{
+					return i;
+				}
+			}
+
+			return 0;
+		}
 	}
-}
 }
