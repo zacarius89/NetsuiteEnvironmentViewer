@@ -14,8 +14,8 @@ namespace NetsuiteEnvironmentViewer
     public class Settings
     {
         public bool useSameCredentialsChecked = true;
-        public bool customRecordsChecked = true;
-        public bool customScriptsChecked = true;
+        public bool recordsChecked = true;
+        public bool scriptsChecked = true;
 
         public string environment1Url = "https://rest.netsuite.com";
         public string environment1Account = string.Empty;

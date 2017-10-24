@@ -6,12 +6,22 @@ using System.Linq;
 
 namespace NetsuiteEnvironmentViewer
 {
-    public class netsuiteCustomRecords
+	public class netsuiteEntityRecords
+	{
+		public netsuiteRecord[] entityRecords { get; set; }
+	}
+
+	public class netsuiteItemRecords
+	{
+		public netsuiteRecord[] itemRecords { get; set; }
+	}
+
+	public class netsuiteCustomRecords
     {
-        public netsuiteCustomRecord[] customRecords { get; set; }
+        public netsuiteRecord[] customRecords { get; set; }
     }
 
-    public class netsuiteCustomRecord
+    public class netsuiteRecord
     {
         public string internalId { get; set; }
         public string recordId { get; set; }
@@ -117,7 +127,21 @@ namespace NetsuiteEnvironmentViewer
             querySchemaUrl = url + querySchemaUrl;
         }
 
-        public netsuiteCustomRecords getCustomRecords()
+		public netsuiteEntityRecords getEntityRecords()
+		{
+			string payload = "{\"method\":\"getEntityRecords\", \"includeAll\":\"T\"}";
+			string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
+			return JsonConvert.DeserializeObject<netsuiteEntityRecords>(result);
+		}
+
+		public netsuiteItemRecords getItemRecords()
+		{
+			string payload = "{\"method\":\"getItemRecords\", \"includeAll\":\"T\"}";
+			string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);
+			return JsonConvert.DeserializeObject<netsuiteItemRecords>(result);
+		}
+
+		public netsuiteCustomRecords getCustomRecords()
         {
             string payload = "{\"method\":\"getCustomRecords\", \"includeAll\":\"T\"}";
             string result = restPOSTCall(querySchemaUrl, payload, netsuiteAuthorization);

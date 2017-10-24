@@ -29,7 +29,15 @@
 			datain.internalId = null;
 		}
 		
-		if(datain.method === 'getCustomRecords')
+		if(datain.method === 'getEntityRecords')
+		{
+			returnJSON = commonNetSuiteFunctions.getEntityRecords(datain.internalId, datain.includeAll);
+		}
+		else if(datain.method === 'getItemRecords')
+		{
+			returnJSON = commonNetSuiteFunctions.getItemRecords(datain.internalId, datain.includeAll);
+		}
+		else if(datain.method === 'getCustomRecords')
 		{
 			returnJSON = commonNetSuiteFunctions.getCustomRecords(datain.internalId, datain.includeAll);
 		}
@@ -116,6 +124,127 @@
 		return returnJSON;
 	};
 	
+	commonNetSuiteFunctions.getEntityRecords = function(internalId, includeAll)
+	{
+		try
+		{
+			var entityRecords = [];
+
+			//Customer
+			var customerRecord = commonNetSuiteFunctions.getStandardRecord('customer', 'Customer', includeAll);
+			entityRecords.push(customerRecord);
+			
+			//Vendor
+			var vendorRecord = commonNetSuiteFunctions.getStandardRecord('vendor', 'Vendor', includeAll);
+			entityRecords.push(vendorRecord);
+			
+			//Employee
+			var employeeRecord = commonNetSuiteFunctions.getStandardRecord('employee', 'Employee', includeAll);
+			entityRecords.push(employeeRecord);
+			
+			//Contact
+			var contactRecord = commonNetSuiteFunctions.getStandardRecord('contact', 'Contact', includeAll);
+			entityRecords.push(contactRecord);
+			
+			//Other Name
+			var otherNameRecord = commonNetSuiteFunctions.getStandardRecord('othername', 'Other Name', includeAll);
+			entityRecords.push(otherNameRecord);
+			
+			//Partner
+			var partnerRecord = commonNetSuiteFunctions.getStandardRecord('partner', 'Partner', includeAll);
+			entityRecords.push(partnerRecord);
+			
+			//Website
+			var websiteRecord = commonNetSuiteFunctions.getStandardRecord('website', 'Website', includeAll);
+			entityRecords.push(websiteRecord);
+			
+			//Group
+			var groupRecord = commonNetSuiteFunctions.getStandardRecord('entitygroup', 'Group', includeAll);
+			entityRecords.push(groupRecord);
+			
+			return {'entityRecords': entityRecords};
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getEntityRecords', e.message);
+			returnStatus = 'failed';
+			
+			return {"error": e.message};
+		}
+	};
+	
+	commonNetSuiteFunctions.getItemRecords = function(internalId, includeAll)
+	{
+		try
+		{
+			var itemRecords = [];
+
+			//Inventory Item
+			var inventoryItemRecord = commonNetSuiteFunctions.getStandardRecord('inventoryitem', 'Inventory Item', includeAll);
+			itemRecords.push(inventoryItemRecord);
+			
+			//Non-Inventory Item
+			var nonInventoryItemRecord = commonNetSuiteFunctions.getStandardRecord('noninventoryitem', 'Non-Inventory Item', includeAll);
+			itemRecords.push(nonInventoryItemRecord);
+			
+			//Service
+			var serviceRecord = commonNetSuiteFunctions.getStandardRecord('serviceitem', 'Service', includeAll);
+			itemRecords.push(serviceRecord);
+			
+			//Other Charge
+			var otherChargeRecord = commonNetSuiteFunctions.getStandardRecord('otherchargeitem', 'Other Charge', includeAll);
+			itemRecords.push(otherChargeRecord);
+			
+			//Group
+			var groupRecord = commonNetSuiteFunctions.getStandardRecord('itemgroup', 'Group', includeAll);
+			itemRecords.push(groupRecord);
+			
+			//Kit
+			var kitRecord = commonNetSuiteFunctions.getStandardRecord('kititem', 'Kit/Package', includeAll);
+			itemRecords.push(kitRecord);
+			
+			return {'itemRecords': itemRecords};
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getItemRecords', e.message);
+			returnStatus = 'failed';
+			
+			return {"error": e.message};
+		}
+	};
+	
+	commonNetSuiteFunctions.getStandardRecord = function(recordId, recordName, includeAll)
+	{
+		try
+		{
+			var record = {};
+			
+			record.internalId = '-1';
+			record.recordId = recordId;
+			record.recordName = recordName;
+			
+			if(includeAll === 'T')
+			{
+				recordFields = commonNetSuiteFunctions.getRecordFields(record.recordId, includeAll)
+			}
+			
+			if(recordFields)
+			{
+				record.recordFields = recordFields;
+			}
+			
+			return record;
+		}
+		catch (e)
+		{
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getStandardRecord', e.message);
+			returnStatus = 'failed';
+			
+			return {"error": e.message};
+		}
+	};
+	
 	commonNetSuiteFunctions.getCustomRecords = function(internalId, includeAll)
 	{
 		try
@@ -149,7 +278,7 @@
 					
 					if(includeAll === 'T')
 					{
-						recordFields = commonNetSuiteFunctions.getCustomRecordFields(recordId, includeAll)
+						recordFields = commonNetSuiteFunctions.getRecordFields(recordId, includeAll)
 					}
 					
 					customRecord.internalId = recordInternalId;
@@ -176,19 +305,28 @@
 		}
 	};
 	
-	commonNetSuiteFunctions.getCustomRecordFields = function(recordId, includeAll)
+	commonNetSuiteFunctions.getRecordFields = function(recordId, includeAll)
 	{
 		try
 		{
-			var customRecord = nlapiCreateRecord(recordId);
+			var record;
 			
-			var customRecordFields = customRecord.getAllFields();
+			if(recordId === 'entitygroup')
+			{
+				record = nlapiCreateRecord(recordId, {dynamic: 'T', grouptype: 'customer'});
+			}
+			else
+			{
+				record = nlapiCreateRecord(recordId);
+			}
 			
-			return customRecordFields;
+			var recordFields = record.getAllFields();
+			
+			return recordFields;
 		}
 		catch (e)
 		{
-			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getCustomRecordFields', e.message);
+			nlapiLogExecution('ERROR', 'commonNetSuiteFunctions.getRecordFields', e.message);
 		}
 	};
 	
@@ -693,6 +831,48 @@
 		supportedMethod.method = 'getDocumentation';
 		supportedMethod.inputs = [];
 
+		supportedMethods.push(supportedMethod);
+		
+		//getEntityRecords
+		supportedMethod = {};
+		supportedMethod.method = 'getEntityRecords';
+		supportedMethod.inputs = [];
+		
+		/* TODO - figure out internal ids of out of the box fields
+		input = {};
+		input.name = 'internalId';
+		input.optional = true;
+		input.description = 'If internalId is specified, only that specific custom record will be returned.  Otherwise, all custom records will be returned.';
+		supportedMethod.inputs.push(input);
+		*/
+		
+		input = {};
+		input.name = 'includeAll';
+		input.optional = true;
+		input.description = 'If includeAll is "T", all custom fields will be returned as well.  Otherwise, just basic information will be returned.';
+		supportedMethod.inputs.push(input);
+		
+		supportedMethods.push(supportedMethod);
+		
+		//getItemRecords
+		supportedMethod = {};
+		supportedMethod.method = 'getItemRecords';
+		supportedMethod.inputs = [];
+		
+		/* TODO - figure out internal ids of out of the box fields
+		input = {};
+		input.name = 'internalId';
+		input.optional = true;
+		input.description = 'If internalId is specified, only that specific custom record will be returned.  Otherwise, all custom records will be returned.';
+		supportedMethod.inputs.push(input);
+		*/
+		
+		input = {};
+		input.name = 'includeAll';
+		input.optional = true;
+		input.description = 'If includeAll is "T", all custom fields will be returned as well.  Otherwise, just basic information will be returned.';
+		supportedMethod.inputs.push(input);
+		
 		supportedMethods.push(supportedMethod);
 		
 		//getCustomRecords
