@@ -74,6 +74,7 @@
 			this.txtEmail2 = new System.Windows.Forms.TextBox();
 			this.txtSignature2 = new System.Windows.Forms.TextBox();
 			this.pnlEnvironment2TreeViews = new System.Windows.Forms.Panel();
+			this.chkHideSignature = new System.Windows.Forms.CheckBox();
 			this.tbCtrlEnvironment1.SuspendLayout();
 			this.tbPgEnvironment1Records.SuspendLayout();
 			this.tbPgEnvironment1Scripts.SuspendLayout();
@@ -288,6 +289,7 @@
 			// 
 			// grpEnvironment1
 			// 
+			this.grpEnvironment1.Controls.Add(this.chkHideSignature);
 			this.grpEnvironment1.Controls.Add(this.btnOpenCSVImport1);
 			this.grpEnvironment1.Controls.Add(this.lblUrl1);
 			this.grpEnvironment1.Controls.Add(this.lblRole1);
@@ -346,7 +348,7 @@
 			// lblSignature1
 			// 
 			this.lblSignature1.AutoSize = true;
-			this.lblSignature1.Location = new System.Drawing.Point(238, 42);
+			this.lblSignature1.Location = new System.Drawing.Point(223, 42);
 			this.lblSignature1.Name = "lblSignature1";
 			this.lblSignature1.Size = new System.Drawing.Size(52, 13);
 			this.lblSignature1.TabIndex = 7;
@@ -571,6 +573,19 @@
 			this.pnlEnvironment2TreeViews.Size = new System.Drawing.Size(436, 160);
 			this.pnlEnvironment2TreeViews.TabIndex = 3;
 			// 
+			// chkHideSignature
+			// 
+			this.chkHideSignature.AutoSize = true;
+			this.chkHideSignature.Checked = true;
+			this.chkHideSignature.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkHideSignature.Location = new System.Drawing.Point(226, 21);
+			this.chkHideSignature.Name = "chkHideSignature";
+			this.chkHideSignature.Size = new System.Drawing.Size(96, 17);
+			this.chkHideSignature.TabIndex = 20;
+			this.chkHideSignature.Text = "Hide Signature";
+			this.chkHideSignature.UseVisualStyleBackColor = true;
+			this.chkHideSignature.CheckedChanged += new System.EventHandler(this.chkHideSignature_CheckedChanged);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -649,6 +664,7 @@
 		private System.Windows.Forms.TextBox txtSignature2;
 		private System.Windows.Forms.Panel pnlEnvironment2TreeViews;
 		private System.Windows.Forms.Button btnIgnoreSettings;
+		private System.Windows.Forms.CheckBox chkHideSignature;
 	}
 }
 

@@ -80,6 +80,11 @@ namespace NetsuiteEnvironmentViewer
 		#endregion
 
 		#region "CheckChanged"
+		private void chkHideSignature_CheckedChanged(object sender, EventArgs e)
+		{
+			toggleSignatureDisplay();
+		}
+
 		private void chkUseSameCredentials_CheckedChanged(object sender, EventArgs e)
 		{
 			syncCredentials();
@@ -353,6 +358,20 @@ namespace NetsuiteEnvironmentViewer
 		#endregion
 
 		#region "Credentials"
+		private void toggleSignatureDisplay()
+		{
+			if (chkHideSignature.Checked)
+			{
+				txtSignature1.PasswordChar = '●';
+				txtSignature2.PasswordChar = '●';
+			}
+			else
+			{
+				txtSignature1.PasswordChar = new char();
+				txtSignature2.PasswordChar = new char();
+			}
+		}
+
 		private void syncCredentials()
 		{
 			if (chkUseSameCredentials.Checked)

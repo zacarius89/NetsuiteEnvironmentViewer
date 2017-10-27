@@ -75,7 +75,7 @@ namespace NetsuiteEnvironmentViewer
 		}
 
 		//https://dotnetcodr.com/2015/10/23/encrypt-and-decrypt-plain-string-with-triple-des-in-c/
-		private string encrypt(string source)
+		public string encrypt(string text)
 		{
 			string key = getCurrentMacAddress();
 
@@ -88,14 +88,14 @@ namespace NetsuiteEnvironmentViewer
 			byteHash = hashMD5Provider.ComputeHash(Encoding.UTF8.GetBytes(key));
 			desCryptoProvider.Key = byteHash;
 			desCryptoProvider.Mode = CipherMode.ECB; //CBC, CFB
-			byteBuff = Encoding.UTF8.GetBytes(source);
+			byteBuff = Encoding.UTF8.GetBytes(text);
 
 			string encryptedText = Convert.ToBase64String(desCryptoProvider.CreateEncryptor().TransformFinalBlock(byteBuff, 0, byteBuff.Length));
 
 			return encryptedText;
 		}
 
-		private string decrypt(string encryptedText)
+		public string decrypt(string encryptedText)
 		{
 			string key = getCurrentMacAddress();
 
