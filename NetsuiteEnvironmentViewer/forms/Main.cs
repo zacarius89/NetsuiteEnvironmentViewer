@@ -234,7 +234,7 @@ namespace NetsuiteEnvironmentViewer
 			try
 			{
 				commonClient commonClient = new commonClient();
-				commonClient.getNodeFromPath(tvEnvironment2Scripts.Nodes[e.Node.Index], e.Node.FullPath).Collapse();
+				commonClient.getNodeFromPath(tvEnvironment2Scripts.Nodes[0], e.Node.FullPath).Collapse();
 			}
 			catch (Exception ex)
 			{
@@ -661,7 +661,7 @@ namespace NetsuiteEnvironmentViewer
 				{
 					if(chkScripts.Checked)
 					{
-						scripts2 = netsuiteClient2.getCustomScripts(settings.environment1IgnoreScripts.Select(x => x.internalId).ToList());
+						scripts2 = netsuiteClient2.getCustomScripts(settings.environment2IgnoreScripts.Select(x => x.internalId).ToList());
 					}
 				})
 			};
