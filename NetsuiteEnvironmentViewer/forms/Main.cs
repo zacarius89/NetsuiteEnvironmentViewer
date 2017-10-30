@@ -12,6 +12,7 @@ namespace NetsuiteEnvironmentViewer
 	public partial class Main : Form
 	{
 		public static string confirmationTitle = "";
+		private static string errorTitle = "Error";
 		public static string saveSettingsConfirmationText = "Are you sure you want to save the settings?  This will overwrite the existing settings.";
 		private string haveNotComparedText = "Have you compared the environments yet?  Please compare before opening the File Viewer.";
 		private string missingScriptFileText = "Cannot compare scriptFile(s).  The scriptFile does not exist in one of the environments.";
@@ -105,7 +106,7 @@ namespace NetsuiteEnvironmentViewer
 			}
 			catch (Exception ex)
 			{
-
+				MessageBox.Show(ex.Message, errorTitle);
 			}
 			finally
 			{
@@ -158,7 +159,7 @@ namespace NetsuiteEnvironmentViewer
 			}
 			catch (Exception ex)
 			{
-
+				MessageBox.Show(ex.Message, errorTitle);
 			}
 			finally
 			{

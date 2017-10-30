@@ -226,6 +226,7 @@ namespace NetsuiteEnvironmentViewer
 			httpWebRequest.Method = "POST";
 			httpWebRequest.ContentType = "application/json";
 			httpWebRequest.Headers.Add("Authorization", netsuiteAuthorization);
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 			using (StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
 			{
