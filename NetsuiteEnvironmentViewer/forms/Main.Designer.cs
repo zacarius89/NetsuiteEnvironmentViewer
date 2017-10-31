@@ -46,6 +46,7 @@
 			this.tblLayout = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.grpEnvironment1 = new System.Windows.Forms.GroupBox();
+			this.chkHideSignature = new System.Windows.Forms.CheckBox();
 			this.btnOpenCSVImport1 = new System.Windows.Forms.Button();
 			this.lblUrl1 = new System.Windows.Forms.Label();
 			this.lblRole1 = new System.Windows.Forms.Label();
@@ -74,7 +75,7 @@
 			this.txtEmail2 = new System.Windows.Forms.TextBox();
 			this.txtSignature2 = new System.Windows.Forms.TextBox();
 			this.pnlEnvironment2TreeViews = new System.Windows.Forms.Panel();
-			this.chkHideSignature = new System.Windows.Forms.CheckBox();
+			this.chkOnlyCustomFields = new System.Windows.Forms.CheckBox();
 			this.tbCtrlEnvironment1.SuspendLayout();
 			this.tbPgEnvironment1Records.SuspendLayout();
 			this.tbPgEnvironment1Scripts.SuspendLayout();
@@ -229,7 +230,7 @@
 			this.chkScripts.AutoSize = true;
 			this.chkScripts.Checked = true;
 			this.chkScripts.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkScripts.Location = new System.Drawing.Point(236, 98);
+			this.chkScripts.Location = new System.Drawing.Point(357, 98);
 			this.chkScripts.Name = "chkScripts";
 			this.chkScripts.Size = new System.Drawing.Size(58, 17);
 			this.chkScripts.TabIndex = 16;
@@ -277,6 +278,7 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.chkOnlyCustomFields);
 			this.panel1.Controls.Add(this.grpEnvironment1);
 			this.panel1.Controls.Add(this.button1);
 			this.panel1.Controls.Add(this.chkRecords);
@@ -308,6 +310,19 @@
 			this.grpEnvironment1.TabIndex = 1;
 			this.grpEnvironment1.TabStop = false;
 			this.grpEnvironment1.Text = "Environment 1";
+			// 
+			// chkHideSignature
+			// 
+			this.chkHideSignature.AutoSize = true;
+			this.chkHideSignature.Checked = true;
+			this.chkHideSignature.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkHideSignature.Location = new System.Drawing.Point(226, 21);
+			this.chkHideSignature.Name = "chkHideSignature";
+			this.chkHideSignature.Size = new System.Drawing.Size(96, 17);
+			this.chkHideSignature.TabIndex = 20;
+			this.chkHideSignature.Text = "Hide Signature";
+			this.chkHideSignature.UseVisualStyleBackColor = true;
+			this.chkHideSignature.CheckedChanged += new System.EventHandler(this.chkHideSignature_CheckedChanged);
 			// 
 			// btnOpenCSVImport1
 			// 
@@ -573,18 +588,17 @@
 			this.pnlEnvironment2TreeViews.Size = new System.Drawing.Size(436, 160);
 			this.pnlEnvironment2TreeViews.TabIndex = 3;
 			// 
-			// chkHideSignature
+			// chkOnlyCustomFields
 			// 
-			this.chkHideSignature.AutoSize = true;
-			this.chkHideSignature.Checked = true;
-			this.chkHideSignature.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkHideSignature.Location = new System.Drawing.Point(226, 21);
-			this.chkHideSignature.Name = "chkHideSignature";
-			this.chkHideSignature.Size = new System.Drawing.Size(96, 17);
-			this.chkHideSignature.TabIndex = 20;
-			this.chkHideSignature.Text = "Hide Signature";
-			this.chkHideSignature.UseVisualStyleBackColor = true;
-			this.chkHideSignature.CheckedChanged += new System.EventHandler(this.chkHideSignature_CheckedChanged);
+			this.chkOnlyCustomFields.AutoSize = true;
+			this.chkOnlyCustomFields.Checked = true;
+			this.chkOnlyCustomFields.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkOnlyCustomFields.Location = new System.Drawing.Point(236, 98);
+			this.chkOnlyCustomFields.Name = "chkOnlyCustomFields";
+			this.chkOnlyCustomFields.Size = new System.Drawing.Size(115, 17);
+			this.chkOnlyCustomFields.TabIndex = 17;
+			this.chkOnlyCustomFields.Text = "Only Custom Fields";
+			this.chkOnlyCustomFields.UseVisualStyleBackColor = true;
 			// 
 			// Main
 			// 
@@ -665,6 +679,7 @@
 		private System.Windows.Forms.Panel pnlEnvironment2TreeViews;
 		private System.Windows.Forms.Button btnIgnoreSettings;
 		private System.Windows.Forms.CheckBox chkHideSignature;
+		private System.Windows.Forms.CheckBox chkOnlyCustomFields;
 	}
 }
 

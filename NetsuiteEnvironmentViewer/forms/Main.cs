@@ -40,6 +40,7 @@ namespace NetsuiteEnvironmentViewer
 			chkUseSameCredentials.Checked = settings.useSameCredentialsChecked;
 			chkRecords.Checked = settings.recordsChecked;
 			chkScripts.Checked = settings.scriptsChecked;
+			chkOnlyCustomFields.Checked = settings.onlyCustomFieldsChecked;
 
 			txtUrl1.Text = settings.environment1Url;
 			txtAccount1.Text = settings.environment1Account;
@@ -130,6 +131,7 @@ namespace NetsuiteEnvironmentViewer
 				settings.useSameCredentialsChecked = chkUseSameCredentials.Checked;
 				settings.recordsChecked = chkRecords.Checked;
 				settings.scriptsChecked = chkScripts.Checked;
+				settings.onlyCustomFieldsChecked = chkOnlyCustomFields.Checked;
 
 				settings.environment1Url = txtUrl1.Text;
 				settings.environment1Account = txtAccount1.Text;
@@ -613,6 +615,14 @@ namespace NetsuiteEnvironmentViewer
 					if(chkRecords.Checked)
 					{
 						entityRecords1 = netsuiteClient1.getEntityRecords();
+
+						if(chkOnlyCustomFields.Checked)
+						{
+							foreach(var entityRecord in entityRecords1.entityRecords)
+							{
+								entityRecord.recordFields = entityRecord.recordFields.Where(x => x.StartsWith("custentity_")).ToArray();
+							}
+						}
 					}
 				}),
 				Task.Factory.StartNew(() =>
@@ -620,6 +630,14 @@ namespace NetsuiteEnvironmentViewer
 					if(chkRecords.Checked)
 					{
 						entityRecords2 = netsuiteClient2.getEntityRecords();
+
+						if(chkOnlyCustomFields.Checked)
+						{
+							foreach(var entityRecord in entityRecords2.entityRecords)
+							{
+								entityRecord.recordFields = entityRecord.recordFields.Where(x => x.StartsWith("custentity_")).ToArray();
+							}
+						}
 					}
 				}),
 				Task.Factory.StartNew(() =>
@@ -627,6 +645,14 @@ namespace NetsuiteEnvironmentViewer
 					if(chkRecords.Checked)
 					{
 						itemRecords1 = netsuiteClient1.getItemRecords();
+
+						if(chkOnlyCustomFields.Checked)
+						{
+							foreach(var itemRecord in itemRecords1.itemRecords)
+							{
+								itemRecord.recordFields = itemRecord.recordFields.Where(x => x.StartsWith("custitem_")).ToArray();
+							}
+						}
 					}
 				}),
 				Task.Factory.StartNew(() =>
@@ -634,6 +660,14 @@ namespace NetsuiteEnvironmentViewer
 					if(chkRecords.Checked)
 					{
 						itemRecords2 = netsuiteClient2.getItemRecords();
+
+						if(chkOnlyCustomFields.Checked)
+						{
+							foreach(var itemRecord in itemRecords2.itemRecords)
+							{
+								itemRecord.recordFields = itemRecord.recordFields.Where(x => x.StartsWith("custitem_")).ToArray();
+							}
+						}
 					}
 				}),
 				Task.Factory.StartNew(() =>
@@ -641,6 +675,14 @@ namespace NetsuiteEnvironmentViewer
 					if(chkRecords.Checked)
 					{
 						customRecords1 = netsuiteClient1.getCustomRecords();
+
+						if(chkOnlyCustomFields.Checked)
+						{
+							foreach(var customRecord in customRecords1.customRecords)
+							{
+								customRecord.recordFields = customRecord.recordFields.Where(x => x.StartsWith("custrecord_")).ToArray();
+							}
+						}
 					}
 				}),
 				Task.Factory.StartNew(() =>
@@ -648,6 +690,14 @@ namespace NetsuiteEnvironmentViewer
 					if(chkRecords.Checked)
 					{
 						customRecords2 = netsuiteClient2.getCustomRecords();
+
+						if(chkOnlyCustomFields.Checked)
+						{
+							foreach(var customRecord in customRecords2.customRecords)
+							{
+								customRecord.recordFields = customRecord.recordFields.Where(x => x.StartsWith("custrecord_")).ToArray();
+							}
+						}
 					}
 				}),
 				Task.Factory.StartNew(() =>
