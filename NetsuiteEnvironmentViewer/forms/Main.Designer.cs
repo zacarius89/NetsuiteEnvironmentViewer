@@ -45,6 +45,7 @@
 			this.btnCompare = new System.Windows.Forms.Button();
 			this.tblLayout = new System.Windows.Forms.TableLayoutPanel();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.chkOnlyCustomFields = new System.Windows.Forms.CheckBox();
 			this.grpEnvironment1 = new System.Windows.Forms.GroupBox();
 			this.chkHideSignature = new System.Windows.Forms.CheckBox();
 			this.btnOpenCSVImport1 = new System.Windows.Forms.Button();
@@ -75,7 +76,6 @@
 			this.txtEmail2 = new System.Windows.Forms.TextBox();
 			this.txtSignature2 = new System.Windows.Forms.TextBox();
 			this.pnlEnvironment2TreeViews = new System.Windows.Forms.Panel();
-			this.chkOnlyCustomFields = new System.Windows.Forms.CheckBox();
 			this.tbCtrlEnvironment1.SuspendLayout();
 			this.tbPgEnvironment1Records.SuspendLayout();
 			this.tbPgEnvironment1Scripts.SuspendLayout();
@@ -224,6 +224,7 @@
 			this.chkRecords.TabIndex = 15;
 			this.chkRecords.Text = "Records";
 			this.chkRecords.UseVisualStyleBackColor = true;
+			this.chkRecords.CheckedChanged += new System.EventHandler(this.chkRecords_CheckedChanged);
 			// 
 			// chkScripts
 			// 
@@ -288,6 +289,18 @@
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(436, 119);
 			this.panel1.TabIndex = 0;
+			// 
+			// chkOnlyCustomFields
+			// 
+			this.chkOnlyCustomFields.AutoSize = true;
+			this.chkOnlyCustomFields.Checked = true;
+			this.chkOnlyCustomFields.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.chkOnlyCustomFields.Location = new System.Drawing.Point(236, 98);
+			this.chkOnlyCustomFields.Name = "chkOnlyCustomFields";
+			this.chkOnlyCustomFields.Size = new System.Drawing.Size(115, 17);
+			this.chkOnlyCustomFields.TabIndex = 17;
+			this.chkOnlyCustomFields.Text = "Only Custom Fields";
+			this.chkOnlyCustomFields.UseVisualStyleBackColor = true;
 			// 
 			// grpEnvironment1
 			// 
@@ -587,18 +600,6 @@
 			this.pnlEnvironment2TreeViews.Name = "pnlEnvironment2TreeViews";
 			this.pnlEnvironment2TreeViews.Size = new System.Drawing.Size(436, 160);
 			this.pnlEnvironment2TreeViews.TabIndex = 3;
-			// 
-			// chkOnlyCustomFields
-			// 
-			this.chkOnlyCustomFields.AutoSize = true;
-			this.chkOnlyCustomFields.Checked = true;
-			this.chkOnlyCustomFields.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkOnlyCustomFields.Location = new System.Drawing.Point(236, 98);
-			this.chkOnlyCustomFields.Name = "chkOnlyCustomFields";
-			this.chkOnlyCustomFields.Size = new System.Drawing.Size(115, 17);
-			this.chkOnlyCustomFields.TabIndex = 17;
-			this.chkOnlyCustomFields.Text = "Only Custom Fields";
-			this.chkOnlyCustomFields.UseVisualStyleBackColor = true;
 			// 
 			// Main
 			// 

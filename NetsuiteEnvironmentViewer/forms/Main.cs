@@ -54,6 +54,8 @@ namespace NetsuiteEnvironmentViewer
 			txtSignature2.Text = settings.environment2Signature;
 			txtRole2.Text = settings.environment2Role;
 
+			chkOnlyCustomFields.Enabled = chkRecords.Checked;
+
 			syncCredentials();
 			enableEnvironment2Credentials();
 		}
@@ -91,6 +93,11 @@ namespace NetsuiteEnvironmentViewer
 		{
 			syncCredentials();
 			enableEnvironment2Credentials();
+		}
+
+		private void chkRecords_CheckedChanged(object sender, EventArgs e)
+		{
+			chkOnlyCustomFields.Enabled = chkRecords.Checked;
 		}
 		#endregion
 
