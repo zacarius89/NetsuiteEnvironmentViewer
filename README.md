@@ -1,5 +1,6 @@
 # NetsuiteEnvironmentViewer
 Application to view and compare records and scripts between Netsuite environments
+https://s3.amazonaws.com/netsuite-environment-viewer/app/setup.exe
 
 For application to be used, users will have to deploy the SuiteScript, suiteScripts/commonNetSuiteFunctions.js, into the desired Netsuite environments.
 
