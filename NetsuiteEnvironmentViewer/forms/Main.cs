@@ -627,7 +627,7 @@ namespace NetsuiteEnvironmentViewer
 						{
 							foreach(var entityRecord in entityRecords1.entityRecords)
 							{
-								entityRecord.recordFields = entityRecord.recordFields.Where(x => x.StartsWith("custentity_")).ToArray();
+								entityRecord.recordFields = entityRecord.recordFields.Where(x => x.StartsWith("custentity")).ToArray();
 							}
 						}
 					}
@@ -642,7 +642,7 @@ namespace NetsuiteEnvironmentViewer
 						{
 							foreach(var entityRecord in entityRecords2.entityRecords)
 							{
-								entityRecord.recordFields = entityRecord.recordFields.Where(x => x.StartsWith("custentity_")).ToArray();
+								entityRecord.recordFields = entityRecord.recordFields.Where(x => x.StartsWith("custentity")).ToArray();
 							}
 						}
 					}
@@ -657,7 +657,7 @@ namespace NetsuiteEnvironmentViewer
 						{
 							foreach(var itemRecord in itemRecords1.itemRecords)
 							{
-								itemRecord.recordFields = itemRecord.recordFields.Where(x => x.StartsWith("custitem_")).ToArray();
+								itemRecord.recordFields = itemRecord.recordFields.Where(x => x.StartsWith("custitem")).ToArray();
 							}
 						}
 					}
@@ -672,7 +672,7 @@ namespace NetsuiteEnvironmentViewer
 						{
 							foreach(var itemRecord in itemRecords2.itemRecords)
 							{
-								itemRecord.recordFields = itemRecord.recordFields.Where(x => x.StartsWith("custitem_")).ToArray();
+								itemRecord.recordFields = itemRecord.recordFields.Where(x => x.StartsWith("custitem")).ToArray();
 							}
 						}
 					}
@@ -687,7 +687,7 @@ namespace NetsuiteEnvironmentViewer
 						{
 							foreach(var customRecord in customRecords1.customRecords)
 							{
-								customRecord.recordFields = customRecord.recordFields.Where(x => x.StartsWith("custrecord_")).ToArray();
+								customRecord.recordFields = customRecord.recordFields.Where(x => x.StartsWith("custrecord")).ToArray();
 							}
 						}
 					}
@@ -702,7 +702,7 @@ namespace NetsuiteEnvironmentViewer
 						{
 							foreach(var customRecord in customRecords2.customRecords)
 							{
-								customRecord.recordFields = customRecord.recordFields.Where(x => x.StartsWith("custrecord_")).ToArray();
+								customRecord.recordFields = customRecord.recordFields.Where(x => x.StartsWith("custrecord")).ToArray();
 							}
 						}
 					}
