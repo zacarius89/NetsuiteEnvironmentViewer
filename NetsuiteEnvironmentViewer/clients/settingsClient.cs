@@ -20,13 +20,15 @@ namespace NetsuiteEnvironmentViewer
 
 		public string environment1Url = "https://rest.netsuite.com";
 		public string environment1Account = string.Empty;
-		public string environment1Email = string.Empty;
+        public string environment1Suffix = string.Empty;
+        public string environment1Email = string.Empty;
 		public string environment1Signature = string.Empty;
 		public string environment1Role = "3";
 
 		public string environment2Url = "https://rest.netsuite.com";
 		public string environment2Account = string.Empty;
-		public string environment2Email = string.Empty;
+        public string environment2Suffix = "_SB1";
+        public string environment2Email = string.Empty;
 		public string environment2Signature = string.Empty;
 		public string environment2Role = "3";
 

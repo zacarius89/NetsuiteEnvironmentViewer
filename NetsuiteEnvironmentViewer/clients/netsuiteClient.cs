@@ -117,9 +117,9 @@ namespace NetsuiteEnvironmentViewer
 		private string netsuiteAuthorization;
 		private string querySchemaUrl = "/app/site/hosting/restlet.nl?script=customscript_commonnetsuitefunctions&deploy=customdeploy_commonnetsuitefunctions";
 
-		public netsuiteClient(string url, string account, string email, string signature, string role)
+		public netsuiteClient(string url, string account, string suffix, string email, string signature, string role)
 		{
-			netsuiteAuthorization = "NLAuth nlauth_account = " + account +
+			netsuiteAuthorization = "NLAuth nlauth_account = " + account + suffix +
 				", nlauth_email = " + email +
 				", nlauth_signature = " + signature +
 				", nlauth_role = " + role;

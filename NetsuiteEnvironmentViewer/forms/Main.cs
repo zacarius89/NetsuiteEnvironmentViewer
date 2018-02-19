@@ -44,13 +44,15 @@ namespace NetsuiteEnvironmentViewer
 
 			txtUrl1.Text = settings.environment1Url;
 			txtAccount1.Text = settings.environment1Account;
+            txtSuffix1.Text = settings.environment1Suffix;
 			txtEmail1.Text = settings.environment1Email;
 			txtSignature1.Text = settings.environment1Signature;
 			txtRole1.Text = settings.environment1Role;
 
 			txtUrl2.Text = settings.environment2Url;
 			txtAccount2.Text = settings.environment2Account;
-			txtEmail2.Text = settings.environment2Email;
+            txtSuffix2.Text = settings.environment2Suffix;
+            txtEmail2.Text = settings.environment2Email;
 			txtSignature2.Text = settings.environment2Signature;
 			txtRole2.Text = settings.environment2Role;
 
@@ -142,13 +144,15 @@ namespace NetsuiteEnvironmentViewer
 
 				settings.environment1Url = txtUrl1.Text;
 				settings.environment1Account = txtAccount1.Text;
+                settings.environment1Suffix = txtSuffix1.Text;
 				settings.environment1Email = txtEmail1.Text;
 				settings.environment1Signature = txtSignature1.Text;
 				settings.environment1Role = txtRole1.Text;
 
 				settings.environment2Url = txtUrl2.Text;
 				settings.environment2Account = txtAccount2.Text;
-				settings.environment2Email = txtEmail2.Text;
+                settings.environment2Suffix = txtSuffix2.Text;
+                settings.environment2Email = txtEmail2.Text;
 				settings.environment2Signature = txtSignature2.Text;
 				settings.environment2Role = txtRole2.Text;
 
@@ -180,14 +184,14 @@ namespace NetsuiteEnvironmentViewer
 		private void btnOpenCSVImport1_Click(object sender, EventArgs e)
 		{
 			CSVImportTool csvImportTool = new CSVImportTool();
-			csvImportTool.netsuiteClient = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+			csvImportTool.netsuiteClient = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtSuffix1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
 			csvImportTool.Show();
 		}
 
 		private void btnOpenCSVImport2_Click(object sender, EventArgs e)
 		{
 			CSVImportTool csvImportTool = new CSVImportTool();
-			csvImportTool.netsuiteClient = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+			csvImportTool.netsuiteClient = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtSuffix2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 			csvImportTool.Show();
 		}
 
@@ -386,7 +390,7 @@ namespace NetsuiteEnvironmentViewer
 		{
 			if (chkUseSameCredentials.Checked)
 			{
-				txtAccount2.Text = txtAccount1.Text + "_SB1";
+				txtAccount2.Text = txtAccount1.Text;
 				txtEmail2.Text = txtEmail1.Text;
 				txtSignature2.Text = txtSignature1.Text;
 				txtRole2.Text = txtRole1.Text;
@@ -570,8 +574,8 @@ namespace NetsuiteEnvironmentViewer
 					return;
 				}
 
-				netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
-				netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+				netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtSuffix1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+				netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtSuffix2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 
 				netsuiteFile netsuiteCustomScriptFile1 = netsuiteClient1.getCustomScriptFile(scriptFile1InternalId);
 				netsuiteFile netsuiteCustomScriptFile2 = netsuiteClient2.getCustomScriptFile(scriptFile2InternalId);
@@ -600,8 +604,8 @@ namespace NetsuiteEnvironmentViewer
 			dataPulled = true;
 			compared = false;
 
-			netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
-			netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
+			netsuiteClient netsuiteClient1 = new netsuiteClient(txtUrl1.Text, txtAccount1.Text, txtSuffix1.Text, txtEmail1.Text, txtSignature1.Text, txtRole1.Text);
+			netsuiteClient netsuiteClient2 = new netsuiteClient(txtUrl2.Text, txtAccount2.Text, txtSuffix2.Text, txtEmail2.Text, txtSignature2.Text, txtRole2.Text);
 
 			netsuiteEntityRecords entityRecords1 = null;
 			netsuiteEntityRecords entityRecords2 = null;
@@ -928,5 +932,35 @@ namespace NetsuiteEnvironmentViewer
 
 			return 0;
 		}
+
+        private void lblEmail2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtEmail2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblSignature2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtSignature2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblRole2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtRole2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
