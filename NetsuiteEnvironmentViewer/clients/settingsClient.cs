@@ -24,7 +24,7 @@ namespace NetsuiteEnvironmentViewer
 		public string environment1Signature = string.Empty;
 		public string environment1Role = "3";
 
-		public string environment2Url = "https://rest.sandbox.netsuite.com";
+		public string environment2Url = "https://rest.netsuite.com";
 		public string environment2Account = string.Empty;
 		public string environment2Email = string.Empty;
 		public string environment2Signature = string.Empty;

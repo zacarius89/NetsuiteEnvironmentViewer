@@ -386,7 +386,7 @@ namespace NetsuiteEnvironmentViewer
 		{
 			if (chkUseSameCredentials.Checked)
 			{
-				txtAccount2.Text = txtAccount1.Text;
+				txtAccount2.Text = txtAccount1.Text + "_SB1";
 				txtEmail2.Text = txtEmail1.Text;
 				txtSignature2.Text = txtSignature1.Text;
 				txtRole2.Text = txtRole1.Text;
@@ -928,5 +928,5 @@ namespace NetsuiteEnvironmentViewer
 
 			return 0;
 		}
-	}
+    }
 }
