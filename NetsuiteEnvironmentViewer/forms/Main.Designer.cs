@@ -1,33 +1,33 @@
 ﻿namespace NetsuiteEnvironmentViewer
 {
-	partial class Main
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    partial class Main
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.button1 = new System.Windows.Forms.Button();
             this.tbCtrlEnvironment1 = new System.Windows.Forms.TabControl();
             this.tbPgEnvironment1Records = new System.Windows.Forms.TabPage();
@@ -595,7 +595,6 @@
             this.lblRole2.Size = new System.Drawing.Size(37, 17);
             this.lblRole2.TabIndex = 20;
             this.lblRole2.Text = "Role";
-            this.lblRole2.Click += new System.EventHandler(this.lblRole2_Click);
             // 
             // txtUrl2
             // 
@@ -614,7 +613,6 @@
             this.lblSignature2.Size = new System.Drawing.Size(69, 17);
             this.lblSignature2.TabIndex = 18;
             this.lblSignature2.Text = "Signature";
-            this.lblSignature2.Click += new System.EventHandler(this.lblSignature2_Click);
             // 
             // txtRole2
             // 
@@ -623,7 +621,6 @@
             this.txtRole2.Name = "txtRole2";
             this.txtRole2.Size = new System.Drawing.Size(75, 22);
             this.txtRole2.TabIndex = 21;
-            this.txtRole2.TextChanged += new System.EventHandler(this.txtRole2_TextChanged);
             // 
             // lblEmail2
             // 
@@ -634,7 +631,6 @@
             this.lblEmail2.Size = new System.Drawing.Size(42, 17);
             this.lblEmail2.TabIndex = 16;
             this.lblEmail2.Text = "Email";
-            this.lblEmail2.Click += new System.EventHandler(this.lblEmail2_Click);
             // 
             // lblAccount2
             // 
@@ -661,7 +657,6 @@
             this.txtEmail2.Name = "txtEmail2";
             this.txtEmail2.Size = new System.Drawing.Size(185, 22);
             this.txtEmail2.TabIndex = 17;
-            this.txtEmail2.TextChanged += new System.EventHandler(this.txtEmail2_TextChanged);
             // 
             // txtSignature2
             // 
@@ -671,7 +666,6 @@
             this.txtSignature2.PasswordChar = '●';
             this.txtSignature2.Size = new System.Drawing.Size(185, 22);
             this.txtSignature2.TabIndex = 19;
-            this.txtSignature2.TextChanged += new System.EventHandler(this.txtSignature2_TextChanged);
             // 
             // pnlEnvironment2TreeViews
             // 
@@ -731,57 +725,57 @@
             this.pnlEnvironment2TreeViews.ResumeLayout(false);
             this.ResumeLayout(false);
 
-		}
+        }
 
-		#endregion
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.TabControl tbCtrlEnvironment1;
-		private System.Windows.Forms.TabPage tbPgEnvironment1Records;
-		private System.Windows.Forms.TabPage tbPgEnvironment1Scripts;
-		private System.Windows.Forms.TabControl tbCtrlEnvironment2;
-		private System.Windows.Forms.TabPage tbPgEnvironment2Records;
-		private System.Windows.Forms.TabPage tbPgEnvironment2Scripts;
-		private MyTreeView tvEnvironment1Records;
-		private MyTreeView tvEnvironment1Scripts;
-		private MyTreeView tvEnvironment2Records;
-		private MyTreeView tvEnvironment2Scripts;
-		private System.Windows.Forms.CheckBox chkRecords;
-		private System.Windows.Forms.CheckBox chkScripts;
-		private System.Windows.Forms.Button btnSaveSettings;
-		private System.Windows.Forms.Button btnCompare;
-		private System.Windows.Forms.TableLayoutPanel tblLayout;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.GroupBox grpEnvironment1;
-		private System.Windows.Forms.Button btnOpenCSVImport1;
-		private System.Windows.Forms.Label lblUrl1;
-		private System.Windows.Forms.Label lblRole1;
-		private System.Windows.Forms.TextBox txtUrl1;
-		private System.Windows.Forms.Label lblSignature1;
-		private System.Windows.Forms.TextBox txtRole1;
-		private System.Windows.Forms.Label lblEmail1;
-		private System.Windows.Forms.Label lblAccount1;
-		private System.Windows.Forms.TextBox txtAccount1;
-		private System.Windows.Forms.TextBox txtEmail1;
-		private System.Windows.Forms.TextBox txtSignature1;
-		private System.Windows.Forms.Panel pnlEnvironment1TreeViews;
-		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.GroupBox grpEnvironment2;
-		private System.Windows.Forms.Button btnOpenCSVImport2;
-		private System.Windows.Forms.CheckBox chkUseSameCredentials;
-		private System.Windows.Forms.Label lblUrl2;
-		private System.Windows.Forms.Label lblRole2;
-		private System.Windows.Forms.TextBox txtUrl2;
-		private System.Windows.Forms.Label lblSignature2;
-		private System.Windows.Forms.TextBox txtRole2;
-		private System.Windows.Forms.Label lblEmail2;
-		private System.Windows.Forms.Label lblAccount2;
-		private System.Windows.Forms.TextBox txtAccount2;
-		private System.Windows.Forms.TextBox txtEmail2;
-		private System.Windows.Forms.TextBox txtSignature2;
-		private System.Windows.Forms.Panel pnlEnvironment2TreeViews;
-		private System.Windows.Forms.Button btnIgnoreSettings;
-		private System.Windows.Forms.CheckBox chkHideSignature;
-		private System.Windows.Forms.CheckBox chkOnlyCustomFields;
+        #endregion
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TabControl tbCtrlEnvironment1;
+        private System.Windows.Forms.TabPage tbPgEnvironment1Records;
+        private System.Windows.Forms.TabPage tbPgEnvironment1Scripts;
+        private System.Windows.Forms.TabControl tbCtrlEnvironment2;
+        private System.Windows.Forms.TabPage tbPgEnvironment2Records;
+        private System.Windows.Forms.TabPage tbPgEnvironment2Scripts;
+        private MyTreeView tvEnvironment1Records;
+        private MyTreeView tvEnvironment1Scripts;
+        private MyTreeView tvEnvironment2Records;
+        private MyTreeView tvEnvironment2Scripts;
+        private System.Windows.Forms.CheckBox chkRecords;
+        private System.Windows.Forms.CheckBox chkScripts;
+        private System.Windows.Forms.Button btnSaveSettings;
+        private System.Windows.Forms.Button btnCompare;
+        private System.Windows.Forms.TableLayoutPanel tblLayout;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.GroupBox grpEnvironment1;
+        private System.Windows.Forms.Button btnOpenCSVImport1;
+        private System.Windows.Forms.Label lblUrl1;
+        private System.Windows.Forms.Label lblRole1;
+        private System.Windows.Forms.TextBox txtUrl1;
+        private System.Windows.Forms.Label lblSignature1;
+        private System.Windows.Forms.TextBox txtRole1;
+        private System.Windows.Forms.Label lblEmail1;
+        private System.Windows.Forms.Label lblAccount1;
+        private System.Windows.Forms.TextBox txtAccount1;
+        private System.Windows.Forms.TextBox txtEmail1;
+        private System.Windows.Forms.TextBox txtSignature1;
+        private System.Windows.Forms.Panel pnlEnvironment1TreeViews;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.GroupBox grpEnvironment2;
+        private System.Windows.Forms.Button btnOpenCSVImport2;
+        private System.Windows.Forms.CheckBox chkUseSameCredentials;
+        private System.Windows.Forms.Label lblUrl2;
+        private System.Windows.Forms.Label lblRole2;
+        private System.Windows.Forms.TextBox txtUrl2;
+        private System.Windows.Forms.Label lblSignature2;
+        private System.Windows.Forms.TextBox txtRole2;
+        private System.Windows.Forms.Label lblEmail2;
+        private System.Windows.Forms.Label lblAccount2;
+        private System.Windows.Forms.TextBox txtAccount2;
+        private System.Windows.Forms.TextBox txtEmail2;
+        private System.Windows.Forms.TextBox txtSignature2;
+        private System.Windows.Forms.Panel pnlEnvironment2TreeViews;
+        private System.Windows.Forms.Button btnIgnoreSettings;
+        private System.Windows.Forms.CheckBox chkHideSignature;
+        private System.Windows.Forms.CheckBox chkOnlyCustomFields;
         private System.Windows.Forms.Label lblSuffix1;
         private System.Windows.Forms.TextBox txtSuffix1;
         private System.Windows.Forms.Label lblSuffix2;

@@ -932,35 +932,5 @@ namespace NetsuiteEnvironmentViewer
 
 			return 0;
 		}
-
-        private void lblEmail2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtEmail2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblSignature2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtSignature2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblRole2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtRole2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
