@@ -544,7 +544,7 @@
 
 			var filters = new Array();
 
-			filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId)
+			filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId);
 
 			var columns = new Array();
 			columns[0] = new nlobjSearchColumn('internalid');
