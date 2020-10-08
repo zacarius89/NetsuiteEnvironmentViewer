@@ -227,7 +227,7 @@
 
 			if (includeAll === 'T')
 			{
-				recordFields = commonNetSuiteFunctions.getRecordFields(record.recordId, includeAll)
+				recordFields = commonNetSuiteFunctions.getRecordFields(record.recordId, includeAll);
 			}
 
 			if (recordFields)
@@ -254,7 +254,7 @@
 
 			if (internalId)
 			{
-				filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId)
+				filters[0] = new nlobjSearchFilter('internalid', null, 'anyof', internalId);
 			}
 
 			var columns = new Array();
@@ -279,7 +279,7 @@
 
 					if (includeAll === 'T')
 					{
-						recordFields = commonNetSuiteFunctions.getRecordFields(recordId, includeAll)
+						recordFields = commonNetSuiteFunctions.getRecordFields(recordId, includeAll);
 					}
 
 					customRecord.internalId = recordInternalId;
@@ -404,12 +404,12 @@
 
 					if (includeAll === 'T')
 					{
-						scriptDeployments = commonNetSuiteFunctions.getCustomScriptDeployments(scriptInternalId, includeAll)
+						scriptDeployments = commonNetSuiteFunctions.getCustomScriptDeployments(scriptInternalId, includeAll);
 					}
 
 					if (includeAll === 'T')
 					{
-						scriptLibraries = commonNetSuiteFunctions.getCustomScriptLibraries(scriptInternalId, includeAll)
+						scriptLibraries = commonNetSuiteFunctions.getCustomScriptLibraries(scriptInternalId, includeAll);
 					}
 
 					customScript.internalId = scriptInternalId;
